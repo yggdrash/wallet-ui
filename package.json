@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "electron-window-state": "^4.1.1",
-    "get-port": "^3.2.0"
+    "get-port": "^3.2.0",
+    "global": "^4.3.2"
   }
 }
