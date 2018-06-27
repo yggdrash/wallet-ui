@@ -1,7 +1,16 @@
 const windowStateKeeper = require('electron-window-state')
 const electron = require('electron'),
     path = require("path"),
-    url = require("url");
+    url = require("url"),
+    yeedcoin = require("./yeedCoin/src/server");
+
+
+const server = yeedcoin.app.listen(4000, () =>{
+    console.log("running localhost 4000");
+});
+
+yeedcoin.startP2PServer(server);
+
 
 const { app, BrowserWindow } = electron;
 

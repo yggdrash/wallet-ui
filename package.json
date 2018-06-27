@@ -1,12 +1,12 @@
 {
   "scripts": {
-    "start":
-    "concurrently --kill-others \" yarn run startReact \" \"ENV=dev electron .\"",
+    "start": "concurrently --kill-others \" yarn run startReact \" \"ENV=dev electron .\"",
     "startReact": "cd client && npm start"
   },
   "main": "main.js",
   "devDependencies": {
-    "concurrently": "^3.6.0"
+    "concurrently": "^3.6.0",
+    "electron": "^2.0.3"
   },
   "dependencies": {
     "electron-window-state": "^4.1.1"

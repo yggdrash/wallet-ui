@@ -1,5 +1,5 @@
 # yggdrash Wallet
-Yggdrash Wallet Desktop App for YEED coin
+Yggdrash Wallet Desktop App for YEED Coin
 
 ## Download
 [Latest Release]()
@@ -11,8 +11,6 @@ For Mac users the package is available in [Homebrew](https://brew.sh/):
 ```
 brew update
 brew install yarn
-
-yarn add concurrently electron --dev
 ```
 
 ## Features
