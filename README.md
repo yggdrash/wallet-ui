@@ -1,4 +1,4 @@
-# yggdrash Wallet
+# Yggdrash Wallet
 Yggdrash Wallet Desktop App for YEED Coin
 
 ## Download
@@ -28,7 +28,7 @@ nvm use
 Install from source:
 ```bash
 # Clone this repository
-git clone https://github.com/wooheet/yggdrash-wallet
+git clone git@bitbucket.org:r2v/yggdrash-wallet.git
 # Go into the repository
 cd yggdrash-wallet
 # Install dependencies
