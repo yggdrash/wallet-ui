@@ -1,7 +1,7 @@
 {
-  "name": "yeedcoin",
+  "name": "yeedchain",
   "version": "1.0.0",
-  "description": "yeedcoin",
+  "description": "yeedchain",
   "main": "src/server.js",
   "repository": "https://github.com/wooheet/tedy-coin",
   "author": "tedy <tedy@r2v.io>",
