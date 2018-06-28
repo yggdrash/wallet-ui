@@ -1,7 +1,7 @@
 const electron = require('electron'),
     path = require("path"),
     url = require("url"),
-    yeedcoin = require("./yeedCoin/src/server");
+    yeedcoin = require("./yeedcoin/src/server");
 
 
 const server = yeedcoin.app.listen(4000, () =>{
