@@ -1,20 +1,22 @@
 const electron = require('electron'),
     path = require("path"),
     url = require("url"),
-    yeedcoin = require("./yeedcoin/src/server");
+    getPort = require("get-port"),
+    yeedServer = require("./yggdrash-chain/src/server");
 
 
-const server = yeedcoin.app.listen(4000, () =>{
-    console.log("running localhost 4000");
-});
-
-yeedcoin.startP2PServer(server);
-
+getPort().then(port => {
+    const server = yeedServer.app.listen(port, () =>{
+        console.log(`Running yggdrash node on : http://localhost:${port}`);
+    });
+    
+    yeedServer.startP2PServer(server);
+    global.sharedPort = port;
+});  
 
 const { app, BrowserWindow } = electron;
 
 let mainWindow;
-
 const createWindow = () => {
 
     mainWindow = new BrowserWindow({

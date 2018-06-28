@@ -19,7 +19,6 @@ const { startP2PServer, connectToPeers } = P2P;
 const { initWallet, getPublicFromWallet, getBalance } = Wallet;
 const { getMempool } = Mempool;
 
-// Psssst. Don't forget about typing 'export HTTP_PORT=4000' in your console
 const PORT = process.env.HTTP_PORT || 3000;
 
 const app = express();

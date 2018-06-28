@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "styled-components": "^3.3.3",
+    "styled-reset": "^1.3.5",
+    "typography": "^0.16.17"
   },
   "scripts": {
     "start": "BROWSER=false react-scripts start",
