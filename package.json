@@ -2,7 +2,17 @@
   "name": "yggdrash-wallet",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "main.js",
+  "productName": "Yggdrash Client",
+  "description": "Yggdrash Desktop Wallet",
+  "keywords": [
+    "Yggdrash",
+    "Wallet",
+    "Yeed",
+    "R2V",
+    "Client",
+    "Electron",
+    "React"
+  ],
   "private": false,
   "scripts": {
     "start": "concurrently --kill-others \" yarn run startReact \" \"ENV=dev electron .\"",
@@ -33,6 +43,7 @@
     "react-scripts": "1.1.4",
     "styled-components": "^3.3.3",
     "styled-reset": "^1.3.5",
-    "typography": "^0.16.17"
+    "typography": "^0.16.17",
+    "nodemon": "^1.17.5",
   }
 }

@@ -17,7 +17,6 @@ const baseStyles = () => injectGlobal`
   }
 `;
 
-
   
 class AppContainer extends Component {
     state = {
@@ -31,33 +30,46 @@ class AppContainer extends Component {
     componentDidMount = () => {
         const { sharedPort } = this.props;
         this._registerOnMaster(sharedPort);
-        this._getAddress();
+        this._getBalance(sharedPort);
+        this._getAddress(sharedPort);
+        setInterval(() => this._getBalance(sharedPort), 1000);
     };
+
+    // <div className="AppContainer">
+    //         <header className="App-header">
+    //         <img src={logo} className="App-logo" alt="logo" />
+    //         <h1 className="App-title">Yggdrash Wallet</h1>
+    //         </header>
+    //     </div>
     render() {
         baseStyles();
         return (
-        <div className="AppContainer">
-            <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Yggdrash Wallet</h1>
-            </header>
-        </div>
-        // <AppPresenter {...this.state}/>
+            <AppPresenter {...this.state}/>
         );
     };
 
     //todo : 마스터 노드에게 post request(마스터노드 등록)
     _registerOnMaster = async port => {
-        
         const request = await axios.post(`${MASTER_NODE}/peers`, {
             peer: SELF_P2P_NODE(port)
         });
     };
 
-    _getAddress = async port =>{
-         const request = await axios.get(`${SELF_NODE(port)}/me/address`);
-         console.log(request.data)
-    }
+    _getAddress = async port => {
+        const request = await axios.get(`${SELF_NODE(port)}/me/address`);
+        this.setState({
+          address: request.data,
+          isLoading: false
+        });
+      };
+
+      _getBalance = async port => {
+        const request = await axios.get(`${SELF_NODE(port)}/me/balance`);
+        const { balance } = request.data;
+        this.setState({
+          balance
+        });
+      };
 }
 
 export default AppContainer;
