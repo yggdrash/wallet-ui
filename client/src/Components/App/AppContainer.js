@@ -5,9 +5,9 @@ import reset from "styled-reset";
 import axios from "axios";
 import typography from "../../typography";
 import { MASTER_NODE, SELF_NODE, SELF_P2P_NODE } from "../../constants";
-import AppPresenter from "./AppPresenter";
-import logo from '../../assets/images/ygg_symbol_shadow.png';
+// import AppPresenter from "./AppPresenter";
 import './App.css';
+import logo from '../../assets/images/ygg_symbol_shadow.png';
 
 const baseStyles = () => injectGlobal`
   ${reset};
@@ -35,16 +35,18 @@ class AppContainer extends Component {
         setInterval(() => this._getBalance(sharedPort), 1000);
     };
 
-    // <div className="AppContainer">
-    //         <header className="App-header">
-    //         <img src={logo} className="App-logo" alt="logo" />
-    //         <h1 className="App-title">Yggdrash Wallet</h1>
-    //         </header>
-    //     </div>
     render() {
         baseStyles();
         return (
-            <AppPresenter {...this.state}/>
+          <div className="AppContainer">
+            <header className="App-header">
+            <div>
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">Yggdrash Wallet</h1>
+            </div>
+            </header>
+          </div>
+            // <AppPresenter {...this.state}/>
         );
     };
 
@@ -53,10 +55,11 @@ class AppContainer extends Component {
         const request = await axios.post(`${MASTER_NODE}/peers`, {
             peer: SELF_P2P_NODE(port)
         });
+        console.log("MASTER_NODE request data :", request)
     };
 
     _getAddress = async port => {
-        const request = await axios.get(`${SELF_NODE(port)}/me/address`);
+        const request = await axios.get(`${SELF_NODE(port)}/my/address`);
         this.setState({
           address: request.data,
           isLoading: false
@@ -64,7 +67,7 @@ class AppContainer extends Component {
       };
 
       _getBalance = async port => {
-        const request = await axios.get(`${SELF_NODE(port)}/me/balance`);
+        const request = await axios.get(`${SELF_NODE(port)}/my/balance`);
         const { balance } = request.data;
         this.setState({
           balance

@@ -42,12 +42,12 @@ app.post("/peers", (req, res) => {
   res.send();
 });
 
-app.get("/me/balance", (req, res) => {
+app.get("/my/balance", (req, res) => {
   const balance = getAccountBalance();
   res.send({ balance });
 });
 
-app.get("/me/address", (req, res) => {
+app.get("/my/address", (req, res) => {
   res.send(getPublicFromWallet());
 });
 
