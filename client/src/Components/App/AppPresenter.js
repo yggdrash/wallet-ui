@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Card, Key, KeyName, Title, Logo } from "../Shared";
+import { Card, Key, KeyName, Title, Logo } from "../Shared"; //, Button
 import logo from '../../assets/images/ygg_symbol_shadow.png';
+import { Peer } from '../icons/icon-kit'; //Network, Config, Quit,
 
 const AppContainer = styled.div`
   
@@ -10,12 +11,10 @@ const AppContainer = styled.div`
 
 const Header = styled.div`
     display: flex;
-    height: 85px;
+    height: 80px;
     background-color: #222; 
     padding: 15px;
-    color: white;
 `;
-
 
 const AppPresenter = ({
   isLoading,
@@ -24,16 +23,20 @@ const AppPresenter = ({
 }) => (
   <AppContainer>
     <Header>
-      <Logo><img src={logo} className="App-logo" alt="logo" /></Logo>
+      <Logo><img src={logo} alt="logo" /></Logo>
       <Title>{isLoading ? "Loading..." : "Yggdrash Wallet"}</Title>
+      <div>
+        <Peer/>
+      </div>
+
     </Header>
     <Card>
       <Key>
         <KeyName>Your address:</KeyName> {address}
       </Key>
-      {/* <Key>
+      <Key>
         <KeyName>Your balance:</KeyName> {balance} YEED
-      </Key> */}
+      </Key>
     </Card>
   </AppContainer>
 );

@@ -16,7 +16,7 @@ export const Logo = styled.div`
 //   from { transform: rotate(0deg); }
 //   to { transform: rotate(360deg); }
 // }
-  width: 5%;
+  width: 3.5%;
 `;
 
 export const Title = styled.h1`
@@ -38,12 +38,9 @@ export const KeyName = styled.span`
 `;
 
 export const Button = styled.button`
-  background-color: white;
   border: 0;
   width: 100px;
   padding: 10px 0;
-  font-size: 14px;
-  font-weight: 600;
   color: #305371;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);

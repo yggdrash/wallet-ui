@@ -15,7 +15,7 @@ const {
 
 const ec = new elliptic.ec("secp256k1");
 
-const privateKeyLocation = path.join(__dirname, "privateKey");
+const privateKeyLocation = path.join(__dirname, "./accounts/privateKey");
 
 const generatePrivateKey = () => {
   const keyPair = ec.genKeyPair();
