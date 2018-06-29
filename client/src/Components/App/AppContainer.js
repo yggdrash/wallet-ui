@@ -5,9 +5,9 @@ import reset from "styled-reset";
 import axios from "axios";
 import typography from "../../typography";
 import { MASTER_NODE, SELF_NODE, SELF_P2P_NODE } from "../../constants";
-// import AppPresenter from "./AppPresenter";
-import './App.css';
-import logo from '../../assets/images/ygg_symbol_shadow.png';
+import AppPresenter from "./AppPresenter";
+// import './App.css';
+// import logo from '../../assets/images/ygg_symbol_shadow.png';
 
 const baseStyles = () => injectGlobal`
   ${reset};
@@ -34,19 +34,19 @@ class AppContainer extends Component {
         this._getAddress(sharedPort);
         setInterval(() => this._getBalance(sharedPort), 1000);
     };
-
+  //   <div className="AppContainer">
+  //   <header className="App-header">
+  //   <div>
+  //   <img src={logo} className="App-logo" alt="logo" />
+  //   <h1 className="App-title">Yggdrash Wallet</h1>
+  //   </div>
+  //   </header>
+  // </div>
     render() {
         baseStyles();
         return (
-          <div className="AppContainer">
-            <header className="App-header">
-            <div>
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Yggdrash Wallet</h1>
-            </div>
-            </header>
-          </div>
-            // <AppPresenter {...this.state}/>
+
+            <AppPresenter {...this.state}/>
         );
     };
 

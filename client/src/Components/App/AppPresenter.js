@@ -1,30 +1,35 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-// import './App.css';
-// import logo from '../../assets/images/ygg_symbol_shadow.png';
+import { Card, Key, KeyName, Title } from "../Shared";
+import './App.css';
+import logo from '../../assets/images/ygg_symbol_shadow.png';
 
 const AppContainer = styled.div`
-    margin: 50px 0;
-    width: 90%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+
 `;
+
+const Header = styled.div`
+    display: flex;
+    font-size: 1.5em;
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
+`;
+
+
 const AppPresenter = ({
   isLoading,
   address = "",
   balance = ""
 }) => (
   <AppContainer>
-    {/* <Header>
+    <Header>
       <img src={logo} className="App-logo" alt="logo" />
       <Title>{isLoading ? "Loading..." : "Yggdrash Wallet"}</Title>
-      <Button disabled={isMining} onClick={mineBlock}>
-        {isMining ? "Mining" : "Mine"}
-      </Button>
     </Header>
-    <Card>
+    {/* <Card>
       <Key>
         <KeyName>Your address:</KeyName> {address}
       </Key>
