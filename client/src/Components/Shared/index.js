@@ -1,2 +1,2 @@
-import { Card, Title, Key, KeyName, Button } from "./Shared";
-export { Card, Title, Key, KeyName, Button };
+import { Card, Title, Key, KeyName, Button, Logo } from "./Shared";
+export { Card, Title, Key, KeyName, Button, Logo };

@@ -1,20 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Card, Key, KeyName, Title } from "../Shared";
-import './App.css';
+import { Card, Key, KeyName, Title, Logo } from "../Shared";
 import logo from '../../assets/images/ygg_symbol_shadow.png';
 
 const AppContainer = styled.div`
-
+  
 `;
 
 const Header = styled.div`
     display: flex;
-    font-size: 1.5em;
-    background-color: #222;
-    height: 150px;
-    padding: 20px;
+    height: 85px;
+    background-color: #222; 
+    padding: 15px;
     color: white;
 `;
 
@@ -26,17 +24,17 @@ const AppPresenter = ({
 }) => (
   <AppContainer>
     <Header>
-      <img src={logo} className="App-logo" alt="logo" />
+      <Logo><img src={logo} className="App-logo" alt="logo" /></Logo>
       <Title>{isLoading ? "Loading..." : "Yggdrash Wallet"}</Title>
     </Header>
-    {/* <Card>
+    <Card>
       <Key>
         <KeyName>Your address:</KeyName> {address}
       </Key>
-      <Key>
+      {/* <Key>
         <KeyName>Your balance:</KeyName> {balance} YEED
-      </Key>
-    </Card> */}
+      </Key> */}
+    </Card>
   </AppContainer>
 );
 

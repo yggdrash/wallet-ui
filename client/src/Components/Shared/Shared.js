@@ -10,15 +10,26 @@ export const Card = styled.div`
   margin-bottom: 50px;
 `;
 
+export const Logo = styled.div`
+// animation: App-logo-spin infinite 10s linear;
+// @keyframes App-logo-spin {
+//   from { transform: rotate(0deg); }
+//   to { transform: rotate(360deg); }
+// }
+  width: 5%;
+`;
+
 export const Title = styled.h1`
-  color: #305371;
+  color: #f2f2f2;
+  padding: 15px;
+  font-size: 1.5em;
 `;
 
 export const Key = styled.h3`
   color: #305371;
   margin-bottom: 20px !important;
   &:last-child {
-    margin-bottom: 0;
+    margin-bottom: 0;3
   }
 `;
 
