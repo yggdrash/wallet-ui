@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Card, Key, KeyName, Title, Logo } from "../Shared"; //, Button
 import logo from '../../assets/images/ygg_symbol_shadow.png';
-//import { Peer } from '../icons/icon-kit'; //Network, Config, Quit,
+//import { Peer } from '../../assets/icons/icon-kit'; //Network, Config, Quit,
 
 const AppContainer = styled.div`
   
