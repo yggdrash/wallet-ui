@@ -39,9 +39,8 @@ yarn install
 
 Then start:
 ```bash
+yarn build
 yarn start
-
-electron -> refresh
 ```
 
 ### Requirements to build from OS X

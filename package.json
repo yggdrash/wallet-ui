@@ -1,5 +1,5 @@
 {
-  "name": "yggdrash-wallet",
+  "name": "Yggdrash",
   "version": "0.0.1",
   "license": "MIT",
   "productName": "Yggdrash Client",
@@ -7,6 +7,7 @@
   "keywords": [
     "Yggdrash",
     "Wallet",
+    "Account",
     "Yeed",
     "R2V",
     "Client",
@@ -15,11 +16,18 @@
   ],
   "private": false,
   "scripts": {
-    "start": "concurrently --kill-others \" yarn run startReact \" \"ENV=dev electron .\"",
+    "dev": "concurrently --kill-others \" yarn run startReact \" \"ENV=dev electron .\"",
+    "start": "concurrently --kill-others \" yarn run startReact \" \"electron . -- --disableScreenshotProtection\"",
     "startReact": "cd client && npm start",
-    "build": "electron-packager . --prune=false --icon=ygg-logo.icns --ignore=/client --overwrite --out=dist",
+    "build": "electron-packager . --prune=false --icon=icon.icns --ignore=/client --overwrite --out=dist",
     "prebuild": "yarn run deleteWallet && cd client && npm run build",
-    "deleteWallet": "rm -rf yggdrash-chain/src/accounts/privateKey"
+    "deleteWallet": "rm -rf yggdrash-chain/src/accounts/privateKey",
+    "dist": "npm run dist:win && npm run dist:macos && npm run dist:linux && npm run dist:win32",
+    "dist-quick": "npm run dist:win && npm run dist:macos && npm run dist:linux",
+    "dist:win": "electron-builder --win",
+    "dist:win32": "electron-builder --win --ia32",
+    "dist:macos": "electron-builder --macos",
+    "dist:linux": "electron-builder --linux"
   },
   "main": "main.js",
   "devDependencies": {
@@ -30,10 +38,13 @@
   "dependencies": {
     "about-window": "^1.11.1",
     "axios": "^0.18.0",
+    "bip39": "^2.5.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "crypto-js": "^3.1.9-1",
+    "electron-builder": "^20.19.1",
     "electron-window-state": "^4.1.1",
+    "elemon": "^5.0.3",
     "elliptic": "^6.4.0",
     "express": "^4.16.2",
     "get-port": "^3.2.0",
@@ -50,5 +61,44 @@
     "styled-reset": "^1.3.5",
     "typography": "^0.16.17",
     "ws": "^4.1.0"
+  },
+  "build": {
+    "appId": "com.yggdrashwallet.liteclient",
+    "protocols": {
+      "name": "Yggdrash URI scheme",
+      "schemes": [
+        "yggdrash"
+      ],
+      "role": "Viewer"
+    },
+    "mac": {
+      "category": "finance"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "linux": {
+      "description": "A Lite Client used to securely connect to the yggdrash network and manage your yggdrash assets.",
+      "target": [
+        "deb",
+        "tar.xz"
+      ],
+      "desktop": {
+        "MimeType": "x-scheme-handler/yggdrash;"
+      },
+      "category": "Network"
+    },
+    "deb": {
+      "synopsis": "Yggdrash Desktop Wallet"
+    },
+    "dmg": {
+      "icon": "client/src/assets/images/icon.icns"
+    },
+    "nsis": {
+      "perMachine": true,
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }

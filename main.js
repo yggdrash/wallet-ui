@@ -1,6 +1,7 @@
 const electron = require('electron'),
     path = require("path"),
     url = require("url"),
+    elemon = require('elemon'),
     openAboutWindow = require('about-window').default,
     windowStateKeeper = require('electron-window-state'),
     getPort = require("get-port"),
@@ -21,12 +22,11 @@ const { app, BrowserWindow, Menu } = electron;
 let mainWindow;
 let enableScreenshotProtection = true
 let template = null
+let menu = null
 let deeplinkingUrl = null
-
 
 const shouldQuit = app.makeSingleInstance((argv, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
-  
     // argv: An array of the second instance’s (command line / deep linked) arguments
     if (process.platform !== 'darwin') {
       deeplinkingUrl = argv[2]
@@ -43,14 +43,8 @@ const shouldQuit = app.makeSingleInstance((argv, workingDirectory) => {
     app.exit()
   }
 
-  
 const createWindow = () => {
 
-    // mainWindow = new BrowserWindow({
-    //     width: 1200,
-    //     height: 800,
-    //     title: "Yggdrash Wallet"
-    // });
     const ENV = process.env.ENV;
 
     const iconpath = path.resolve(__dirname, '/client/src/assets/images/ygg-logo-green.png')
@@ -64,7 +58,7 @@ const createWindow = () => {
     mainWindow = new BrowserWindow({width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, center: true, icon: iconpath, resizable: true, frame: true, show: false,  title: "Yggdrash Wallet"})
     mainWindow.setContentProtection(true)
     mainWindowState.manage(mainWindow)
-
+    mainWindow.loadURL(`file://${__dirname}/build/index.html`)
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
     })
@@ -90,167 +84,100 @@ const createWindow = () => {
     }
 
     template = [
-        {
-          label: "Yggdrash Wallet",
-          submenu: [
-            {
-              label: "About Yggdrash Wallet",
-              role: "about"
-            },
-            {
-              type: "separator"
-            },
-            {
-              label: "Services",
-              role: "services",
-              submenu: []
-            },
-            {
-              type: "separator"
-            },
-            {
-              label: "Hide Yggdrash Wallet",
-              accelerator: "Command+H",
-              role: "hide"
-            },
-            {
-              label: "Hide Others",
-              accelerator: "Command+Shift+H",
-              role: "hideothers"
-            },
-            {
-              label: "Show All",
-              role: "unhide"
-            },
-            {
-              type: "separator"
-            },
-            {
-              label: "Quit",
-              accelerator: "Command+Q",
-              click: function() {
-                app.quit();
-              }
-            }
-          ]
-        },
-        {
-            label: 'File',
-            submenu: [
-              screenshotProtection,
-              { type: 'separator' },
-              { role: 'quit' }
-            ]
-        },
-        {
-          label: "Edit",
-          submenu: [
-            {
-              label: "Undo",
-              accelerator: "CmdOrCtrl+Z",
-              role: "undo"
-            },
-            {
-              label: "Redo",
-              accelerator: "Shift+CmdOrCtrl+Z",
-              role: "redo"
-            },
-            {
-              type: "separator"
-            },
-            {
-              label: "Cut",
-              accelerator: "CmdOrCtrl+X",
-              role: "cut"
-            },
-            {
-              label: "Copy",
-              accelerator: "CmdOrCtrl+C",
-              role: "copy"
-            },
-            {
-              label: "Paste",
-              accelerator: "CmdOrCtrl+V",
-              role: "paste"
-            },
-            {
-              label: "Select All",
-              accelerator: "CmdOrCtrl+A",
-              role: "selectall"
-            }
-          ]
-        }, {
-            role: 'window',
-            submenu: [
-              { role: 'minimize' },
-              { role: 'close' }
-            ]
-          },
-          {
-            role: 'help',
-            submenu: [
-              {
-                label: 'Learn More',
-                click () { require('electron').shell.openExternal('https://yggdrash.io') }
-              },
-              { label: 'Reload App', accelerator: 'CmdOrCtrl+R', click: function () { mainWindow.reload() } },
-              { label: 'Open Dev Tools', accelerator: 'CmdOrCtrl+D', click: function () { mainWindow.webContents.openDevTools() } }
-            ]
-          }
-      ];
-
-
-    if (process.platform === 'darwin') {
-    template[0] = {
+      {
         label: app.getName(),
         submenu: [
-        about,
-        { type: 'separator' },
-        screenshotProtection,
-        { type: 'separator' },
-        { role: 'services', submenu: [] },
-        { type: 'separator' },
-        { role: 'hide' },
-        { role: 'hideothers' },
-        { role: 'unhide' },
-        { type: 'separator' },
-        { role: 'quit' }
+          screenshotProtection,
+          { type: 'separator' },
+          { role: 'quit' }
         ]
-    }
-    template[2].submenu = [
+      }, {
+        label: 'Edit',
+        submenu: [
+          { role: 'undo' },
+          { role: 'redo' },
+          { type: 'separator' },
+          { role: 'cut' },
+          { role: 'copy' },
+          { role: 'paste' },
+          { role: 'selectall' },
+          { type: 'separator' },
+          { label: 'Print Page', accelerator: 'CmdOrCtrl+P', click: function () { mainWindow.webContents.print({printBackground: true}) } }
+        ]
+      }, {
+        role: 'window',
+        submenu: [
+          { role: 'minimize' },
+          { role: 'close' }
+        ]
+      },
+      {
+        role: 'help',
+        submenu: [
+          {
+            label: 'Learn More',
+            click () { require('electron').shell.openExternal('https://yggdrash.io') }
+          },
+          { label: 'Reload App', accelerator: 'CmdOrCtrl+R', click: function () { mainWindow.reload() } },
+          { label: 'Open Dev Tools', accelerator: 'CmdOrCtrl+D', click: function () { mainWindow.webContents.openDevTools() } }
+        ]
+      }
+    ]
+  
+    if (process.platform === 'darwin') {
+      template[0] = {
+        label: app.getName(),
+        submenu: [
+          about,
+          { type: 'separator' },
+          screenshotProtection,
+          { type: 'separator' },
+          { role: 'services', submenu: [] },
+          { type: 'separator' },
+          { role: 'hide' },
+          { role: 'hideothers' },
+          { role: 'unhide' },
+          { type: 'separator' },
+          { role: 'quit' }
+        ]
+      }
+      template[2].submenu = [
         { role: 'minimize' },
         { role: 'zoom' },
         { role: 'togglefullscreen' }
-    ]
+      ]
     } else if (process.platform === 'linux') {
-    template[0] = {
+      template[0] = {
         label: 'File',
         submenu: [
-        { role: 'quit' }
+          { role: 'quit' }
         ]
-    }
-    template[3].submenu.unshift(about, { type: 'separator' })
+      }
+      template[3].submenu.unshift(about, { type: 'separator' })
     } else {
-    template[3].submenu.unshift(about, { type: 'separator' })
+      template[3].submenu.unshift(about, { type: 'separator' })
     }
+  
+    menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+  
+    mainWindow.on('closed', () => {
+      mainWindow = null
+    })
 
-    // menu = Menu.buildFromTemplate(template)
-    // Menu.setApplicationMenu(menu)
-
-
-    if(ENV === "dev"){
-        mainWindow.loadURL("http://localhost:3000");
-        // mainWindow.webContents.openDevTools();
-    }else{
-        Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-        mainWindow.loadURL(
-            url.format({
-                pathname: path.join(__dirname,"build/index.html"), //react
-                protocol: "file",
-                slashes: true
-            })
-        )
-    }
+    // if(ENV === "dev"){
+    //     mainWindow.loadURL("http://localhost:3000");
+    //     // mainWindow.webContents.openDevTools();
+    // }else{
+    //     Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+    //     mainWindow.loadURL(
+    //         url.format({
+    //             pathname: path.join(__dirname,"build/index.html"),
+    //             protocol: "file",
+    //             slashes: true
+    //         })
+    //     )
+    // }
 };
 
 function configureReload () {
@@ -276,7 +203,7 @@ function updateScreenshotProtectionItem () {
   
     menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
-  }
+}
   
 function getScreenshotProtectionLabel () {
     if (process.platform === 'linux') {
@@ -292,7 +219,7 @@ function shouldDisableScreenshotProtection (arugments) {
     return arugments && arugments.some(v => v && typeof v === 'string' && v.toLowerCase() === '--disablescreenshotprotection')
 }
   
-app.setAsDefaultProtocolClient('ark', process.execPath, ['--'])
+app.setAsDefaultProtocolClient('yggdrash', process.execPath, ['--'])
 app.on('ready', () => {
     createWindow()
 
@@ -306,16 +233,12 @@ app.on('ready', () => {
 })
 
 app.on('window-all-closed', () => {
-    // On OS X it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
       app.quit()
     }
 });
   
 app.on('activate', () => {
-// On OS X it's common to re-create a window in the app when the
-// dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
         createWindow()
     }
@@ -333,7 +256,6 @@ app.on('open-url', (event, url) => {
 
 function broadcastURI (uri) {
     if (!uri || typeof uri !== 'string') return
-  
     if (mainWindow && mainWindow.webContents) mainWindow.webContents.send('uri', uri)
 };
   

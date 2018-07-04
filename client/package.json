@@ -1,7 +1,18 @@
 {
-  "name": "yggdrash-client",
+  "name": "yggdrashClient",
   "version": "0.1.0",
+  "productName": "YggdrashClient",
   "license": "MIT",
+  "description": "Yggdrash Desktop Wallet",
+  "keywords": [
+    "Yggdrash",
+    "Wallet",
+    "Yeed",
+    "R2V",
+    "Client",
+    "Electron",
+    "React"
+  ],
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",

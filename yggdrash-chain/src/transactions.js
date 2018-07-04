@@ -101,14 +101,6 @@ const updateUTxOuts = (newTxs, uTxOutList) => {
   return resultingUTxOuts;
 };
 
-/*
-[(), B, C, D, E, F, G, ZZ, MM]
-
-
-A(40) ---> TRANSACTION  ----> ZZ(10)
-                        ----> MM(30)
-*/
-
 const isTxInStructureValid = txIn => {
   if (txIn === null) {
     console.log("The txIn appears to be null");

@@ -17,6 +17,10 @@ const ec = new elliptic.ec("secp256k1");
 
 const privateKeyLocation = path.join(__dirname, "./accounts/privateKey");
 
+
+// const bip39 = require('bip39')
+// const data = { passphrase: bip39.generateMnemonic(null, null, bip39.wordlists[self.getWordlistLanguage()]) }
+
 const generatePrivateKey = () => {
   const keyPair = ec.genKeyPair();
   const privateKey = keyPair.getPrivate();

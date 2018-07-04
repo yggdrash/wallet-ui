@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Card, Key, KeyName, Title, Logo } from "../Shared"; //, Button
 import logo from '../../assets/images/ygg_symbol_shadow.png';
-import { Peer } from '../icons/icon-kit'; //Network, Config, Quit,
+//import { Peer } from '../icons/icon-kit'; //Network, Config, Quit,
 
 const AppContainer = styled.div`
   
@@ -25,10 +25,6 @@ const AppPresenter = ({
     <Header>
       <Logo><img src={logo} alt="logo" /></Logo>
       <Title>{isLoading ? "Loading..." : "Yggdrash Wallet"}</Title>
-      <div>
-        <Peer/>
-      </div>
-
     </Header>
     <Card>
       <Key>
