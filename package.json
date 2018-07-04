@@ -19,9 +19,10 @@
     "dev": "concurrently --kill-others \" yarn run startReact \" \"ENV=dev electron .\"",
     "start": "concurrently --kill-others \" yarn run startReact \" \"electron . -- --disableScreenshotProtection\"",
     "startReact": "cd client && npm start",
-    "build": "electron-packager . --prune=false --icon=icon.icns --ignore=/client --overwrite --out=dist",
+    "build": "electron-packager . --prune=false --icon=coin.icns --ignore=/client --overwrite --out=dist",
     "prebuild": "yarn run deleteWallet && cd client && npm run build",
     "deleteWallet": "rm -rf yggdrash-chain/src/accounts/privateKey",
+    "live-reload": "cross-env LIVE_RELOAD=true electron main.js",
     "dist": "npm run dist:win && npm run dist:macos && npm run dist:linux && npm run dist:win32",
     "dist-quick": "npm run dist:win && npm run dist:macos && npm run dist:linux",
     "dist:win": "electron-builder --win",
@@ -32,7 +33,7 @@
   "main": "main.js",
   "devDependencies": {
     "concurrently": "^3.6.0",
-    "electron": "^2.0.3",
+    "electron": "1.8.3",
     "electron-packager": "^12.1.0"
   },
   "dependencies": {
@@ -77,7 +78,7 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "client/src/assets/icons/icon.icns"
+      "icon": "build/icon.ico"
     },
     "linux": {
       "description": "A Lite Client used to securely connect to the yggdrash network and manage your yggdrash assets.",
@@ -94,7 +95,7 @@
       "synopsis": "Yggdrash Desktop Wallet"
     },
     "dmg": {
-      "icon": "client/src/assets/icons/icon.icns"
+      "icon": "build/icon.icns"
     },
     "nsis": {
       "perMachine": true,
