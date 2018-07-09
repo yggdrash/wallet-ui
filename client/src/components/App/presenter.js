@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Footer from 'components/Footer'
 import Header from 'components/Header'
 import yeed from 'assets/images/ygg-logo-green.png'
-import { AccountCard, NetworkCard, Key, KeyName, Button, Logo, Yeed } from "components/Shared";
+import { AccountCard, NetworkCard, Key, KeyName, Button, Logo, Yeed, childAccountCard } from "components/Shared";
 
 
 const AppContainer = styled.div`
@@ -61,8 +61,10 @@ const AppPresenter = ({
         <KeyName>My Accounts 
           <Yeed><img src={yeed} alt="yeed" /></Yeed> {balance}
         </KeyName> 
-        {address}
       </Key>
+      <childAccountCard>
+          {address}
+      </childAccountCard>
     </AccountCard>
     <NetworkCard>
       <Key>Network </Key>

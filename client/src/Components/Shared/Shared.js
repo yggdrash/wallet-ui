@@ -10,6 +10,16 @@ export const AccountCard = styled.div`
   margin-bottom: 50px;
 `;
 
+export const childAccountCard = styled.div`
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  background-color: red;
+  width: 50%;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-bottom: 50px;
+`;
+
 export const NetworkCard = styled.div`
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   background-color: white;
@@ -21,26 +31,31 @@ export const NetworkCard = styled.div`
 `;
 
 export const Logo = styled.div`
-  width: 3.5%;
+  width: 4.5%;
+  margin-top:1%;
+  margin-left:1.5%;
+`;
+
+export const Title = styled.h1`
+  color: white;
+  padding: 1%;
+  font-size: 2em;
+  margin-top:1%;
 `;
 
 export const Yeed = styled.div`
   width: 2%;
   margin-left:10px;
-  margin-right:5px;
+  margin-right:7px;
 `;
 
-export const Title = styled.h1`
-  color: white;
-  padding: 15px;
-  font-size: 1.5em;
-`;
+
 
 export const Key = styled.h3`
   color: black;
   margin-bottom: 20px !important;
   &:last-child {
-    margin-bottom: 0;3
+    margin-bottom: 0
   }
 `;
 
