@@ -57,7 +57,7 @@ const createWindow = () => {
 
     mainWindow = new BrowserWindow({width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, center: true, icon: iconpath, resizable: true, frame: true, show: false,  title: "Yggdrash Wallet"})
     mainWindow.setContentProtection(true)
-    mainWindowState.manage(mainWindow)
+    
     mainWindow.loadURL(`file://${__dirname}/build/index.html`)
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
@@ -157,27 +157,27 @@ const createWindow = () => {
     } else {
       template[3].submenu.unshift(about, { type: 'separator' })
     }
-  
-    menu = Menu.buildFromTemplate(template)
-    Menu.setApplicationMenu(menu)
+    // mainWindowState.manage(mainWindow)
+    // menu = Menu.buildFromTemplate(template)
+    // Menu.setApplicationMenu(menu)
   
     mainWindow.on('closed', () => {
       mainWindow = null
     })
 
-    // if(ENV === "dev"){
-    //     mainWindow.loadURL("http://localhost:3000");
-    //     // mainWindow.webContents.openDevTools();
-    // }else{
-    //     Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-    //     mainWindow.loadURL(
-    //         url.format({
-    //             pathname: path.join(__dirname,"build/index.html"),
-    //             protocol: "file",
-    //             slashes: true
-    //         })
-    //     )
-    // }
+    if(ENV === "dev"){
+        mainWindow.loadURL("http://localhost:3000");
+        // mainWindow.webContents.openDevTools();
+    }else{
+        Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+        mainWindow.loadURL(
+            url.format({
+                pathname: path.join(__dirname,"build/index.html"),
+                protocol: "file",
+                slashes: true
+            })
+        )
+    }
 };
 
 function configureReload () {

@@ -20,7 +20,7 @@ export const Logo = styled.div`
 `;
 
 export const Title = styled.h1`
-  color: #f2f2f2;
+  color: white;
   padding: 15px;
   font-size: 1.5em;
 `;
