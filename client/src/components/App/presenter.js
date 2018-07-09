@@ -1,15 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Card, Key, KeyName, Title, Button } from "../Shared";
+import Footer from 'components/Footer'
+import Header from 'components/Header'
+import yeed from 'assets/images/ygg-logo-green.png'
+import { AccountCard, NetworkCard, Key, KeyName, Button, Logo, Yeed } from "components/Shared";
 
-const Header = styled.div`
-  margin: 50px 0;
-  width: 90%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 const AppContainer = styled.div`
   background-color: #f2f6fa;
@@ -52,52 +48,28 @@ const Input = Submit.extend`
 const AppPresenter = ({
   isLoading,
   address = "",
-  balance = "",
+  balance = "0",
   toAddress = "",
   amount = 0,
   handleInput,
   handleSubmit
 }) => (
   <AppContainer>
-    <Header>
-      <Title>{isLoading ? "Loading..." : "Yggdrash Wallet"}</Title>
-    </Header>
-    <Card>
+    <Header />
+    <AccountCard>
       <Key>
-        <KeyName>Your address:</KeyName> {address}
+        <KeyName>My Accounts 
+          <Yeed><img src={yeed} alt="yeed" /></Yeed> {balance}
+        </KeyName> 
+        {address}
       </Key>
-      <Key>
-        <KeyName>Your balance:</KeyName> {balance} YEED
-      </Key>
-    </Card>
-    <Card>
-      <Key>Send YEED: </Key>
-      <SendTxForm onSubmit={handleSubmit}>
-        <Input
-          placeholder={"Address"}
-          required
-          name="toAddress"
-          value={toAddress}
-          type={"text"}
-          onChange={handleInput}
-        />
-        <Input
-          placeholder={"Amount"}
-          required
-          name="amount"
-          type={"number"}
-          value={amount || ""}
-          onChange={handleInput}
-          max={balance}
-        />
-        <Submit
-          value={"Send"}
-          type={"submit"}
-          readOnly
-          disabled={!toAddress || !amount}
-        />
-      </SendTxForm>
-    </Card>
+    </AccountCard>
+    <NetworkCard>
+      <Key>Network </Key>
+      <Key>Peer </Key>
+      <Key>Last Checked </Key>
+    </NetworkCard>
+    <Footer />
   </AppContainer>
 );
 
@@ -112,3 +84,6 @@ AppPresenter.propTypes = {
 };
 
 export default AppPresenter;
+
+
+

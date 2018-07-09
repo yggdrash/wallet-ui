@@ -1,9 +1,19 @@
 import styled from "styled-components";
 
-export const Card = styled.div`
+export const AccountCard = styled.div`
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   background-color: white;
-  width: 90%;
+  width: 50%;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-bottom: 50px;
+`;
+
+export const NetworkCard = styled.div`
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  background-color: white;
+  width: 30%;
   padding: 20px;
   box-sizing: border-box;
   border-radius: 10px;
@@ -11,12 +21,13 @@ export const Card = styled.div`
 `;
 
 export const Logo = styled.div`
-// animation: App-logo-spin infinite 10s linear;
-// @keyframes App-logo-spin {
-//   from { transform: rotate(0deg); }
-//   to { transform: rotate(360deg); }
-// }
   width: 3.5%;
+`;
+
+export const Yeed = styled.div`
+  width: 2%;
+  margin-left:10px;
+  margin-right:5px;
 `;
 
 export const Title = styled.h1`
@@ -26,7 +37,7 @@ export const Title = styled.h1`
 `;
 
 export const Key = styled.h3`
-  color: #305371;
+  color: black;
   margin-bottom: 20px !important;
   &:last-child {
     margin-bottom: 0;3
@@ -34,7 +45,8 @@ export const Key = styled.h3`
 `;
 
 export const KeyName = styled.span`
-  color: #999;
+  color: black;
+  display: flex;
 `;
 
 export const Button = styled.button`

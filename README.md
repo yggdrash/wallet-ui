@@ -39,8 +39,7 @@ yarn install
 
 Then start:
 ```bash
-yarn build
-yarn start
+yarn dev
 ```
 
 ### Requirements to build from OS X

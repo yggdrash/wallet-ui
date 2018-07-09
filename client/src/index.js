@@ -16,7 +16,6 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <I18n translations={translations} initialLang="en" fallbackLang="en">
       <App sharedPort={sharedPort} />
-      {/* <App /> */}
       </I18n>
     </ConnectedRouter>
   </Provider>,
