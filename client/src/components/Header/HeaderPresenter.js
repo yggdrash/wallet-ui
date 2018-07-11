@@ -2,12 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import logo from 'assets/images/ygg-logo-green.png';
-import FontAwesome from "react-fontawesome";
 import { Wifi } from 'styled-icons/fa-solid/Wifi';
 import { ExitToApp } from 'styled-icons/material/ExitToApp';
 import { Location } from 'styled-icons/octicons/Location';
 import { UsersCog } from 'styled-icons/fa-solid/UsersCog';
-import Store from "context/store";
+// import Store from "context/store";
 
 const Header = styled.header`
   height: 100px;
@@ -86,19 +85,6 @@ const HeaderIcon = styled.button`
       transform: none;
     }
   }
-`;
-
-const Number = styled.span`
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-  background-color: #8e44ad;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  left: 25px;
-  top: -10px;
 `;
 
 const HeaderPresenter = () => (

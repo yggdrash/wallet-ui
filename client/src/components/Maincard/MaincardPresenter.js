@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
-import FontAwesome from "react-fontawesome";
 import yeed from 'assets/images/yeed-symbol.png';
 import { Yeed } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
@@ -38,7 +37,6 @@ const Line = styled.span`
 const Address = styled.span`
   font-weight: 200;
   font-size: 1.1em;
-  margin-right: 20px;
   margin-top: 20px;
   width: 100%;
 `;
@@ -126,7 +124,7 @@ const MaincardPresenter = ({ id, text, balance, address }) => (
                 </Button>
                 <Button
                   create
-                  onClick={() => store.deleteNotification(id)}
+                  onClick={() => store.createAccount()}
                 >
                 <CreateAccount/>
                 CREATE ACCOUNT

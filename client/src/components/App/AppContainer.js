@@ -6,6 +6,7 @@ import AppPresenter from "./AppPresenter";
 import ksHelper from "accounts/keyGeneration";
 import Store from "context/store";
 
+const bip39 = require("bip39");
 
 class AppContainer extends Component {
   constructor(props) {
@@ -19,17 +20,19 @@ class AppContainer extends Component {
       setInterval(() => this._getBalance(sharedPort), 1000);
     };
 
-    this._createAccount = e => {
-      let etherAccount = {};
-      // let { passPharse } = this.state;
-      let passPharse = 'pass'
-      const { address, keystoreData } = ksHelper.create(passPharse);
-      const pk = ksHelper.getPrivateKey(keystoreData, passPharse);
-      const privateKey = pk.toString('hex');
-      etherAccount = {
-        address,
-        privateKey
-      };
+    this._createAccount = () => {
+      let mnemonic = bip39.generateMnemonic();
+      console.log("mnemonic",mnemonic)
+      // let etherAccount = {};
+      // // let { passPharse } = this.state;
+      // let passPharse = 'pass'
+      // const { address, keystoreData } = ksHelper.create(passPharse);
+      // const pk = ksHelper.getPrivateKey(keystoreData, passPharse);
+      // const privateKey = pk.toString('hex');
+      // etherAccount = {
+      //   address,
+      //   privateKey
+      // };
 
     };
 
@@ -44,7 +47,6 @@ class AppContainer extends Component {
         address: request.data,
         isLoading: false
       });
-      console.log(request.data)
     };
     this._getBalance = async port => {
       const request = await axios.get(`${SELF_NODE(port)}/my/balance`);
@@ -54,35 +56,8 @@ class AppContainer extends Component {
       });
     };
   
-  
-    this._handleInput = e => {
-      const { target: { name, value } } = e;
-      this.setState({
-        [name]: value
-      });
-    };
-
-    this._handleSubmit = async e => {
-      e.preventDefault();
-      const { sharedPort } = this.props;
-      const { amount, toAddress } = this.state;
-      const request = await axios.post(`${SELF_NODE(sharedPort)}/transactions`, {
-        amount: Number(amount),
-        address: toAddress
-      });
-      this.setState({
-        amount: "",
-        toAddress: ""
-      });
-    };
-
-    this._deleteNotification = id => {
-      this.setState(currentState => {
-        const newState = delete currentState.notifications[id];
-        return newState;
-      });
-    };
     this._seeNotification = id => {
+      console.log("asdfasdf")
       this.setState(currentState => {
         return {
           ...currentState,
@@ -109,19 +84,13 @@ class AppContainer extends Component {
           text: `My Accounts`
         }
       },
-      deleteNotification: this._deleteNotification,
+      createAccount: this._createAccount,
       seeNotification: this._seeNotification
     };
   }
 
   render() {
     return (
-      // <AppPresenter
-      //   {...this.state}
-      //   handleInput={this._handleInput}
-      //   handleSubmit={this._handleSubmit}
-      //   createAccount={this._createAccount}
-      // />
       <Store.Provider value={this.state}>
         <AppPresenter />
       </Store.Provider>
