@@ -14,50 +14,63 @@ class AppContainer extends Component {
 
     this.componentDidMount = () => {
       const { sharedPort } = this.props;
-      this._registerOnMaster(sharedPort);
-      this._getBalance(sharedPort);
-      this._getAddress(sharedPort);
-      setInterval(() => this._getBalance(sharedPort), 1000);
+      // this._registerOnMaster(sharedPort);
+      // this._getBalance(sharedPort);
+      // this._getAddress(sharedPort);
+      // setInterval(() => this._getBalance(sharedPort), 1000);
     };
 
+    /**
+     * keyStore 파일 생성
+     * keyStore data를 이용하여 get private key 
+     * @method createAccount
+    */
     this._createAccount = () => {
-      let mnemonic = bip39.generateMnemonic();
-      console.log("mnemonic",mnemonic)
-      // let etherAccount = {};
-      // // let { passPharse } = this.state;
-      // let passPharse = 'pass'
-      // const { address, keystoreData } = ksHelper.create(passPharse);
-      // const pk = ksHelper.getPrivateKey(keystoreData, passPharse);
-      // const privateKey = pk.toString('hex');
-      // etherAccount = {
-      //   address,
-      //   privateKey
-      // };
+      // let mnemonic = bip39.generateMnemonic();
+      let etherAccount = {};
+      // let { passPharse } = this.state;
+      let passPharse = 'pass'
+      const { address, keystoreData } = ksHelper.create(passPharse);
+      const pk = ksHelper.getPrivateKey(keystoreData, passPharse);
+      const privateKey = pk.toString('hex');
+      etherAccount = {
+        address,
+        privateKey
+      };
+      console.log("etherAccount",etherAccount.address)
 
+      this.setState(currentState => {
+        return {
+          ...currentState,
+          notifications: {
+            ...currentState.notifications
+          },
+          address:etherAccount.address
+        };
+      });
     };
 
-    this._registerOnMaster = async port => {
-      const request = await axios.post(`${MASTER_NODE}/peers`, {
-        peer: SELF_P2P_NODE(port)
-      });
-    };
-    this._getAddress = async port => {
-      const request = await axios.get(`${SELF_NODE(port)}/my/address`);
-      this.setState({
-        address: request.data,
-        isLoading: false
-      });
-    };
-    this._getBalance = async port => {
-      const request = await axios.get(`${SELF_NODE(port)}/my/balance`);
-      const { balance } = request.data;
-      this.setState({
-          balance :balance
-      });
-    };
+    // this._registerOnMaster = async port => {
+    //   const request = await axios.post(`${MASTER_NODE}/peers`, {
+    //     peer: SELF_P2P_NODE(port)
+    //   });
+    // };
+    // this._getAddress = async port => {
+    //   const request = await axios.get(`${SELF_NODE(port)}/my/address`);
+    //   this.setState({
+    //     address: request.data,
+    //     isLoading: false
+    //   });
+    // };
+    // this._getBalance = async port => {
+    //   const request = await axios.get(`${SELF_NODE(port)}/my/balance`);
+    //   const { balance } = request.data;
+    //   this.setState({
+    //       balance :balance
+    //   });
+    // };
   
     this._seeNotification = id => {
-      console.log("asdfasdf")
       this.setState(currentState => {
         return {
           ...currentState,
@@ -74,8 +87,7 @@ class AppContainer extends Component {
     this.state = {
       isLoading: true,
       isMining: false,
-      amount: "0",
-      balance: "",
+      balance: "0",
       address:"",
       passPharse:"",
       notifications: {

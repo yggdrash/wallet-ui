@@ -35,11 +35,19 @@ const Line = styled.span`
 `;
 
 const Address = styled.span`
-  font-weight: 200;
+  font-weight: 400;
   font-size: 1.1em;
   margin-top: 20px;
   width: 100%;
 `;
+
+const Balance = styled.span`
+  font-weight: 400;
+  font-size: 1.1em;
+  margin-top: 30px;
+  width: 100%;
+`;
+
 
 const ImportAccount = styled(Download)`
   width: 20px;
@@ -141,7 +149,7 @@ const MaincardPresenter = ({ id, text, balance, address }) => (
       <FlexItem>
         <Fragment>
           <Fragment>
-            {balance}
+            <Balance>{address ? balance : null}</Balance>
           </Fragment>
         </Fragment>
       </FlexItem>

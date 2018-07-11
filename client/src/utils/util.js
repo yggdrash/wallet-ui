@@ -10,7 +10,7 @@ function padToEven(value) {
   var a = value; // eslint-disable-line
 
   if (typeof a !== 'string') {
-    throw new Error(`[ethjs-util] while padding to even, value must be string, is currently ${typeof a}, while padToEven.`);
+    throw new Error(`[yeedjs-util] while padding to even, value must be string, is currently ${typeof a}, while padToEven.`);
   }
 
   if (a.length % 2) {
@@ -49,7 +49,7 @@ function intToBuffer(i) {
  */
 function getBinarySize(str) {
   if (typeof str !== 'string') {
-    throw new Error(`[ethjs-util] while getting binary size, method getBinarySize requires input 'str' to be type String, got '${typeof str}'.`);
+    throw new Error(`[yeedjs-util] while getting binary size, method getBinarySize requires input 'str' to be type String, got '${typeof str}'.`);
   }
 
   return Buffer.byteLength(str, 'utf8');
@@ -65,8 +65,8 @@ function getBinarySize(str) {
  * @returns {boolean}
  */
 function arrayContainsArray(superset, subset, some) {
-  if (Array.isArray(superset) !== true) { throw new Error(`[ethjs-util] method arrayContainsArray requires input 'superset' to be an array got type '${typeof superset}'`); }
-  if (Array.isArray(subset) !== true) { throw new Error(`[ethjs-util] method arrayContainsArray requires input 'subset' to be an array got type '${typeof subset}'`); }
+  if (Array.isArray(superset) !== true) { throw new Error(`[yeedjs-util] method arrayContainsArray requires input 'superset' to be an array got type '${typeof superset}'`); }
+  if (Array.isArray(subset) !== true) { throw new Error(`[yeedjs-util] method arrayContainsArray requires input 'subset' to be an array got type '${typeof subset}'`); }
 
   return subset[Boolean(some) && 'some' || 'every']((value) => (superset.indexOf(value) >= 0));
 }
@@ -150,8 +150,8 @@ function fromAscii(stringValue) {
  * @returns {Array} output just a simple array of output keys
  */
 function getKeys(params, key, allowEmpty) {
-  if (!Array.isArray(params)) { throw new Error(`[ethjs-util] method getKeys expecting type Array as 'params' input, got '${typeof params}'`); }
-  if (typeof key !== 'string') { throw new Error(`[ethjs-util] method getKeys expecting type String for input 'key' got '${typeof key}'.`); }
+  if (!Array.isArray(params)) { throw new Error(`[yeedjs-util] method getKeys expecting type Array as 'params' input, got '${typeof params}'`); }
+  if (typeof key !== 'string') { throw new Error(`[yeedjs-util] method getKeys expecting type String for input 'key' got '${typeof key}'.`); }
 
   var result = []; // eslint-disable-line
 
