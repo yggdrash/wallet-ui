@@ -42,8 +42,6 @@ export const Yeed = styled.div`
   margin-top:2px;
 `;
 
-
-
 export const Key = styled.h3`
   color: #508464;
   margin-bottom: 20px !important;

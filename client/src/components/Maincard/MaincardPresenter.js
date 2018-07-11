@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import yeed from 'assets/images/yeed-symbol.png';
-import { Yeed } from "components/Shared";
+import { Yeed, AccountYeed } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
 import { PersonAdd } from 'styled-icons/material/PersonAdd';
 import Store from "context/store";
@@ -19,6 +19,11 @@ const Notification = styled.div`
   border: 2px solid rgba(0,0,0,.0975);
 `;
 
+const Account = styled.div`
+  margin-top: 10px;
+`;
+
+
 const Title = styled.span`
   font-weight: 400;
   display: flex;
@@ -26,26 +31,33 @@ const Title = styled.span`
   margin-left: 10px;
 `;
 
-const Line = styled.span`
-  font-weight: 400;
-  font-size: 1.3em;
-  display: flex;
+const Line = styled.div`
   border-bottom: 0.1px solid rgb(105,105,105);
   width: 100%;
+  margin-top: ${props => {
+    if (props.two) {
+      return "15px;";
+    }
+  }};
 `;
 
 const Address = styled.span`
   font-weight: 400;
   font-size: 1.1em;
-  margin-top: 20px;
   width: 100%;
+  display: flex;
 `;
 
-const Balance = styled.span`
-  font-weight: 400;
+const Balance = styled.div`
+  font-weight: 300;
   font-size: 1.1em;
-  margin-top: 30px;
-  width: 100%;
+  margin-top: ${props => {
+      if (props.yeed) {
+        return "26px;";
+      }
+    }};
+  margin-left: 5px;
+  width: 15px;
 `;
 
 
@@ -143,22 +155,28 @@ const MaincardPresenter = ({ id, text, balance, address }) => (
         </Fragment>
       </FlexItem>
     </Flex>
-    <Line/>
-    <Flex alignCenter justifyBetween>
-      <Address>{address}</Address>
-      <FlexItem>
-        <Fragment>
-          <Fragment>
-            <Balance>{address ? balance : null}</Balance>
-          </Fragment>
-        </Fragment>
-      </FlexItem>
-    </Flex>
+    <Line two/>
+    <Account>
+      <Flex alignCenter justifyBetween>
+        <Address>{address}</Address>
+        <FlexItem>
+          <Balance 
+            yeed
+          >
+          {address ?  <img src={yeed} alt="yeed" />: null}
+          </Balance>
+        </FlexItem>
+        <FlexItem>
+          <Balance>{address ? balance : null}</Balance>
+        </FlexItem>
+      </Flex>
+    </Account>
   </Notification>
 );
 
 MaincardPresenter.propTypes = {
   text: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
   balance: PropTypes.number.isRequired,
   id: PropTypes.number.isRequired
 };
