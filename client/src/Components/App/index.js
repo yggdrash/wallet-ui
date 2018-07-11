@@ -1,2 +1,2 @@
-import AppContainer from "./container";
+import AppContainer from "./AppContainer";
 export default AppContainer;

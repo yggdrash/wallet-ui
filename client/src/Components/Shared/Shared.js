@@ -36,9 +36,10 @@ export const Title = styled.h1`
 `;
 
 export const Yeed = styled.div`
-  width: 2%;
+  width: 15px;
   margin-left:10px;
   margin-right:7px;
+  margin-top:2px;
 `;
 
 
@@ -62,7 +63,7 @@ export const Button = styled.button`
   height: 5%;
   padding: 10px 0;
   color: #f5f6fa;
-  background-color: #006266
+  background-color: #006266;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
