@@ -1,5 +1,5 @@
-const Wallet = require("ethereumjs-wallet");
-const util = require("ethereumjs-util");
+const Wallet = require("./index.js");
+const util = require("../utils");
 
 const ksHelper = {
   create: function(password) {

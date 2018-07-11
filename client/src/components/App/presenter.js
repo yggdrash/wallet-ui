@@ -1,49 +1,67 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Footer from 'components/Footer'
-import Header from 'components/Header'
-import yeed from 'assets/images/ygg-logo-green.png'
-import { AccountCard, NetworkCard, Key, KeyName, Button, Logo, Yeed, childAccountCard } from "components/Shared";
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+import yeed from 'assets/images/ygg-logo-green.png';
+import tree from 'assets/images/tree.jpg';
+import { Download } from 'styled-icons/feather/Download';
+import { PersonAdd } from 'styled-icons/material/PersonAdd';
+// import Grid from 'styled-components-grid';
+
+
+import { AccountCard, NetworkCard, Key, KeyName, Button, Logo, Yeed } from "components/Shared";
 
 
 const AppContainer = styled.div`
-  background-color: #f2f6fa;
+  background-color: #f5f6fa
   height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: column;
+  
+  // background-image: url(${tree});
 `;
 
-const SendTxForm = styled.form`
-  margin-top: 25px;
-`;
+const ImportAccount = styled(Download)`
+  width:20%
+  margin-right:7px;
+`
 
-const Submit = Button.withComponent("input").extend`
-  margin-right:10px;
-  border: 2px solid #305371;
-  box-shadow:none;
-  &:hover{
-      box-shadow:none;
-      transform:none;
-  }
-  &:disabled{
-      color:#999;
-      border: 2px solid #999;
-      cursor:not-allowed;
-      box-shadow:none;
-  }
-`;
+const CreateAccount = styled(PersonAdd)`
+  width:20%
+  margin-right:7px;
+`
 
-const Input = Submit.extend`
-  width: 200px;
-  padding-left: 10px;
-  &:active {
-    background-color: transparent;
-  }
-  color: ${props => (props.hasError ? "#e74c3c" : "inherit")};
-  border-color: ${props => (props.hasError ? "#e74c3c" : "inherit")};
-`;
+// const SendTxForm = styled.form`
+//   margin-top: 25px;
+// `;
+
+// const Submit = Button.withComponent("input").extend`
+//   margin-right:10px;
+//   border: 2px solid #305371;
+//   box-shadow:none;
+//   &:hover{
+//       box-shadow:none;
+//       transform:none;
+//   }
+//   &:disabled{
+//       color:#999;
+//       border: 2px solid #999;
+//       cursor:not-allowed;
+//       box-shadow:none;
+//   }
+// `;
+
+// const Input = Submit.extend`
+//   width: 200px;
+//   padding-left: 10px;
+//   &:active {
+//     background-color: transparent;
+//   }
+//   color: ${props => (props.hasError ? "#e74c3c" : "inherit")};
+//   border-color: ${props => (props.hasError ? "#e74c3c" : "inherit")};
+// `;
 
 const AppPresenter = ({
   isLoading,
@@ -54,17 +72,19 @@ const AppPresenter = ({
   handleInput,
   handleSubmit
 }) => (
+  
   <AppContainer>
     <Header />
     <AccountCard>
       <Key>
         <KeyName>My Accounts 
-          <Yeed><img src={yeed} alt="yeed" /></Yeed> {balance}
+          <Yeed><img src={yeed} alt="yeed" /></Yeed> 
+          {balance}
         </KeyName> 
       </Key>
-      <childAccountCard>
-          {address}
-      </childAccountCard>
+      <Button> <ImportAccount/> ImportAccount </Button>
+      <Button> <CreateAccount/> Create Account </Button>
+      {address}
     </AccountCard>
     <NetworkCard>
       <Key>Network </Key>

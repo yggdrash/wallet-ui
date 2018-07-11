@@ -20,7 +20,7 @@ getPort().then(port => {
 const { app, BrowserWindow, Menu } = electron;
 
 let mainWindow;
-let enableScreenshotProtection = true
+let enableScreenshotProtection = false
 let template = null
 let menu = null
 let deeplinkingUrl = null

@@ -5,7 +5,7 @@ const rlp = require('rlp')
 const BN = require('bn.js')
 const createHash = require('create-hash')
 const Buffer = require('safe-buffer').Buffer
-Object.assign(exports, require('ethjs-util'))
+Object.assign(exports, require('./util.js'))
 
 /**
  * the max integer that this VM can handle (a ```BN```)

@@ -2,45 +2,37 @@ import styled from "styled-components";
 
 export const AccountCard = styled.div`
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  background-color: white;
+  background-color: #dcdde1
   width: 50%;
   padding: 20px;
   box-sizing: border-box;
   border-radius: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 7%;
 `;
 
-export const childAccountCard = styled.div`
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  background-color: red;
-  width: 50%;
-  padding: 20px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  margin-bottom: 50px;
-`;
 
 export const NetworkCard = styled.div`
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  background-color: white;
+  background-color: #dcdde1
   width: 30%;
   padding: 20px;
   box-sizing: border-box;
   border-radius: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 7%
 `;
 
 export const Logo = styled.div`
-  width: 4.5%;
+  width: 4%;
   margin-top:1%;
-  margin-left:1.5%;
+  margin-left:2.5%;
 `;
 
 export const Title = styled.h1`
-  color: white;
+  color: #508464;
   padding: 1%;
   font-size: 2em;
-  margin-top:1%;
+  margin-top:1.3%;
+  margin-left:0.5%;
 `;
 
 export const Yeed = styled.div`
@@ -52,7 +44,7 @@ export const Yeed = styled.div`
 
 
 export const Key = styled.h3`
-  color: black;
+  color: #508464;
   margin-bottom: 20px !important;
   &:last-child {
     margin-bottom: 0
@@ -60,19 +52,22 @@ export const Key = styled.h3`
 `;
 
 export const KeyName = styled.span`
-  color: black;
+  color: #508464;
   display: flex;
 `;
 
 export const Button = styled.button`
   border: 0;
-  width: 100px;
+  width: 150px;
+  height: 5%;
   padding: 10px 0;
-  color: #305371;
+  color: #f5f6fa;
+  background-color: #006266
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
   cursor: pointer;
+  margin-bottom: 5%
   &:focus,
   &:active {
     outline: none;
@@ -83,12 +78,12 @@ export const Button = styled.button`
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #f6f9fc;
+    background-color: #7f8c8d
     transform: translateY(1px);
   }
   &:disabled {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #f6f9fc;
+    background-color: #009432;
     transform: none;
     cursor: progress;
     &:focus,
@@ -98,3 +93,4 @@ export const Button = styled.button`
     }
   }
 `;
+

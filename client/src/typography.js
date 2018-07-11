@@ -3,16 +3,16 @@ import Typography from "typography";
 const typography = new Typography({
   googleFonts: [
     {
-      name: "Nunito",
+      name: "Markazi",
       styles: ["400", "700"]
     },
     {
-      name: "Open Sans",
+      name: "Markazi",
       styles: ["400"]
     }
   ],
-  headerFontFamily: ["Nunito", "Helvetica", "sans-serif"],
-  bodyFontFamily: ["Open Sans", "Helvetica", "sans-serif"],
+  headerFontFamily: ["Markazi", "Helvetica", "sans-serif"],
+  bodyFontFamily: ["Markazi", "Helvetica", "sans-serif"],
   includeNormalize: false,
   baseFontSize: "14px"
 });

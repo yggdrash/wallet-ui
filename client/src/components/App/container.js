@@ -6,6 +6,8 @@ import axios from "axios";
 import typography from "../../typography";
 import { MASTER_NODE, SELF_NODE, SELF_P2P_NODE } from "../../constants";
 import AppPresenter from "./presenter";
+import ksHelper from "accounts/keyGeneration";
+
 
 const baseStyles = () => injectGlobal`
   ${reset};
@@ -20,7 +22,8 @@ class AppContainer extends Component {
     isLoading: true,
     isMining: false,
     toAddress: "",
-    amount: "0"
+    amount: "0",
+    passPharse:""
   };
   static propTypes = {
     sharedPort: PropTypes.number.isRequired
@@ -32,6 +35,22 @@ class AppContainer extends Component {
     this._getAddress(sharedPort);
     setInterval(() => this._getBalance(sharedPort), 1000);
   };
+
+  _createAccount = e => {
+    let etherAccount = {};
+    // let { passPharse } = this.state;
+    let passPharse = 'pass'
+    const { address, keystoreData } = ksHelper.create(passPharse);
+    const pk = ksHelper.getPrivateKey(keystoreData, passPharse);
+    const privateKey = pk.toString('hex');
+    etherAccount = {
+      address,
+      privateKey
+    };
+
+  };
+
+
   render() {
     baseStyles();
     return (
@@ -39,6 +58,7 @@ class AppContainer extends Component {
         {...this.state}
         handleInput={this._handleInput}
         handleSubmit={this._handleSubmit}
+        createAccount={this._createAccount}
       />
     );
   }
@@ -61,6 +81,8 @@ class AppContainer extends Component {
       balance
     });
   };
+
+
   _handleInput = e => {
     const { target: { name, value } } = e;
     this.setState({
