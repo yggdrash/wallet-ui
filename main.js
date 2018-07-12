@@ -20,7 +20,7 @@ getPort().then(port => {
 const { app, BrowserWindow, Menu } = electron;
 
 let mainWindow;
-let enableScreenshotProtection = false
+let enableScreenshotProtection = true
 let template = null
 let menu = null
 let deeplinkingUrl = null
@@ -44,7 +44,6 @@ const shouldQuit = app.makeSingleInstance((argv, workingDirectory) => {
   }
 
 const createWindow = () => {
-
     const ENV = process.env.ENV;
 
     const iconpath = path.resolve(__dirname, '/client/src/assets/images/ygg-logo-green.png')
@@ -86,6 +85,7 @@ const createWindow = () => {
     template = [
       {
         label: app.getName(),
+        about,
         submenu: [
           screenshotProtection,
           { type: 'separator' },

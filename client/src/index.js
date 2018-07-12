@@ -10,10 +10,6 @@ const sharedPort = remote.getGlobal("sharedPort");
 
 injectGlobal`
 ${reset};
-@font-face {
-  font-family: 'Operator Mono';
-  src: url('../fonts/Operator-Mono.ttf');
-}
 body{
     background-color:#FAFAFA;
 }`;

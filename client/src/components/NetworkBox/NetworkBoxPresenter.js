@@ -20,7 +20,7 @@ const Title = styled.span`
   margin-bottom:15px;
 `;
 
-const SubcardPresenter = ({ id, text }) => (
+const NetworkBoxPresenter = ({ id, text }) => (
   <Notification >
     <Flex alignCenter justifyBetween>
       <Title>Network</Title>
@@ -68,9 +68,9 @@ const SubcardPresenter = ({ id, text }) => (
   </Notification>
 );
 
-SubcardPresenter.propTypes = {
+NetworkBoxPresenter.propTypes = {
   text: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired
 };
 
-export default SubcardPresenter;
+export default NetworkBoxPresenter;

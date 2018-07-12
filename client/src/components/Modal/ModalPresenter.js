@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Component } from "react";
 import Modal from 'styled-react-modal';
 
 const StyledModal = Modal.styled`
@@ -41,4 +41,4 @@ class ModalPresenter extends Component {
   }
 }
 
-export default MaincardPresenter;;
+export default ModalPresenter;;

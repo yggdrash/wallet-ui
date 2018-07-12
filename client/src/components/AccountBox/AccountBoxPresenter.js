@@ -2,13 +2,15 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
+import Select from 'react-styled-select'
+import Modal from 'styled-react-modal';
 import yeed from 'assets/images/yeed-symbol.png';
-import { Yeed, AccountYeed } from "components/Shared";
+import { Yeed } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
 import { PersonAdd } from 'styled-icons/material/PersonAdd';
 import Store from "context/store";
 
-const Notification = styled.div`
+const AccountBox = styled.div`
   background-color: #ffffff;
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   width: 50%;
@@ -21,6 +23,16 @@ const Notification = styled.div`
 
 const Account = styled.div`
   margin-top: 10px;
+  &:hover {
+    ${props => {
+      if (props.addr) {
+        return (
+          "box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);",
+          "ransform: translateY(-1px);"
+        )
+      }
+    }};
+  }
 `;
 
 
@@ -66,6 +78,14 @@ const ImportAccount = styled(Download)`
   margin-right:7px;
 `
 
+const StyledModal = Modal.styled`
+  width: 20rem;
+  height: 20rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 const CreateAccount = styled(PersonAdd)`
   width: 20px;
   margin-right:7px;
@@ -95,7 +115,7 @@ const Button = styled.button`
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #7f8c8d
+    background-color: #7f8c8d;
     transform: translateY(1px);
   }
   &:disabled {
@@ -110,17 +130,9 @@ const Button = styled.button`
     }
   }
 `;
-// background-color: ${props => {
-//   if (props.seen) {
-//     return "#7f8c8d";
-//   } else if (props.success) {
-//     return "#2ecc71";
-//   } else if (props.danger) {
-//     return "#e74c3c";
-//   }
-// }};
-const MaincardPresenter = ({ id, text, balance, address }) => (
-  <Notification >
+
+const AccountBoxPresenter = ({ id, text, balance, address }) => (
+  <AccountBox >
     <Flex alignCenter justifyBetween>
       <Title>
         {text} 
@@ -137,7 +149,7 @@ const MaincardPresenter = ({ id, text, balance, address }) => (
               <Fragment>
                 <Button
                   import
-                  onClick={() => store.seeNotification(id)}
+                  onClick={() => store.importAccount()}
                 >
                 <ImportAccount/> 
                 IMPORT ACCOUNT
@@ -158,7 +170,7 @@ const MaincardPresenter = ({ id, text, balance, address }) => (
     <Line two/>
     <Account>
       <Flex alignCenter justifyBetween>
-        <Address>{address}</Address>
+        <Address addr>{address}</Address>
         <FlexItem>
           <Balance 
             yeed
@@ -171,14 +183,14 @@ const MaincardPresenter = ({ id, text, balance, address }) => (
         </FlexItem>
       </Flex>
     </Account>
-  </Notification>
+  </AccountBox>
 );
 
-MaincardPresenter.propTypes = {
+AccountBoxPresenter.propTypes = {
   text: PropTypes.string.isRequired,
   address: PropTypes.string.isRequired,
   balance: PropTypes.number.isRequired,
   id: PropTypes.number.isRequired
 };
 
-export default MaincardPresenter;
+export default AccountBoxPresenter;

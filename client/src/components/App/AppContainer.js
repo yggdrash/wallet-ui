@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
-import { MASTER_NODE, SELF_NODE, SELF_P2P_NODE } from "../../constants";
+// import axios from "axios";
+// import { MASTER_NODE, SELF_NODE, SELF_P2P_NODE } from "../../constants";
 import AppPresenter from "./AppPresenter";
 import ksHelper from "accounts/keyGeneration";
 import Store from "context/store";
-
-const bip39 = require("bip39");
 
 class AppContainer extends Component {
   constructor(props) {
@@ -14,10 +12,6 @@ class AppContainer extends Component {
 
     this.componentDidMount = () => {
       const { sharedPort } = this.props;
-      // this._registerOnMaster(sharedPort);
-      // this._getBalance(sharedPort);
-      // this._getAddress(sharedPort);
-      // setInterval(() => this._getBalance(sharedPort), 1000);
     };
 
     /**
@@ -26,7 +20,6 @@ class AppContainer extends Component {
      * @method createAccount
     */
     this._createAccount = () => {
-      // let mnemonic = bip39.generateMnemonic();
       let etherAccount = {};
       // let { passPharse } = this.state;
       let passPharse = 'pass'
@@ -37,7 +30,6 @@ class AppContainer extends Component {
         address,
         privateKey
       };
-      console.log("etherAccount",etherAccount.address)
 
       this.setState(currentState => {
         return {
@@ -50,43 +42,16 @@ class AppContainer extends Component {
       });
     };
 
-    // this._registerOnMaster = async port => {
-    //   const request = await axios.post(`${MASTER_NODE}/peers`, {
-    //     peer: SELF_P2P_NODE(port)
-    //   });
-    // };
-    // this._getAddress = async port => {
-    //   const request = await axios.get(`${SELF_NODE(port)}/my/address`);
-    //   this.setState({
-    //     address: request.data,
-    //     isLoading: false
-    //   });
-    // };
-    // this._getBalance = async port => {
-    //   const request = await axios.get(`${SELF_NODE(port)}/my/balance`);
-    //   const { balance } = request.data;
-    //   this.setState({
-    //       balance :balance
-    //   });
-    // };
-  
-    this._seeNotification = id => {
-      this.setState(currentState => {
-        return {
-          ...currentState,
-          notifications: {
-            ...currentState.notifications,
-            [id]: {
-              ...currentState.notifications[id]
-            }
-          }
-        };
-      });
-    };
+    this._importAccount = () =>{
+      this.toggleModal = (e) => {
+        this.setState({ isOpen: !this.state.isOpen })
+      }
+    }
 
     this.state = {
       isLoading: true,
       isMining: false,
+      isOpen: false,
       balance: "0",
       address:"",
       passPharse:"",
@@ -97,7 +62,7 @@ class AppContainer extends Component {
         }
       },
       createAccount: this._createAccount,
-      seeNotification: this._seeNotification
+      importAccount: this._importAccount
     };
   }
 
