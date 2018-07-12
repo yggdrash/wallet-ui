@@ -43,9 +43,16 @@ class AppContainer extends Component {
     };
 
     this._importAccount = () =>{
-      this.toggleModal = (e) => {
-        this.setState({ isOpen: !this.state.isOpen })
-      }
+      console.log(this.state.showModal)
+      this.setState(currentState => {
+        return {
+          ...currentState,
+          notifications: {
+            ...currentState.notifications
+          },
+          showModal: !this.state.showModal
+        };
+      });
     }
 
     this.state = {
@@ -62,7 +69,8 @@ class AppContainer extends Component {
         }
       },
       createAccount: this._createAccount,
-      importAccount: this._importAccount
+      importAccount: this._importAccount,
+      showModal: false
     };
   }
 

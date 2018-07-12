@@ -1,11 +1,8 @@
-// import ModalContainer from "./ModalContainer";
-// export default ModalContainer;
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 
-class Modal extends React.Component {
+class ExampleApp extends React.Component {
     constructor () {
       super();
       this.state = {
@@ -38,5 +35,8 @@ class Modal extends React.Component {
       );
     }
   }
+  
+  const props = {};
+  
 
-  export default Modal
+  ReactDOM.render(<ExampleApp />, document.getElementById('root'))

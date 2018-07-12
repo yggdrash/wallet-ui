@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import Select from 'react-styled-select'
-import Modal from 'styled-react-modal';
+import ReactModal from 'react-modal';
 import yeed from 'assets/images/yeed-symbol.png';
 import { Yeed } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
 import { PersonAdd } from 'styled-icons/material/PersonAdd';
+import { Button } from 'components/Shared';
 import Store from "context/store";
 
 const AccountBox = styled.div`
@@ -78,58 +79,10 @@ const ImportAccount = styled(Download)`
   margin-right:7px;
 `
 
-const StyledModal = Modal.styled`
-  width: 20rem;
-  height: 20rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
 const CreateAccount = styled(PersonAdd)`
   width: 20px;
   margin-right:7px;
 `
-
-const Button = styled.button`
-  border: 0;
-  width: 150px;
-  height: 5%;
-  padding: 10px 0;
-  color: #f5f6fa;
-  margin-right:10px;
-  margin-top:15px;
-  margin-bottom:15px;
-  background-color: #006266;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition: all 0.1s linear;
-  cursor: pointer;
-  &:focus,
-  &:active {
-    outline: none;
-  }
-  &:hover {
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
-  }
-  &:active {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #7f8c8d;
-    transform: translateY(1px);
-  }
-  &:disabled {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #009432;
-    transform: none;
-    cursor: progress;
-    &:focus,
-    &:active,
-    &:hover {
-      transform: none;
-    }
-  }
-`;
 
 const AccountBoxPresenter = ({ id, text, balance, address }) => (
   <AccountBox >
@@ -154,8 +107,13 @@ const AccountBoxPresenter = ({ id, text, balance, address }) => (
                 <ImportAccount/> 
                 IMPORT ACCOUNT
                 </Button>
+                  <ReactModal 
+                    isOpen={store.showModal}
+                    contentLabel="Minimal Modal Example"
+                  >
+                    <Button onClick={() => store.importAccount()}>Close Modal</Button>
+                  </ReactModal>
                 <Button
-                  create
                   onClick={() => store.createAccount()}
                 >
                 <CreateAccount/>

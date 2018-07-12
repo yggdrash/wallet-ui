@@ -61,12 +61,14 @@ export const Button = styled.button`
   height: 5%;
   padding: 10px 0;
   color: #f5f6fa;
+  margin-right:10px;
+  margin-top:15px;
+  margin-bottom:15px;
   background-color: #006266;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
   cursor: pointer;
-  margin-bottom: 5%
   &:focus,
   &:active {
     outline: none;
@@ -77,7 +79,7 @@ export const Button = styled.button`
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #7f8c8d
+    background-color: #7f8c8d;
     transform: translateY(1px);
   }
   &:disabled {
