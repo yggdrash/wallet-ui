@@ -7,17 +7,10 @@ class HeaderContainer extends Component {
     super(props);
 
     this.state = {
-        visible: false  
     };
-
-    this.toggleMenu = this.toggleMenu.bind(this);
-  }
-
-  toggleMenu() {
-    this.setState({visible: !this.state.visible})
   }
   render() {
-    return <HeaderPresenter {...this.state} />;
+    return <HeaderPresenter {...this.props} {...this.state} />;
   }
 }
 

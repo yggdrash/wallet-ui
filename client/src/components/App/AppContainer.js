@@ -52,7 +52,8 @@ class AppContainer extends Component {
             ...currentState.notifications
           },
           address:address,
-          mnemonic:mnemonic
+          mnemonic:mnemonic,
+          showModal: !this.state.showModal
         };
       });
     };
@@ -78,6 +79,7 @@ class AppContainer extends Component {
       address:"",
       passPharse:"",
       mnemonic:"",
+      showModal: false,
       notifications: {
         "1": {
           id: 1,
@@ -85,9 +87,7 @@ class AppContainer extends Component {
         }
       },
       createAccount: this._createAccount,
-      importAccount: this._importAccount,
-      // mnemonic:"",
-      showModal: false
+      importAccount: this._importAccount
     };
   }
 

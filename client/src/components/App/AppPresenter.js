@@ -30,7 +30,9 @@ const AppPresenter = ({
                 text={store.notifications[key].text}
                 balance={store.balance}
                 address={store.address}
-                showModal={store.showModal}
+                showCreateModal={store.showCreateModal}
+                showImportModal={store.showImportModal}
+                mnemonic={store.mnemonic}
               />
             ));
           }}
