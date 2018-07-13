@@ -234,3 +234,5 @@ function hash160 (buf) {
 
 HDKey.HARDENED_OFFSET = HARDENED_OFFSET
 module.exports = HDKey
+
+

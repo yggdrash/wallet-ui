@@ -36,7 +36,6 @@ const Account = styled.div`
   }
 `;
 
-
 const Title = styled.span`
   font-weight: 400;
   display: flex;
@@ -84,6 +83,16 @@ const CreateAccount = styled(PersonAdd)`
   margin-right:7px;
 `
 
+const Modal = styled(ReactModal)`
+  width: 50%;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  background-color: papayawhip;
+`
+
 const AccountBoxPresenter = ({ id, text, balance, address }) => (
   <AccountBox >
     <Flex alignCenter justifyBetween>
@@ -107,12 +116,18 @@ const AccountBoxPresenter = ({ id, text, balance, address }) => (
                 <ImportAccount/> 
                 IMPORT ACCOUNT
                 </Button>
-                  <ReactModal 
+                  <Modal 
                     isOpen={store.showModal}
-                    contentLabel="Minimal Modal Example"
+                    style={{
+                      content: {
+                        color: 'lightsteelblue'
+                      }
+                    }}
                   >
-                    <Button onClick={() => store.importAccount()}>Close Modal</Button>
-                  </ReactModal>
+                    <Button onClick={() => store.importAccount()}>Close</Button>
+                  </Modal>
+
+
                 <Button
                   onClick={() => store.createAccount()}
                 >
