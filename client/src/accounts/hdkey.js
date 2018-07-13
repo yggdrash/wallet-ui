@@ -1,5 +1,5 @@
 
-const HDKey = require('./hdkeyLib')
+const HDKey = require('../utils/HDWalletUtil')
 const Wallet = require('./index.js')
 
 function YggdrashHDKey () {
