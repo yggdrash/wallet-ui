@@ -26,7 +26,7 @@ const AccountBox = styled.div`
 const Account = styled.button`
   width: 100%;
   border: 0;
-  margin-top: 10px;
+  margin-top: 20px;
   border-radius: 5px;
   background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -59,6 +59,7 @@ const Account = styled.button`
   }
 `;
 
+
 const Title = styled.span`
   font-weight: 400;
   display: flex;
@@ -70,7 +71,7 @@ const Line = styled.div`
   border-bottom: 0.1px solid rgb(105,105,105);
   width: 100%;
   margin-top: ${props => {
-    if (props.two) {
+    if (props.second) {
       return "15px;";
     }
   }};
@@ -107,6 +108,7 @@ const CreateAccount = styled(PersonAdd)`
 `
 
 const Modal = styled(ReactModal)`
+  border: 0;
   width: 50%;
   position: absolute;
   top: 35%;
@@ -117,6 +119,51 @@ const Modal = styled(ReactModal)`
   border-radius: 10px;
   box-sizing: border-box;
 `
+
+const Alert = styled.div`
+  width: 90%;
+  height:${props =>{
+    if(props.mnemonic){
+      return "30px;"
+    }else{
+      return "80px;"
+    }
+  }}
+  border: 0;
+  border-radius: 5px;
+  background-color: ${props =>{
+    if(props.mnemonic){
+      return "#ecf0f1;"
+    }else{
+      return "#e67e22;;"
+    }
+  }}
+  color: ${props =>{
+    if(props.mnemonic){
+      return "#2980b9"
+    }
+  }}
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.1s linear;
+  text-align: ${props =>{
+    if(props.mnemonic){
+      return "left;"
+    }else{
+      return "center;"
+    }
+  }}
+  margin:0 auto;
+  font-weight: 200;
+  font-size: 1.1em;
+`;
+
+const Passphrase = styled.div`
+  margin-top: 40px;
+  margin-left:40px;
+  margin-bottom: 20px;
+  transition: all 0.1s linear;
+  color:#2980b9
+`;
 
 const AccountBoxPresenter = ({ id, text, balance, address, mnemonic }) => (
   <AccountBox >
@@ -142,36 +189,72 @@ const AccountBoxPresenter = ({ id, text, balance, address, mnemonic }) => (
                 IMPORT ACCOUNT
                 </Button>
                 <Button
-                  onClick={() => store.createAccount()}
+                  onClick={() => store.createAccountModal()}
                 >
                 <CreateAccount/>
                 CREATE ACCOUNT
                 </Button>
+
                 <Modal 
-                    isOpen={store.showModal}
-                    style={{
-                      content: {
-                        color: 'black'
+                  isOpen={store.showModal}
+                  style={{
+                    content: {
+                      color: 'black'
+                    }
+                  }}
+                > 
+                  <ModalHeader/>
+                  <FlexItem>
+                    <Alert>
+                      {
+                        store.statusModal === "create" 
+                        ?
+                        `Before proceeding further, first BACKUP THE PASSPHRASE SECURELY, this client does NOT store it and thus cannot recover your passphrase! If you lose it, delete it, or it gets stolen - we CANNOT help you recover it. There is no forgot my passphrase option!`
+                        :
+                        `Passphrase is case sensitive, each character change will result in importing a different Ark address! Passphrases are not saved on this computer so always make sure you have them backed up safely!`
                       }
-                    }}
-                  > 
-                    <ModalHeader/>
-                    {mnemonic}
-                    <Button 
-                      onClick={() => store.importAccount()}>
-                      Close
-                    </Button>
-                  </Modal>
+                    </Alert>
+                  </FlexItem>
+                  <FlexItem>
+                    <Passphrase>
+                      Passphrase
+                    </Passphrase>
+                  </FlexItem>
+                  <FlexItem>
+                    <Alert mnemonic>
+                      {store.statusModal === "create" ? mnemonic : null}
+                    </Alert>
+                  </FlexItem>
+                  <Flex alignCenter justifyBetween>
+                    <FlexItem>
+                      <Fragment>
+
+                      </Fragment>
+                    </FlexItem>
+                    <FlexItem>
+                      <Fragment>
+                      <Button 
+                          onClick={() => store.statusModal === "create"  ? store.createAccount() : store.importAccount()}>
+                          {store.statusModal === "create"  ? `CREATE` : `IMPORT`}
+                        </Button>
+                        <Button 
+                          onClick={() => store.closeModal()}>
+                          CANCLE
+                        </Button>
+                      </Fragment>
+                    </FlexItem>
+                  </Flex>
+                </Modal>
               </Fragment>
             )}
           </Store.Consumer>
         </Fragment>
       </FlexItem>
     </Flex>
-    <Line two/>
-    <Account address={false}>
+    <Line second/>
+    <Account >
       <Flex alignCenter justifyBetween>
-        <Address addr>{address}</Address>
+        <Address>{address}</Address>
         <FlexItem>
           <Balance 
             yeed
@@ -195,3 +278,7 @@ AccountBoxPresenter.propTypes = {
 };
 
 export default AccountBoxPresenter;
+
+//Before proceeding further, first BACKUP THE PASSPHRASE SECURELY, this client does NOT store it and thus cannot recover your passphrase! If you lose it, delete it, or it gets stolen - we CANNOT help you recover it. There is no forgot my passphrase option!
+
+// Passphrase is case sensitive, each character change will result in importing a different Ark address! Passphrases are not saved on this computer so always make sure you have them backed up safely!

@@ -33,14 +33,12 @@ class AppContainer extends Component {
       //   address,
       //   privateKey
       // };
-
-      let mnemonic = bip39.generateMnemonic();
       let path = "m/44'/60'/0'/0/0";
-      let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic));
+
+      let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
       let wallet = hdwallet.derivePath(path).getWallet();
       let address = "0x" + wallet.getAddress().toString("hex");
       let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
-
       // let chiledWallet = hdwallet.deriveChild(1).getWallet();
       // let address2 = "0x" + chiledWallet.getAddress().toString("hex");
       // let key = HDKey.fromExtendedKey(hdwallet.privateExtendedKey())
@@ -52,21 +50,50 @@ class AppContainer extends Component {
             ...currentState.notifications
           },
           address:address,
-          mnemonic:mnemonic,
-          showModal: !this.state.showModal
+          showModal: !this.state.showModal,
         };
       });
+      console.log(this.state.mnemonic)
     };
 
-    this._importAccount = () =>{
-      console.log(this.state.showModal)
+    this._createAccountModal = () => {
+      let mnemonic = bip39.generateMnemonic();
       this.setState(currentState => {
         return {
           ...currentState,
           notifications: {
             ...currentState.notifications
           },
-          showModal: !this.state.showModal
+          mnemonic:mnemonic,
+          showModal: !this.state.showModal,
+          statusModal:"create"
+        };
+      });
+      console.log(mnemonic)
+    };
+
+    this._importAccount = () =>{
+      this.setState(currentState => {
+        return {
+          ...currentState,
+          notifications: {
+            ...currentState.notifications
+          },
+          showModal: !this.state.showModal,
+          statusModal:"import"
+        };
+      });
+    }
+
+    this._closeModal = () =>{
+      this.setState(currentState => {
+        return {
+          ...currentState,
+          notifications: {
+            ...currentState.notifications
+          },
+          showModal: !this.state.showModal,
+          statusModal:"import"
         };
       });
     }
@@ -80,6 +107,7 @@ class AppContainer extends Component {
       passPharse:"",
       mnemonic:"",
       showModal: false,
+      statusModal:"",
       notifications: {
         "1": {
           id: 1,
@@ -87,7 +115,9 @@ class AppContainer extends Component {
         }
       },
       createAccount: this._createAccount,
-      importAccount: this._importAccount
+      createAccountModal: this._createAccountModal,
+      importAccount: this._importAccount,
+      closeModal: this._closeModal
     };
   }
 

@@ -9,6 +9,8 @@ const Header = styled.header`
   color:  #ffffff;
   padding: 0 40px;
   border-bottom: 1px solid rgba(0,0,0,.0975);
+  border-radius: 5px;
+  margin-bottom:40px;
 `;
 
 const Title = styled.div`
@@ -24,7 +26,7 @@ const ModalHeaderPresenter = () => (
         <Store.Consumer>
             {store => (
               <Title>
-                {store.mnemonic ? `CREATE ACCOUNT` :`IMPORT ACCOUNT`}
+                {store.statusModal === "create" ? `CREATE ACCOUNT` :`IMPORT ACCOUNT`}
               </Title>
             )}
         </Store.Consumer>
