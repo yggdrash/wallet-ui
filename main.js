@@ -54,7 +54,7 @@ const createWindow = () => {
       defaultHeight: height - 100
     })
 
-    mainWindow = new BrowserWindow({width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, center: true, icon: iconpath, resizable: true, frame: true, show: false,  title: "Yggdrash Wallet"})
+    mainWindow = new BrowserWindow({width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, center: true, icon: iconpath, resizable: false, frame: true, show: false,  title: "Yggdrash Wallet"})
     mainWindow.setContentProtection(true)
     
     mainWindow.loadURL(`file://${__dirname}/build/index.html`)

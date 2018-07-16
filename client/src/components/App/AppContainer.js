@@ -38,7 +38,7 @@ class AppContainer extends Component {
       let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
       let wallet = hdwallet.derivePath(path).getWallet();
       let address = "0x" + wallet.getAddress().toString("hex");
-      let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
+      // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
       // let chiledWallet = hdwallet.deriveChild(1).getWallet();
       // let address2 = "0x" + chiledWallet.getAddress().toString("hex");
       // let key = HDKey.fromExtendedKey(hdwallet.privateExtendedKey())
@@ -53,7 +53,6 @@ class AppContainer extends Component {
           showModal: !this.state.showModal,
         };
       });
-      console.log(this.state.mnemonic)
     };
 
     this._createAccountModal = () => {
@@ -69,7 +68,6 @@ class AppContainer extends Component {
           statusModal:"create"
         };
       });
-      console.log(mnemonic)
     };
 
     this._importAccount = () =>{
@@ -98,6 +96,13 @@ class AppContainer extends Component {
       });
     }
 
+    this._handleInput = e => {
+      const { target: { name, value } } = e;
+      this.setState({
+        [name]: value
+      });
+    };
+
     this.state = {
       isLoading: true,
       isMining: false,
@@ -108,6 +113,7 @@ class AppContainer extends Component {
       mnemonic:"",
       showModal: false,
       statusModal:"",
+      importMnemonic:"",
       notifications: {
         "1": {
           id: 1,
@@ -117,6 +123,7 @@ class AppContainer extends Component {
       createAccount: this._createAccount,
       createAccountModal: this._createAccountModal,
       importAccount: this._importAccount,
+      handleInput:this._handleInput,
       closeModal: this._closeModal
     };
   }

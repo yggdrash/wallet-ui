@@ -31,6 +31,8 @@ const AppPresenter = ({
                 balance={store.balance}
                 address={store.address}
                 mnemonic={store.mnemonic}
+                importMnemonic={store.importMnemonic}
+                handleInput={this._handleInput}
               />
             ));
           }}

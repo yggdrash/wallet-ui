@@ -70,11 +70,7 @@ const Title = styled.span`
 const Line = styled.div`
   border-bottom: 0.1px solid rgb(105,105,105);
   width: 100%;
-  margin-top: ${props => {
-    if (props.second) {
-      return "15px;";
-    }
-  }};
+  margin-top: ${props => (props.second ? "15px;" : "inherit")};
 `;
 
 const Address = styled.span`
@@ -87,11 +83,7 @@ const Address = styled.span`
 const Balance = styled.div`
   font-weight: 300;
   font-size: 1.1em;
-  margin-top: ${props => {
-      if (props.yeed) {
-        return "26px;";
-      }
-    }};
+  margin-top: ${props => (props.yeed ? "26px;" : "inherit")};
   margin-left: 5px;
   width: 15px;
 `;
@@ -111,7 +103,7 @@ const Modal = styled(ReactModal)`
   border: 0;
   width: 50%;
   position: absolute;
-  top: 35%;
+  top: 30%;
   left: 25%;
   background-color: #ecf0f1;
   border: 2px solid rgba(0,0,0,.0975);
@@ -122,50 +114,60 @@ const Modal = styled(ReactModal)`
 
 const Alert = styled.div`
   width: 90%;
-  height:${props =>{
-    if(props.mnemonic){
-      return "30px;"
-    }else{
-      return "80px;"
-    }
-  }}
+  // height: 3%;
+  height: ${props => (props.mnemonic ? "35px;" : "80px;")};
   border: 0;
   border-radius: 5px;
-  background-color: ${props =>{
-    if(props.mnemonic){
-      return "#ecf0f1;"
-    }else{
-      return "#e67e22;;"
-    }
-  }}
-  color: ${props =>{
-    if(props.mnemonic){
-      return "#2980b9"
-    }
-  }}
+  background-color: ${props => (props.mnemonic ?  "#ecf0f1;" : "#e67e22;;")};
+  color: ${props => (props.mnemonic ? "#2980b9" : null)};
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
-  text-align: ${props =>{
-    if(props.mnemonic){
-      return "left;"
-    }else{
-      return "center;"
-    }
-  }}
+  text-align: ${props => (props.mnemonic ? "left;" : "center;")};
   margin:0 auto;
   font-weight: 200;
   font-size: 1.1em;
+  border:  ${props => (props.mnemonic ? "2px solid #305371" : "inherit")};
+  padding-left: ${props => (props.mnemonic ? "10px" : "inherit")};
+  padding-top: ${props => (props.mnemonic ? "4px" : "10px")};
 `;
 
 const Passphrase = styled.div`
   margin-top: 40px;
   margin-left:40px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   transition: all 0.1s linear;
   color:#2980b9
 `;
 
-const AccountBoxPresenter = ({ id, text, balance, address, mnemonic }) => (
+const Submit = Button.withComponent("input").extend`
+  margin-right:10px;
+  border: 2px solid #305371;
+  box-shadow:none;
+  &:hover{
+      box-shadow:none;
+      transform:none;
+  }
+  &:disabled{
+      color:#999;
+      border: 2px solid #999;
+      cursor:not-allowed;
+      box-shadow:none;
+  }
+`;
+
+const Input = Submit.extend`
+  width: 90%;
+  margin-left:40px;
+  padding-left: 10px;
+  background-color: #ecf0f1;
+  &:active {
+    background-color: transparent;
+  }
+  color: ${props => (props.hasError ? "#e74c3c" : "inherit")};
+  border-color: ${props => (props.hasError ? "#e74c3c" : "inherit")};
+`;
+
+const AccountBoxPresenter = ({ text, balance, address, mnemonic, handleInput, importMnemonic }) => (
   <AccountBox >
     <Flex alignCenter justifyBetween>
       <Title>
@@ -211,7 +213,7 @@ const AccountBoxPresenter = ({ id, text, balance, address, mnemonic }) => (
                         ?
                         `Before proceeding further, first BACKUP THE PASSPHRASE SECURELY, this client does NOT store it and thus cannot recover your passphrase! If you lose it, delete it, or it gets stolen - we CANNOT help you recover it. There is no forgot my passphrase option!`
                         :
-                        `Passphrase is case sensitive, each character change will result in importing a different Ark address! Passphrases are not saved on this computer so always make sure you have them backed up safely!`
+                        `Passphrase is case sensitive, each character change will result in importing a different Yggdrash address! Passphrases are not saved on this computer so always make sure you have them backed up safely!`
                       }
                     </Alert>
                   </FlexItem>
@@ -221,14 +223,26 @@ const AccountBoxPresenter = ({ id, text, balance, address, mnemonic }) => (
                     </Passphrase>
                   </FlexItem>
                   <FlexItem>
-                    <Alert mnemonic>
-                      {store.statusModal === "create" ? mnemonic : null}
-                    </Alert>
+                    {
+                      store.statusModal === "create"
+                      ?
+                      <Alert mnemonic>
+                        {mnemonic}
+                      </Alert>
+                      :
+                      <Input
+                        placeholder={"PASSPHRASE"}
+                        required
+                        name="importMnemonic"
+                        value={importMnemonic}
+                        type={"text"}
+                        onChange={handleInput}
+                      />
+                    }
                   </FlexItem>
                   <Flex alignCenter justifyBetween>
                     <FlexItem>
                       <Fragment>
-
                       </Fragment>
                     </FlexItem>
                     <FlexItem>
@@ -278,7 +292,3 @@ AccountBoxPresenter.propTypes = {
 };
 
 export default AccountBoxPresenter;
-
-//Before proceeding further, first BACKUP THE PASSPHRASE SECURELY, this client does NOT store it and thus cannot recover your passphrase! If you lose it, delete it, or it gets stolen - we CANNOT help you recover it. There is no forgot my passphrase option!
-
-// Passphrase is case sensitive, each character change will result in importing a different Ark address! Passphrases are not saved on this computer so always make sure you have them backed up safely!

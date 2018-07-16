@@ -16,9 +16,9 @@
   ],
   "private": false,
   "scripts": {
-    "dev": "concurrently --kill-others \"yarn run startReact\" \"ENV=dev electron .\"",
-    "start": "concurrently --kill-others \"yarn run startReact\" \"electron . -- --disableScreenshotProtection\"",
-    "startReact": "cd client && npm start",
+    "dev": "concurrently --kill-others \"yarn run React\" \"ENV=dev electron .\"",
+    "start": "concurrently --kill-others \"yarn run React\" \"electron . -- --disableScreenshotProtection\"",
+    "React": "cd client && npm start",
     "build": "electron-packager . --prune=false --icon=coin.icns --ignore=/client --overwrite --out=dist",
     "prebuild": "yarn run deleteWallet && cd client && npm run build",
     "deleteWallet": "rm -rf yggdrash-chain/src/accounts/privateKey",
