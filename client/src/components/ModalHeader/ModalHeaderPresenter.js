@@ -9,7 +9,8 @@ const Header = styled.header`
   color:  #ffffff;
   padding: 0 40px;
   border-bottom: 1px solid rgba(0,0,0,.0975);
-  border-radius: 5px;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
   margin-bottom:40px;
 `;
 

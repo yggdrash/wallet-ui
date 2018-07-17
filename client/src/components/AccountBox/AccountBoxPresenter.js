@@ -9,7 +9,7 @@ import { Yeed } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
 import { PersonAdd } from 'styled-icons/material/PersonAdd';
 import { Button } from 'components/Shared';
-import { AddAlert } from "styled-icons/material/AddAlert";
+import { AlertOctagon } from "styled-icons/feather/AlertOctagon";
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 
@@ -99,7 +99,7 @@ const CreateAccount = styled(PersonAdd)`
   margin-right:7px;
 `
 
-const AlertIcon = styled(AddAlert)`
+const AlertIcon = styled(AlertOctagon)`
   width: 20px;
   margin-right:7px;
 `
@@ -142,7 +142,7 @@ const Info = styled.div`
   font-size: ${props => (props.mnemonic ? "1em;" : "1.1em;")};
   border:  ${props => (props.mnemonic ? "1px solid #305371" : "inherit")};
   padding-left: ${props => (props.mnemonic ? "10px" : "inherit")};
-  padding-top: ${props => (props.mnemonic ? "8px" : "10px")};
+  padding-top: ${props => (props.mnemonic ? "8px" : "12px")};
 `;
 
 const Passphrase = styled.div`
@@ -157,9 +157,9 @@ const AlertInfo = styled.div`
   margin-top:10px;
   margin-bottom: 10px;
   text-align: center;
-  font-size: 1em;
+  font-size: 0.9em;
   transition: all 0.1s linear;
-  color: #e74c3c;
+  color:#e74c3c;
 `;
 
 const Submit = styled.input`
@@ -176,11 +176,6 @@ const Submit = styled.input`
   &:hover{
       box-shadow:none;
       transform: translateY(-1px);
-  }
-  &:active {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #7f8c8d;
-    transform: translateY(1px);
   }
   &:disabled{
       color:#999;

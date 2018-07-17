@@ -1,13 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import axios from "axios";
-// import { MASTER_NODE, SELF_NODE, SELF_P2P_NODE } from "../../constants";
 import AppPresenter from "./AppPresenter";
-// import ksHelper from "accounts/keyGeneration";
 import Store from "context/store";
 
-
-// const HDKey = require("accounts/hdkey");
 const HDKey = require("accounts/hdkey");
 const bip39 = require("bip39");
 const path = "m/44'/60'/0'/0/0";
@@ -66,9 +61,7 @@ class AppContainer extends Component {
         });
       }
     };
-    // final sentence profit common mule west file income doctor nut fortune west //0x63ecae2fce
-    // mixture fork fringe noise calm opinion topple dilemma avoid muffin pupil sunny //0x8695fd49
-    // hello bomb way drink hold wear medal wonder dinosaur tip shallow minor //0x2372e105193
+
     this._importAccount = () =>{
       if(bip39.validateMnemonic(this.state.importMnemonic)){
         let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.importMnemonic));
@@ -89,17 +82,31 @@ class AppContainer extends Component {
           };
         });
       } else if(this.state.importMnemonic === ""){
-        this.setState(currentState => {
+        this.setState(() => {
           return {
-            AlertImportAccount:"Please enter seed.",
+            AlertImportAccount:"Please enter passphrase!"
           };
         });
+        setTimeout(() =>{
+          this.setState(() => {
+            return {
+              AlertImportAccount:""
+            };
+          });
+        }, 1500)
       } else {
-        this.setState(currentState => {
+        this.setState(() => {
           return {
-            AlertImportAccount:"If the seed is not correct, check the space between the seeds.",
+            AlertImportAccount:"Not valid BIP39 passphrase! Please check all words and spaces."
           };
         });
+        setTimeout(() =>{
+          this.setState(() => {
+            return {
+              AlertImportAccount:""
+            };
+          });
+        }, 1500)
       }
     }
     this._importAccountModal = () =>{
