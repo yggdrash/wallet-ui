@@ -10,6 +10,7 @@ import { Download } from 'styled-icons/feather/Download';
 import { PersonAdd } from 'styled-icons/material/PersonAdd';
 import { Button } from 'components/Shared';
 import { AddAlert } from "styled-icons/material/AddAlert";
+import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 
 const AccountBox = styled.div`
@@ -103,6 +104,11 @@ const AlertIcon = styled(AddAlert)`
   margin-right:7px;
 `
 
+const LockIcon = styled(UserLock)`
+  width: 15px;
+  margin-right:7px;
+`
+
 const Modal = styled(ReactModal)`
   border: 0;
   width: 50%;
@@ -115,6 +121,10 @@ const Modal = styled(ReactModal)`
   border-radius: 10px;
   box-sizing: border-box;
   border-color: rgba(70, 219, 115, 0);
+  &:focus,
+  &:active {
+    outline: none;
+  }
 `
 
 const Info = styled.div`
@@ -123,16 +133,16 @@ const Info = styled.div`
   border: 0;
   border-radius: 5px;
   background-color: ${props => (props.mnemonic ?  "#ecf0f1;" : "#e67e22;")};
-  color: ${props => (props.mnemonic ? "#2980b9" : null)};
+  color: ${props => (props.mnemonic ? "#508464;" : null)};
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
   text-align: ${props => (props.mnemonic ? "left;" : "center;")};
   margin:0 auto;
   font-weight: 200;
   font-size: ${props => (props.mnemonic ? "1em;" : "1.1em;")};
-  border:  ${props => (props.mnemonic ? "2px solid #305371" : "inherit")};
+  border:  ${props => (props.mnemonic ? "1px solid #305371" : "inherit")};
   padding-left: ${props => (props.mnemonic ? "10px" : "inherit")};
-  padding-top: ${props => (props.mnemonic ? "7px" : "10px")};
+  padding-top: ${props => (props.mnemonic ? "8px" : "10px")};
 `;
 
 const Passphrase = styled.div`
@@ -140,35 +150,56 @@ const Passphrase = styled.div`
   margin-left:40px;
   margin-bottom: 30px;
   transition: all 0.1s linear;
-  color:#2980b9
+  color: #508464; //#2980b9;
 `;
 
 const AlertInfo = styled.div`
+  margin-top:10px;
   margin-bottom: 10px;
   text-align: center;
   font-size: 1em;
   transition: all 0.1s linear;
-  color: #c0392b;
+  color: #e74c3c;
 `;
 
-const Submit = Button.withComponent("input").extend`
+const Submit = styled.input`
+  border: 0;
   margin-right:10px;
-  border: 2px solid #305371;
-  box-shadow:none;
+  padding: 10px 0;
+  border: 1px solid #305371;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  &:focus,
+  &:active {
+    outline: none;
+  }
   &:hover{
       box-shadow:none;
-      transform:none;
+      transform: translateY(-1px);
+  }
+  &:active {
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: #7f8c8d;
+    transform: translateY(1px);
   }
   &:disabled{
       color:#999;
       border: 2px solid #999;
       cursor:not-allowed;
+      transform: none;
       box-shadow:none;
+      &:focus,
+      &:active,
+      &:hover {
+        transform: none;
+      }
   }
 `;
 
 const Input = Submit.extend`
   width: 90%;
+  height: 40px;
+  font-size: 0.9em;
   margin-left:40px;
   padding-left: 10px;
   background-color: #ecf0f1;
@@ -231,7 +262,7 @@ const AccountBoxPresenter = ({ text, balance, address, mnemonic, importMnemonic,
                   </FlexItem>
                   <FlexItem>
                     <Passphrase>
-                      Passphrase
+                      <LockIcon/>Passphrase
                     </Passphrase>
                   </FlexItem>
                   <FlexItem>
@@ -242,7 +273,7 @@ const AccountBoxPresenter = ({ text, balance, address, mnemonic, importMnemonic,
                         {mnemonic}
                       </Info>
                       :
-                      <Input
+                      <Input 
                         placeholder={"PASSPHRASE"}
                         required
                         name="importMnemonic"
