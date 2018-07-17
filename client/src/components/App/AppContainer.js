@@ -6,9 +6,11 @@ import AppPresenter from "./AppPresenter";
 // import ksHelper from "accounts/keyGeneration";
 import Store from "context/store";
 
+
 // const HDKey = require("accounts/hdkey");
 const HDKey = require("accounts/hdkey");
 const bip39 = require("bip39");
+const path = "m/44'/60'/0'/0/0";
 
 class AppContainer extends Component {
   constructor(props) {
@@ -19,31 +21,21 @@ class AppContainer extends Component {
     };
 
     /**
-     * keyStore 파일 생성
-     * keyStore data를 이용하여 get private key 
+     * bip39, mnemonic생성
+     * Create HDwallet from Master Seed 
      * @method createAccount
+     * @param mnemonicToSeed mnemonic buffer한 값
     */
     this._createAccount = () => {
-      // let etherAccount = {};
-      // let passPharse = 'pass'
-      // const { address, keystoreData } = ksHelper.create(passPharse);
-      // const pk = ksHelper.getPrivateKey(keystoreData, passPharse);
-      // const privateKey = pk.toString('hex');
-      // etherAccount = {
-      //   address,
-      //   privateKey
-      // };
-      let path = "m/44'/60'/0'/0/0";
-
       let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
       let wallet = hdwallet.derivePath(path).getWallet();
       let address = "0x" + wallet.getAddress().toString("hex");
       // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
       // let chiledWallet = hdwallet.deriveChild(1).getWallet();
       // let address2 = "0x" + chiledWallet.getAddress().toString("hex");
-      // let key = HDKey.fromExtendedKey(hdwallet.privateExtendedKey())
       
       this.setState(currentState => {
+        const newState = delete currentState.mnemonic;
         return {
           ...currentState,
           notifications: {
@@ -51,32 +43,72 @@ class AppContainer extends Component {
           },
           address:address,
           showModal: !this.state.showModal,
+          newState
         };
       });
     };
 
     this._createAccountModal = () => {
-      let mnemonic = bip39.generateMnemonic();
-      this.setState(currentState => {
-        return {
-          ...currentState,
-          notifications: {
-            ...currentState.notifications
-          },
-          mnemonic:mnemonic,
-          showModal: !this.state.showModal,
-          statusModal:"create"
-        };
-      });
+      if(this.state.address){
+        console.log("asdf")
+      }else{
+        let mnemonic = bip39.generateMnemonic();
+        this.setState(currentState => {
+          return {
+            ...currentState,
+            notifications: {
+              ...currentState.notifications
+            },
+            mnemonic:mnemonic,
+            showModal: !this.state.showModal,
+            statusModal:"create"
+          };
+        });
+      }
     };
-
+    // final sentence profit common mule west file income doctor nut fortune west //0x63ecae2fce
+    // mixture fork fringe noise calm opinion topple dilemma avoid muffin pupil sunny //0x8695fd49
+    // hello bomb way drink hold wear medal wonder dinosaur tip shallow minor //0x2372e105193
     this._importAccount = () =>{
+      if(bip39.validateMnemonic(this.state.importMnemonic)){
+        let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.importMnemonic));
+        let wallet = hdwallet.derivePath(path).getWallet();
+        let address = "0x" + wallet.getAddress().toString("hex");
+        
+        this.setState(currentState => {
+          const newState = delete currentState.importMnemonic;
+          return {
+            ...currentState,
+            notifications: {
+              ...currentState.notifications
+            },
+            showModal: !this.state.showModal,
+            address:address,
+            statusModal:"import",
+            newState
+          };
+        });
+      } else if(this.state.importMnemonic === ""){
+        this.setState(currentState => {
+          return {
+            AlertImportAccount:"Please enter seed.",
+          };
+        });
+      } else {
+        this.setState(currentState => {
+          return {
+            AlertImportAccount:"If the seed is not correct, check the space between the seeds.",
+          };
+        });
+      }
+    }
+    this._importAccountModal = () =>{
       this.setState(currentState => {
         return {
           ...currentState,
-          notifications: {
-            ...currentState.notifications
-          },
+            notifications: {
+              ...currentState.notifications
+            },
           showModal: !this.state.showModal,
           statusModal:"import"
         };
@@ -85,35 +117,40 @@ class AppContainer extends Component {
 
     this._closeModal = () =>{
       this.setState(currentState => {
-        return {
-          ...currentState,
-          notifications: {
-            ...currentState.notifications
-          },
-          showModal: !this.state.showModal,
-          statusModal:"import"
-        };
+        try{
+          const newState = delete currentState.importMnemonic;
+          return {
+            ...currentState,
+            notifications: {
+              ...currentState.notifications
+            },
+            showModal: !this.state.showModal,
+            statusModal:"import",
+            newState,
+            AlertImportAccount:""
+          };
+        }catch(e){
+          console.log(e)
+        }
       });
     }
 
     this._handleInput = e => {
       const { target: { name, value } } = e;
       this.setState({
-        [name]: value
+        [name]: value,
+        AlertImportAccount:""
       });
     };
 
     this.state = {
-      isLoading: true,
-      isMining: false,
-      isOpen: false,
       balance: "0",
       address:"",
-      passPharse:"",
       mnemonic:"",
       showModal: false,
       statusModal:"",
       importMnemonic:"",
+      AlertImportAccount:"",
       notifications: {
         "1": {
           id: 1,
@@ -123,6 +160,7 @@ class AppContainer extends Component {
       createAccount: this._createAccount,
       createAccountModal: this._createAccountModal,
       importAccount: this._importAccount,
+      importAccountModal: this._importAccountModal,
       handleInput:this._handleInput,
       closeModal: this._closeModal
     };

@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
-import Select from 'react-styled-select'
 import ReactModal from 'react-modal';
 import yeed from 'assets/images/yeed-symbol.png';
 import ModalHeader from 'components/ModalHeader';
@@ -10,6 +9,7 @@ import { Yeed } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
 import { PersonAdd } from 'styled-icons/material/PersonAdd';
 import { Button } from 'components/Shared';
+import { AddAlert } from "styled-icons/material/AddAlert";
 import Store from "context/store";
 
 const AccountBox = styled.div`
@@ -59,7 +59,6 @@ const Account = styled.button`
   }
 `;
 
-
 const Title = styled.span`
   font-weight: 400;
   display: flex;
@@ -99,6 +98,11 @@ const CreateAccount = styled(PersonAdd)`
   margin-right:7px;
 `
 
+const AlertIcon = styled(AddAlert)`
+  width: 20px;
+  margin-right:7px;
+`
+
 const Modal = styled(ReactModal)`
   border: 0;
   width: 50%;
@@ -110,25 +114,25 @@ const Modal = styled(ReactModal)`
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
   box-sizing: border-box;
+  border-color: rgba(70, 219, 115, 0);
 `
 
-const Alert = styled.div`
+const Info = styled.div`
   width: 90%;
-  // height: 3%;
-  height: ${props => (props.mnemonic ? "35px;" : "80px;")};
+  height: ${props => (props.mnemonic ? "40px;" : "80px;")};
   border: 0;
   border-radius: 5px;
-  background-color: ${props => (props.mnemonic ?  "#ecf0f1;" : "#e67e22;;")};
+  background-color: ${props => (props.mnemonic ?  "#ecf0f1;" : "#e67e22;")};
   color: ${props => (props.mnemonic ? "#2980b9" : null)};
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
   text-align: ${props => (props.mnemonic ? "left;" : "center;")};
   margin:0 auto;
   font-weight: 200;
-  font-size: 1.1em;
+  font-size: ${props => (props.mnemonic ? "1em;" : "1.1em;")};
   border:  ${props => (props.mnemonic ? "2px solid #305371" : "inherit")};
   padding-left: ${props => (props.mnemonic ? "10px" : "inherit")};
-  padding-top: ${props => (props.mnemonic ? "4px" : "10px")};
+  padding-top: ${props => (props.mnemonic ? "7px" : "10px")};
 `;
 
 const Passphrase = styled.div`
@@ -137,6 +141,14 @@ const Passphrase = styled.div`
   margin-bottom: 30px;
   transition: all 0.1s linear;
   color:#2980b9
+`;
+
+const AlertInfo = styled.div`
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1em;
+  transition: all 0.1s linear;
+  color: #c0392b;
 `;
 
 const Submit = Button.withComponent("input").extend`
@@ -167,7 +179,7 @@ const Input = Submit.extend`
   border-color: ${props => (props.hasError ? "#e74c3c" : "inherit")};
 `;
 
-const AccountBoxPresenter = ({ text, balance, address, mnemonic, handleInput, importMnemonic }) => (
+const AccountBoxPresenter = ({ text, balance, address, mnemonic, importMnemonic, AlertImportAccount }) => (
   <AccountBox >
     <Flex alignCenter justifyBetween>
       <Title>
@@ -185,7 +197,7 @@ const AccountBoxPresenter = ({ text, balance, address, mnemonic, handleInput, im
               <Fragment>
                 <Button
                   import
-                  onClick={() => store.importAccount()}
+                  onClick={() => store.importAccountModal()}
                 >
                 <ImportAccount/> 
                 IMPORT ACCOUNT
@@ -207,7 +219,7 @@ const AccountBoxPresenter = ({ text, balance, address, mnemonic, handleInput, im
                 > 
                   <ModalHeader/>
                   <FlexItem>
-                    <Alert>
+                    <Info>
                       {
                         store.statusModal === "create" 
                         ?
@@ -215,7 +227,7 @@ const AccountBoxPresenter = ({ text, balance, address, mnemonic, handleInput, im
                         :
                         `Passphrase is case sensitive, each character change will result in importing a different Yggdrash address! Passphrases are not saved on this computer so always make sure you have them backed up safely!`
                       }
-                    </Alert>
+                    </Info>
                   </FlexItem>
                   <FlexItem>
                     <Passphrase>
@@ -226,9 +238,9 @@ const AccountBoxPresenter = ({ text, balance, address, mnemonic, handleInput, im
                     {
                       store.statusModal === "create"
                       ?
-                      <Alert mnemonic>
+                      <Info mnemonic>
                         {mnemonic}
-                      </Alert>
+                      </Info>
                       :
                       <Input
                         placeholder={"PASSPHRASE"}
@@ -236,9 +248,15 @@ const AccountBoxPresenter = ({ text, balance, address, mnemonic, handleInput, im
                         name="importMnemonic"
                         value={importMnemonic}
                         type={"text"}
-                        onChange={handleInput}
+                        onChange={store.handleInput}
                       />
                     }
+                  </FlexItem>
+                  <FlexItem>
+                    <AlertInfo>
+                      { AlertImportAccount ?  <AlertIcon/> : null}
+                      { AlertImportAccount }
+                    </AlertInfo>
                   </FlexItem>
                   <Flex alignCenter justifyBetween>
                     <FlexItem>
@@ -286,9 +304,11 @@ const AccountBoxPresenter = ({ text, balance, address, mnemonic, handleInput, im
 
 AccountBoxPresenter.propTypes = {
   text: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
-  balance: PropTypes.number.isRequired,
+  address: PropTypes.string,
+  balance: PropTypes.string,
   id: PropTypes.number.isRequired
 };
+
+ReactModal.setAppElement('body');
 
 export default AccountBoxPresenter;

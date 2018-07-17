@@ -14,7 +14,6 @@ const Footer = styled.span`
 `;
 
 const AppPresenter = ({
-  isLoading,
   address = "",
   balance = ""
 }) => (
@@ -32,7 +31,7 @@ const AppPresenter = ({
                 address={store.address}
                 mnemonic={store.mnemonic}
                 importMnemonic={store.importMnemonic}
-                handleInput={this._handleInput}
+                AlertImportAccount={store.AlertImportAccount}
               />
             ));
           }}
@@ -50,7 +49,7 @@ const AppPresenter = ({
         </Store.Consumer>
       </Flex>
       <Flex alignCenter full column>
-        <Footer>© 2018 Yggdrash</Footer>
+        <Footer>© 2018 YGGDRASH</Footer>
       </Flex>
   </Fragment>
 
@@ -58,9 +57,8 @@ const AppPresenter = ({
 );
 
 AppPresenter.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  address: PropTypes.string.isRequired,
-  balance: PropTypes.string.isRequired,
+  address: PropTypes.string,
+  balance: PropTypes.string
 };
 
 export default AppPresenter;
