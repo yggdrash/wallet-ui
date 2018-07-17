@@ -12,6 +12,8 @@ import { Button } from 'components/Shared';
 import { AlertOctagon } from "styled-icons/feather/AlertOctagon";
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
+import Account from "components/Address";
+
 
 const AccountBox = styled.div`
   background-color: #ffffff;
@@ -22,42 +24,6 @@ const AccountBox = styled.div`
   margin-bottom: 90px;
   box-sizing: border-box;
   border: 2px solid rgba(0,0,0,.0975);
-`;
-
-const Account = styled.button`
-  width: 100%;
-  border: 0;
-  margin-top: 20px;
-  border-radius: 5px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition: all 0.1s linear;
-  cursor: pointer;
-  &:focus,
-  &:active {
-    outline: none;
-  }
-  &:hover {
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
-    background-color:  #ecf0f1;
-  }
-  &:active {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color:  #ecf0f1;
-    transform: translateY(1px);
-  }
-  &:disabled {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #009432;
-    transform: none;
-    cursor: progress;
-    &:focus,
-    &:active,
-    &:hover {
-      transform: none;
-    }
-  }
 `;
 
 const Title = styled.span`
@@ -72,22 +38,6 @@ const Line = styled.div`
   width: 100%;
   margin-top: ${props => (props.second ? "15px;" : "inherit")};
 `;
-
-const Address = styled.span`
-  font-weight: 400;
-  font-size: 1.3em;
-  width: 100%;
-  display: flex;
-`;
-
-const Balance = styled.div`
-  font-weight: 300;
-  font-size: 1.1em;
-  margin-top: ${props => (props.yeed ? "26px;" : "inherit")};
-  margin-left: 5px;
-  width: 15px;
-`;
-
 
 const ImportAccount = styled(Download)`
   width: 20px;
@@ -150,7 +100,7 @@ const Passphrase = styled.div`
   margin-left:40px;
   margin-bottom: 30px;
   transition: all 0.1s linear;
-  color: #508464; //#2980b9;
+  color: #508464;
 `;
 
 const AlertInfo = styled.div`
@@ -169,6 +119,7 @@ const Submit = styled.input`
   border: 1px solid #305371;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  secureTextEntry:true;
   &:focus,
   &:active {
     outline: none;
@@ -205,7 +156,7 @@ const Input = Submit.extend`
   border-color: ${props => (props.hasError ? "#e74c3c" : "inherit")};
 `;
 
-const AccountBoxPresenter = ({ text, balance, address, mnemonic, importMnemonic, AlertImportAccount }) => (
+const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImportAccount }) => (
   <AccountBox >
     <Flex alignCenter justifyBetween>
       <Title>
@@ -310,29 +261,23 @@ const AccountBoxPresenter = ({ text, balance, address, mnemonic, importMnemonic,
       </FlexItem>
     </Flex>
     <Line second/>
-    <Account >
-      <Flex alignCenter justifyBetween>
-        <Address>{address}</Address>
-        <FlexItem>
-          <Balance 
-            yeed
-          >
-          {address ?  <img src={yeed} alt="yeed" />: null}
-          </Balance>
-        </FlexItem>
-        <FlexItem>
-          <Balance>{address ? balance : null}</Balance>
-        </FlexItem>
-      </Flex>
-    </Account>
+      <Store.Consumer>
+          {store => {
+            return store.address.map(key => (
+              <Account
+                address={key}
+              />
+            ));
+          }}
+      </Store.Consumer>
   </AccountBox>
 );
 
 AccountBoxPresenter.propTypes = {
   text: PropTypes.string.isRequired,
-  address: PropTypes.string,
   balance: PropTypes.string,
-  id: PropTypes.number.isRequired
+  id: PropTypes.number.isRequired,
+  importMnemonic: PropTypes.string
 };
 
 ReactModal.setAppElement('body');

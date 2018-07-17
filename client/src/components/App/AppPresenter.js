@@ -14,21 +14,20 @@ const Footer = styled.span`
 `;
 
 const AppPresenter = ({
-  address = "",
-  balance = ""
+
 }) => (
   <Fragment>
     <Header />
       <Flex alignCenter full column>
         <Store.Consumer>
           {store => {
-            return Object.keys(store.notifications).map(key => (
+            return Object.keys(store.account).map(key => (
               <AccountBox
-                key={store.notifications[key].id}
-                id={store.notifications[key].id}
-                text={store.notifications[key].text}
-                balance={store.balance}
+                key={store.account[key].id}
+                id={store.account[key].id}
+                text={store.text}
                 address={store.address}
+                balance={store.balance}
                 mnemonic={store.mnemonic}
                 importMnemonic={store.importMnemonic}
                 AlertImportAccount={store.AlertImportAccount}
@@ -40,7 +39,7 @@ const AppPresenter = ({
       <Flex alignCenter full column>
         <Store.Consumer>
           {store => {
-            return Object.keys(store.notifications).map(key => (
+            return Object.keys(store.account).map(key => (
               <NetworkBox
 
               />
@@ -57,8 +56,7 @@ const AppPresenter = ({
 );
 
 AppPresenter.propTypes = {
-  address: PropTypes.string,
-  balance: PropTypes.string
+  // balance: PropTypes.string
 };
 
 export default AppPresenter;

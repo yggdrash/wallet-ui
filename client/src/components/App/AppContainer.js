@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AppPresenter from "./AppPresenter";
+import update from 'react-addons-update';
 import Store from "context/store";
 
 const HDKey = require("accounts/hdkey");
@@ -33,10 +34,15 @@ class AppContainer extends Component {
         const newState = delete currentState.mnemonic;
         return {
           ...currentState,
-          notifications: {
-            ...currentState.notifications
+          account: {
+            ...currentState.account,
           },
-          address:address,
+          address: update(
+            this.state.address,
+            {
+                $push: [address]
+            }
+          ),
           showModal: !this.state.showModal,
           newState
         };
@@ -44,22 +50,38 @@ class AppContainer extends Component {
     };
 
     this._createAccountModal = () => {
-      if(this.state.address){
-        console.log("asdf")
-      }else{
-        let mnemonic = bip39.generateMnemonic();
+      // if(this.state.address){
+      //   console.log("asdf")
+      // }else{
+      //   let mnemonic = bip39.generateMnemonic();
+      //   this.setState(currentState => {
+      //     return {
+      //       ...currentState,
+      //       account: {
+      //         ...currentState.account
+      //       },
+      //       mnemonic:mnemonic,
+      //       showModal: !this.state.showModal,
+      //       statusModal:"create"
+      //     };
+      //   });
+      // }
+      let mnemonic = bip39.generateMnemonic();
         this.setState(currentState => {
           return {
             ...currentState,
-            notifications: {
-              ...currentState.notifications
+            account: {
+              ...currentState.account
             },
             mnemonic:mnemonic,
             showModal: !this.state.showModal,
             statusModal:"create"
           };
         });
-      }
+        let test = this.state.address.map(k => {
+          return k
+        })
+        console.log(test)
     };
 
     this._importAccount = () =>{
@@ -72,11 +94,16 @@ class AppContainer extends Component {
           const newState = delete currentState.importMnemonic;
           return {
             ...currentState,
-            notifications: {
-              ...currentState.notifications
+            account: {
+              ...currentState.account
             },
+            address: update(
+              this.state.address,
+              {
+                  $push: [address]
+              }
+            ),
             showModal: !this.state.showModal,
-            address:address,
             statusModal:"import",
             newState
           };
@@ -113,8 +140,8 @@ class AppContainer extends Component {
       this.setState(currentState => {
         return {
           ...currentState,
-            notifications: {
-              ...currentState.notifications
+            account: {
+              ...currentState.account
             },
           showModal: !this.state.showModal,
           statusModal:"import"
@@ -128,8 +155,8 @@ class AppContainer extends Component {
           const newState = delete currentState.importMnemonic;
           return {
             ...currentState,
-            notifications: {
-              ...currentState.notifications
+            account: {
+              ...currentState.account
             },
             showModal: !this.state.showModal,
             statusModal:"import",
@@ -152,16 +179,16 @@ class AppContainer extends Component {
 
     this.state = {
       balance: "0",
-      address:"",
+      address:[],
       mnemonic:"",
       showModal: false,
       statusModal:"",
       importMnemonic:"",
       AlertImportAccount:"",
-      notifications: {
+      text: `My Accounts`,
+      account: {
         "1": {
-          id: 1,
-          text: `My Accounts`
+          id: 1
         }
       },
       createAccount: this._createAccount,
