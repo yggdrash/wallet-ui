@@ -10,58 +10,56 @@ const Notification = styled.div`
   width: 30%;
   padding: 20px;
   border-radius: 5px;
-  // margin-top: 10%;
   box-sizing: border-box;
   border: 2px solid rgba(0,0,0,.0975);
 `;
 
-const Title = styled.span`
+const Title = styled.div`
   font-weight: 600;
-  margin-bottom:15px;
+  margin-top: ${props => (props.top ? "0px;" : "30px;")};
+`;
+
+const Value = styled.div`
+  font-weight: 350;
+  margin-top: ${props => (props.top ? "0px;" : "30px;")};
 `;
 
 const NetworkBoxPresenter = ({ id, text }) => (
   <Notification >
     <Flex alignCenter justifyBetween>
-      <Title>Network</Title>
+        <FlexItem>
+            <Title top>Network</Title>
+        </FlexItem>
       <FlexItem>
-        <Fragment>
           <Store.Consumer>
             {store => (
-              <Fragment>
-                Network
-              </Fragment>
+                <Value top>Network</Value>
             )}
           </Store.Consumer>
-        </Fragment>
       </FlexItem>
     </Flex>
     <Flex alignCenter justifyBetween>
-      <Title>Peer</Title>
+        <FlexItem>
+            <Title>Peer</Title>
+        </FlexItem>
       <FlexItem>
-        <Fragment>
           <Store.Consumer>
             {store => (
-              <Fragment>
-                Peer
-              </Fragment>
+                <Value>Peer</Value>
             )}
           </Store.Consumer>
-        </Fragment>
       </FlexItem>
     </Flex>
     <Flex alignCenter justifyBetween>
-      <Title>Last Checked</Title>
+        <FlexItem>
+            <Title>Last Checked</Title>
+        </FlexItem>
       <FlexItem>
-        <Fragment>
           <Store.Consumer>
             {store => (
-              <Fragment>
-                Last Checked
-              </Fragment>
+                <Value>Last Checked</Value>
             )}
           </Store.Consumer>
-        </Fragment>
       </FlexItem>
     </Flex>
 

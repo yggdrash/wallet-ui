@@ -61,48 +61,57 @@ class AppContainer extends Component {
         });
     };
 
+    /**
+     * bip39, 유효한 bip39 mnemonic 검증
+     * 소유한 HD Wallet Account 예외처리
+     * Input null 예외처리
+     */
     this._importAccount = () =>{
-
+      var Break = new Error('Break')
       if(bip39.validateMnemonic(this.state.importMnemonic)){
         let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.importMnemonic));
         let wallet = hdwallet.derivePath(path).getWallet();
         let address = "0x" + wallet.getAddress().toString("hex");
 
-        this.state.address.map(addr => {
-            if(addr === address){
-              this.setState(() => {
-                  return {
-                      AlertImportAccount: "This account is already owned by you."
-                  };
-              });
-              setTimeout(() =>{
-                  this.setState(() => {
-                      return {
-                          AlertImportAccount:""
-                      };
-                  });
-              }, 1500)
-            }else {
-              this.setState(currentState => {
-                  const newState = delete currentState.importMnemonic;
-                  return {
-                      ...currentState,
-                      account: {
-                          ...currentState.account
-                      },
-                      address: update(
-                          this.state.address,
-                          {
-                              $push: [address]
-                          }
-                      ),
-                      showModal: !this.state.showModal,
-                      statusModal:"import",
-                      newState
-                  };
-              });
-            }
-        });
+        try{
+            this.state.address.map(addr => {
+                if(addr === address){
+                    this.setState(() => {
+                        return {
+                            AlertImportAccount:"This account is already owned by you."
+                        };
+                    });
+                    setTimeout(() =>{
+                        this.setState(() => {
+                            return {
+                                AlertImportAccount:""
+                            };
+                        });
+                    }, 2000)
+                    throw Break;
+                    this.setState(currentState => {
+                        const newState = delete currentState.importMnemonic;
+                        return {
+                            ...currentState,
+                            account: {
+                                ...currentState.account
+                            },
+                            address: update(
+                                this.state.address,
+                                {
+                                    $push: [address]
+                                }
+                            ),
+                            showModal: !this.state.showModal,
+                            statusModal:"import",
+                            newState
+                        };
+                    });
+                }
+            });
+        } catch (e) {
+            if (e!= Break) throw Break;
+        }
       } else if(this.state.importMnemonic === ""){
         this.setState(() => {
           return {
