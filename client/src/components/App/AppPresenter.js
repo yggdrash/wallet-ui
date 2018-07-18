@@ -14,50 +14,50 @@ const Footer = styled.span`
   margin-bottom: 30px;
 `;
 
-const AppPresenter = ({
+const AppPresenter = ({ }) => (
+      <Fragment>
+        <Header />
+          <Flex alignCenter full column>
+            <Store.Consumer>
+              {store => {
+                return Object.keys(store.account).map(key => (
+                  <AccountBox
+                    key={store.account[key].id}
+                    id={store.account[key].id}
+                    text={store.text}
+                    address={store.address}
+                    balance={store.balance}
+                    mnemonic={store.mnemonic}
+                    importMnemonic={store.importMnemonic}
+                    AlertImportAccount={store.AlertImportAccount}
+                  />
+                ));
+              }}
+            </Store.Consumer>
+          </Flex>
+          <Flex alignCenter full column>
+            <Store.Consumer>
+              {store => {
+                return Object.keys(store.account).map(key => (
+                  <NetworkBox
 
-}) => (
-  <Fragment>
-    <Header />
-      <Flex alignCenter full column>
-        <Store.Consumer>
-          {store => {
-            return Object.keys(store.account).map(key => (
-              <AccountBox
-                key={store.account[key].id}
-                id={store.account[key].id}
-                text={store.text}
-                address={store.address}
-                balance={store.balance}
-                mnemonic={store.mnemonic}
-                importMnemonic={store.importMnemonic}
-                AlertImportAccount={store.AlertImportAccount}
-              />
-            ));
-          }}
-        </Store.Consumer>
-      </Flex>
-      <Flex alignCenter full column>
-        <Store.Consumer>
-          {store => {
-            return Object.keys(store.account).map(key => (
-              <NetworkBox
-
-              />
-            ));
-          }}
-        </Store.Consumer>
-      </Flex>
-      <Flex alignCenter full column>
-        <Footer>© 2018 YGGDRASH</Footer>
-      </Flex>
-  </Fragment>
-
-  
+                  />
+                ));
+              }}
+            </Store.Consumer>
+          </Flex>
+          <Flex alignCenter full column>
+            <Footer>© 2018 YGGDRASH</Footer>
+          </Flex>
+      </Fragment>
 );
 
 AppPresenter.propTypes = {
   // balance: PropTypes.string
+    text: PropTypes.string,
+    address: PropTypes.array,
+    mnemonic: PropTypes.string,
+    importMnemonic: PropTypes.string
 };
 
 export default AppPresenter;

@@ -110,7 +110,7 @@ class AppContainer extends Component {
                 }
             });
         } catch (e) {
-            if (e!= Break) throw Break;
+            if (e!== Break) throw Break;
         }
       } else if(this.state.importMnemonic === ""){
         this.setState(() => {

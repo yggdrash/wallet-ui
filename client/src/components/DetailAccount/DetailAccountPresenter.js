@@ -160,9 +160,7 @@ const DetailAccountPresenter = ({ text, balance, mnemonic, importMnemonic, Alert
     <AccountBox >
         <Flex alignCenter justifyBetween>
             <Title>
-                {text}
-                <Yeed><img src={yeed} alt="yeed" /></Yeed>
-                {balance}
+Address
             </Title>
         </Flex>
         <Line/>

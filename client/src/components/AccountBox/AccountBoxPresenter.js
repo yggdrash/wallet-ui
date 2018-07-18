@@ -238,8 +238,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                   </FlexItem>
                   <Flex alignCenter justifyBetween>
                     <FlexItem>
-                      <Fragment>
-                      </Fragment>
+                      <Fragment/>
                     </FlexItem>
                     <FlexItem>
                       <Fragment>

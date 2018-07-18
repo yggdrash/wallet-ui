@@ -2,8 +2,10 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
-import yeed from 'assets/images/yeed-symbol.png';
-import Store from "context/store";
+import { Route, Switch } from "react-router-dom";
+import DetailAccount from "components/DetailAccount";
+// import yeed from 'assets/images/yeed-symbol.png';
+// import Store from "context/store";
 
 const Account = styled.button`
   width: 100%;
@@ -53,10 +55,13 @@ const Balance = styled.div`
   width: 15px;
 `;
 
-const AddressPresenter = ({ balance, address }) => (
-    <Account
+const Detail = props => [
+    <DetailAccount key={1} />
+];
 
-    >
+
+const AddressPresenter = ({ balance, address }) => (
+    <Account>
       <Flex alignCenter justifyBetween>
         <FlexItem>
             <Fragment>
