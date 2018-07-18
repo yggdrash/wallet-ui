@@ -7,7 +7,10 @@ import Store from "context/store";
 
 const Account = styled.button`
   width: 100%;
+  height:40px;
   border: 0;
+  font-size: 0.9em;
+  font-weight: 250;
   margin-top: 20px;
   border-radius: 5px;
   background-color: #ffffff;
@@ -41,12 +44,6 @@ const Account = styled.button`
   }
 `;
 
-const Address = styled.span`
-  font-weight: 400;
-  font-size: 1.3em;
-  width: 100%;
-  display: flex;
-`;
 
 const Balance = styled.div`
   font-weight: 300;
@@ -57,7 +54,9 @@ const Balance = styled.div`
 `;
 
 const AddressPresenter = ({ balance, address }) => (
-    <Account >
+    <Account
+
+    >
       <Flex alignCenter justifyBetween>
         <FlexItem>
             <Fragment>

@@ -222,6 +222,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                       <Input 
                         placeholder={"PASSPHRASE"}
                         required
+                        max={"5"}
                         name="importMnemonic"
                         value={importMnemonic}
                         type={"text"}

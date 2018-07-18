@@ -11,6 +11,7 @@ const Footer = styled.span`
   font-weight: 600;
   color: #508464;
   margin-top: 100px;
+  margin-bottom: 30px;
 `;
 
 const AppPresenter = ({
