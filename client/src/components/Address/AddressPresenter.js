@@ -2,12 +2,17 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
-import yeed from 'assets/images/yeed-symbol.png';
-import Store from "context/store";
+import { Route, Switch } from "react-router-dom";
+import DetailAccount from "components/DetailAccount";
+// import yeed from 'assets/images/yeed-symbol.png';
+// import Store from "context/store";
 
 const Account = styled.button`
   width: 100%;
+  height:40px;
   border: 0;
+  font-size: 0.9em;
+  font-weight: 250;
   margin-top: 20px;
   border-radius: 5px;
   background-color: #ffffff;
@@ -41,12 +46,6 @@ const Account = styled.button`
   }
 `;
 
-const Address = styled.span`
-  font-weight: 400;
-  font-size: 1.3em;
-  width: 100%;
-  display: flex;
-`;
 
 const Balance = styled.div`
   font-weight: 300;
@@ -56,8 +55,13 @@ const Balance = styled.div`
   width: 15px;
 `;
 
+const Detail = props => [
+    <DetailAccount key={1} />
+];
+
+
 const AddressPresenter = ({ balance, address }) => (
-    <Account >
+    <Account>
       <Flex alignCenter justifyBetween>
         <FlexItem>
             <Fragment>

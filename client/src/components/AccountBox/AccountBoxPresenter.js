@@ -92,7 +92,7 @@ const Info = styled.div`
   font-size: ${props => (props.mnemonic ? "1em;" : "1.1em;")};
   border:  ${props => (props.mnemonic ? "1px solid #305371" : "inherit")};
   padding-left: ${props => (props.mnemonic ? "10px" : "inherit")};
-  padding-top: ${props => (props.mnemonic ? "8px" : "12px")};
+  padding-top: ${props => (props.mnemonic ? "9px" : "12px")};
 `;
 
 const Passphrase = styled.div`
@@ -160,7 +160,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
   <AccountBox >
     <Flex alignCenter justifyBetween>
       <Title>
-        {text} 
+        {text}
         <Yeed><img src={yeed} alt="yeed" /></Yeed>
         {balance}
       </Title>
@@ -176,7 +176,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                   import
                   onClick={() => store.importAccountModal()}
                 >
-                <ImportAccount/> 
+                <ImportAccount/>
                 IMPORT ACCOUNT
                 </Button>
                 <Button
@@ -186,19 +186,19 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                 CREATE ACCOUNT
                 </Button>
 
-                <Modal 
+                <Modal
                   isOpen={store.showModal}
                   style={{
                     content: {
                       color: 'black'
                     }
                   }}
-                > 
+                >
                   <ModalHeader/>
                   <FlexItem>
                     <Info>
                       {
-                        store.statusModal === "create" 
+                        store.statusModal === "create"
                         ?
                         `Before proceeding further, first BACKUP THE PASSPHRASE SECURELY, this client does NOT store it and thus cannot recover your passphrase! If you lose it, delete it, or it gets stolen - we CANNOT help you recover it. There is no forgot my passphrase option!`
                         :
@@ -219,9 +219,10 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                         {mnemonic}
                       </Info>
                       :
-                      <Input 
+                      <Input
                         placeholder={"PASSPHRASE"}
                         required
+                        maxLength={130}
                         name="importMnemonic"
                         value={importMnemonic}
                         type={"text"}
@@ -237,8 +238,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                   </FlexItem>
                   <Flex alignCenter justifyBetween>
                     <FlexItem>
-                      <Fragment>
-                      </Fragment>
+                      <Fragment/>
                     </FlexItem>
                     <FlexItem>
                       <Fragment>
