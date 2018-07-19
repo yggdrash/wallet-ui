@@ -4,15 +4,15 @@ var crypto = require('crypto')
 var cs = require('coinstring')
 var secp256k1 = require('secp256k1')
 
-var MASTER_SECRET = Buffer.from('Bitcoin seed', 'utf8')
+var MASTER_SECRET = Buffer.from('Yggdrash Tedy Peter Rachael Jaes Luke Brian', 'utf8')
 var HARDENED_OFFSET = 0x80000000
 var LEN = 78
 
 // Bitcoin hardcoded by default, can use package `coininfo` for others
-var BITCOIN_VERSIONS = {private: 0x0488ADE4, public: 0x0488B21E}
+var YGGDRASH_VERSIONS = {private: 0x0488ADE4, public: 0x0488B21E}
 
 function HDKey (versions) {
-  this.versions = versions || BITCOIN_VERSIONS
+  this.versions = versions || YGGDRASH_VERSIONS
   this.depth = 0
   this.index = 0
   this._privateKey = null
@@ -181,7 +181,7 @@ HDKey.fromMasterSeed = function (seedBuffer, versions) {
 
 HDKey.fromExtendedKey = function (base58key, versions) {
   // => version(4) || depth(1) || fingerprint(4) || index(4) || chain(32) || key(33)
-  versions = versions || BITCOIN_VERSIONS
+  versions = versions || YGGDRASH_VERSIONS
   var hdkey = new HDKey(versions)
 
   var keyBuffer = cs.decode(base58key)
