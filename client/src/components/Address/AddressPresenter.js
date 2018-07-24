@@ -143,7 +143,7 @@ const Modal = styled(ReactModal)`
   position: absolute;
   top: 5%
   left: 5%;
-  background-color: #2c3e50
+  background-color: #508464; //#2c3e50
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
