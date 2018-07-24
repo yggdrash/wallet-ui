@@ -77,12 +77,12 @@ const Modal = styled(ReactModal)`
   }
 `
 
-const Info = styled.div`
+const Address = styled.div`
   width: 90%;
   height: ${props => (props.mnemonic ? "40px;" : "80px;")};
   border: 0;
   border-radius: 5px;
-  background-color: ${props => (props.mnemonic ?  "#ecf0f1;" : "#e67e22;")};
+  background-color: #ffffff;
   color: ${props => (props.mnemonic ? "#508464;" : null)};
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
@@ -174,15 +174,15 @@ const DetailAccountPresenter = ({ text, balance, mnemonic, importMnemonic, Alert
                             >
                                 <ModalHeader/>
                                 <FlexItem>
-                                    <Info>
+                                    <Address>
                                         {
                                             store.statusModal === "create"
                                                 ?
                                                 `Before proceeding further, first BACKUP THE PASSPHRASE SECURELY, this client does NOT store it and thus cannot recover your passphrase! If you lose it, delete it, or it gets stolen - we CANNOT help you recover it. There is no forgot my passphrase option!`
                                                 :
-                                                `Passphrase is case sensitive, each character change will result in importing a different Yggdrash address! Passphrases are not saved on this computer so always make sure you have them backed up safely!`
+                                                `s`
                                         }
-                                    </Info>
+                                    </Address>
                                 </FlexItem>
                                 <FlexItem>
                                     <Passphrase>
@@ -193,9 +193,9 @@ const DetailAccountPresenter = ({ text, balance, mnemonic, importMnemonic, Alert
                                     {
                                         store.statusModal === "create"
                                             ?
-                                            <Info mnemonic>
+                                            <Address mnemonic>
                                                 {mnemonic}
-                                            </Info>
+                                            </Address>
                                             :
                                             <Input
                                                 placeholder={"PASSPHRASE"}
@@ -208,12 +208,6 @@ const DetailAccountPresenter = ({ text, balance, mnemonic, importMnemonic, Alert
                                             />
                                     }
                                 </FlexItem>
-                                <FlexItem>
-                                    <AlertInfo>
-                                        { AlertImportAccount ?  <AlertIcon/> : null}
-                                        { AlertImportAccount }
-                                    </AlertInfo>
-                                </FlexItem>
                                 <Flex alignCenter justifyBetween>
                                     <FlexItem>
                                         <Fragment>
@@ -221,10 +215,6 @@ const DetailAccountPresenter = ({ text, balance, mnemonic, importMnemonic, Alert
                                     </FlexItem>
                                     <FlexItem>
                                         <Fragment>
-                                            <Button
-                                                onClick={() => store.statusModal === "create"  ? store.createAccount() : store.importAccount()}>
-                                                {store.statusModal === "create"  ? `CREATE` : `IMPORT`}
-                                            </Button>
                                             <Button
                                                 onClick={() => store.closeModal()}>
                                                 CANCLE

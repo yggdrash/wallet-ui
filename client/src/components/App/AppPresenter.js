@@ -26,6 +26,7 @@ const AppPresenter = ({ }) => (
                     id={store.account[key].id}
                     text={store.text}
                     address={store.address}
+                    selectAddress={store.selectAddress}
                     balance={store.balance}
                     mnemonic={store.mnemonic}
                     importMnemonic={store.importMnemonic}

@@ -11,17 +11,26 @@ import Store from "context/store";
 
 const accountProp = "account"
 
-const Account = styled.button`
+const Account = styled.div`
   width: 100%;
+  height:40px;
+  border: 0;
+  margin-bottom: 10px;
+`;
+
+const Address = styled.button`
+  width: 750px;
   height:40px;
   border: 0;
   font-size: 0.9em;
   font-weight: 250;
   margin-top: 20px;
+  margin-bottom: 10px;
   border-radius: 5px;
   background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
+  text-align: left;
   cursor: pointer;
   &:focus,
   &:active {
@@ -50,22 +59,22 @@ const Account = styled.button`
   }
 `;
 
+
 const Info = styled.div`
   width: 90%;
-  height: ${props => (props.mnemonic ? "40px;" : "80px;")};
+  margin-top: 40px;
+  margin-left: 65px;
+  height: 100px;
   border: 0;
   border-radius: 5px;
-  background-color: ${props => (props.mnemonic ?  "#ecf0f1;" : "#e67e22;")};
-  color: ${props => (props.mnemonic ? "#508464;" : null)};
+  background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
-  text-align: ${props => (props.mnemonic ? "left;" : "center;")};
-  margin:0 auto;
+  // text-align: ${props => (props.mnemonic ? "left;" : "center;")};
   font-weight: 200;
-  font-size: ${props => (props.mnemonic ? "1em;" : "1.1em;")};
-  border:  ${props => (props.mnemonic ? "1px solid #305371" : "inherit")};
-  padding-left: ${props => (props.mnemonic ? "10px" : "inherit")};
-  padding-top: ${props => (props.mnemonic ? "9px" : "12px")};
+  font-size: 1em;
+  border: 1px solid #305371
+  padding-top: 12px;
 `;
 
 const Modal = styled(ReactModal)`
@@ -96,17 +105,19 @@ const Balance = styled.div`
 `;
 
 
-const AddressPresenter = ({ balance, address }) => (
+const AddressPresenter = ({ balance, address, selectAddress }) => (
   <Fragment>
     <Store.Consumer>
       {store => (
-          <Account
-            onClick={() => store.AccountModal()}
-          >
+          <Account>
           <Flex alignCenter justifyBetween>
             <FlexItem>
                 <Fragment>
+                  <Address
+                    onClick={() => store.AccountModal(address)}
+                  >
                     {address}
+                  </Address>
                 </Fragment>
             </FlexItem>
 
@@ -120,9 +131,7 @@ const AddressPresenter = ({ balance, address }) => (
                 >
                   <FlexItem>
                     <Info>
-                      {
-                        `Passphrase is case sensitive, each character change will result in importing a different Yggdrash address! Passphrases are not saved on this computer so always make sure you have them backed up safely!`
-                      }
+                      {store.selectAddress}
                     </Info>
                   </FlexItem>
                   <Flex alignCenter justifyBetween>
@@ -133,7 +142,7 @@ const AddressPresenter = ({ balance, address }) => (
                       <Fragment>
                         <Button 
                           onClick={() => store.closeModal(accountProp)}>
-                          CANCLE
+                          CLOSE
                         </Button>
                       </Fragment>
                     </FlexItem>
