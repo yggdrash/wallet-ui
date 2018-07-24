@@ -9,17 +9,17 @@ import { UsersCog } from 'styled-icons/fa-solid/UsersCog';
 // import Store from "context/store";
 
 const Header = styled.header`
-  height: 100px;
+  height: 90px;
   background-color: #ffffff;
   color: #508464;
   padding: 0 40px;
-  margin-bottom: 90px;
+  margin-bottom: 100px;
   border-bottom: 1px solid rgba(0,0,0,.0975);
 `;
 
 const Logo = styled.div`
-  width: 8%;
-  margin-top:2%;
+  width: 7%;
+  margin-top:20px;
 `;
 
 const Title = styled.div`
@@ -32,7 +32,7 @@ const Yggdrash = styled.h5`
   color: #508464;
   display: flex;
   font-size: 1.5em;
-  margin-top: 30px;
+  margin-top: 33px;
   margin-left: 20px;
 `;
 
@@ -61,7 +61,7 @@ const HeaderIcon = styled.button`
   background-color: #ffffff;
   align-items: center;
   border-radius: 10px;
-  margin-right: 30px;
+  margin-right: 50px;
   cursor: pointer;
   transition: all 0.2s ease-out;
   position: relative;

@@ -123,10 +123,6 @@ const Submit = styled.input`
   &:active {
     outline: none;
   }
-  &:hover{
-      box-shadow:none;
-      transform: translateY(-1px);
-  }
   &:disabled{
       color:#999;
       border: 2px solid #999;
