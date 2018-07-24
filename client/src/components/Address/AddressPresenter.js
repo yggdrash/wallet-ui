@@ -10,6 +10,7 @@ import { Copy } from "styled-icons/feather/Copy";
 import { Send } from "styled-icons/feather/Send";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import yeed from 'assets/images/yeed-symbol.png';
+import { Yeed } from "components/Shared";
 import Store from "context/store";
 
 const accountProp = "account"
@@ -70,7 +71,7 @@ const DetailAddress = styled.button`
   font-size: 1em;
   font-weight: 400;
   margin-bottom: 10px;
-  margin-left: 20px;
+  margin-left: ${props => (props.tx ? "200px" : "20px")}
   margin-top: 10px;
   transition: all 0.1s linear;
   text-align: left;
@@ -206,7 +207,7 @@ const Balance = styled.div`
   font-weight: 350;
   font-size: 0.9em;
   margin-top: 5px;
-  margin-left: 25px;
+  margin-left: ${props => (props.val ? "inherit" : "25px")}
 `;
 
 
@@ -277,11 +278,15 @@ const AddressPresenter = ({ balance, address, selectAddress }) => (
                         {store.selectAddress}
                       </DetailAddress>
                     </CopyToClipboard>
-                    <Balance>Balance</Balance>
+                    <Flex>
+                      <Balance>Balance </Balance>
+                      <Yeed><img src={yeed} alt="yeed" /></Yeed>
+                      <Balance val>0</Balance>
+                    </Flex>
                   </FlexItem>
                 </Flex>
                 <Flex full>
-                 <DetailAddress>
+                 <DetailAddress tx>
                     <Transaction/>
                   </DetailAddress>
                 </Flex>
