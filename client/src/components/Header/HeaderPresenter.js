@@ -60,10 +60,9 @@ const HeaderIcon = styled.button`
   justify-content: center;
   background-color: #ffffff;
   align-items: center;
-  border-radius: 50%;
+  border-radius: 10px;
   margin-right: 30px;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.2s ease-out;
   position: relative;
   &:focus,
@@ -72,10 +71,12 @@ const HeaderIcon = styled.button`
   }
   &:hover {
     transform: translateY(-1px);
+    background-color:  #ecf0f1;
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color:  #ecf0f1;
     transform: translateY(1px);
   }
   &:disabled {

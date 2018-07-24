@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import ReactModal from 'react-modal';
 import yeed from 'assets/images/yeed-symbol.png';
-import ModalHeader from 'components/ModalHeader';
+import ModalHeader from 'components/AccountBoxHeader';
 import { Yeed } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
 import { PersonAdd } from 'styled-icons/material/PersonAdd';
@@ -180,7 +180,6 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                 </Button>
                 <Button
                   onClick={() => store.createAccountModal()}
-                  // onClick={() => console.log(balance)}
                 >
                 <CreateAccount/>
                 CREATE ACCOUNT
