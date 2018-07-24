@@ -105,8 +105,8 @@ const AlertInfo = styled.div`
   margin-top:10px;
   margin-bottom: 10px;
   text-align: center;
-  font-size: 1.1em;
-  font-weight: 450;
+  font-size: 1em;
+  font-weight: 400;
   transition: all 0.1s linear;
   color:#e67e22
 `;

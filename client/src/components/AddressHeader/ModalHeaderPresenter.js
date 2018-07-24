@@ -8,8 +8,8 @@ const Header = styled.header`
   background-color: black;
   padding: 0 40px;
   border-bottom: 1px solid rgba(0,0,0,.0975);
-  border-top-left-radius:5px;
-  border-top-right-radius:5px;
+  border-top-left-radius:10px;
+  border-top-right-radius:10px;
   margin-bottom:30px;
 `;
 

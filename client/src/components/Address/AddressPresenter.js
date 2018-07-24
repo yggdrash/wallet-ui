@@ -9,7 +9,7 @@ import ModalHeader from 'components/AddressHeader';
 import { Copy } from "styled-icons/feather/Copy";
 import { Send } from "styled-icons/feather/Send";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-// import yeed from 'assets/images/yeed-symbol.png';
+import yeed from 'assets/images/yeed-symbol.png';
 import Store from "context/store";
 
 const accountProp = "account"
@@ -67,10 +67,10 @@ const DetailAddress = styled.button`
   border-radius: 5px;
   background-color: #ffffff;
   height:40px;
-  font-size: 1.1em;
+  font-size: 1em;
   font-weight: 400;
   margin-bottom: 10px;
-  // margin-left: 20px;
+  margin-left: 20px;
   margin-top: 10px;
   transition: all 0.1s linear;
   text-align: left;
@@ -133,7 +133,14 @@ const Info = styled.div`
 `;
 
 const Label = styled.div`
+  margin-top:20px;
+  margin-left:25px;
+  font-size:1.3em;
+  font-weight:400;
+`;
 
+const QR = styled.div`
+  margin-top:10px;
 `;
 
 const Modal = styled(ReactModal)`
@@ -196,11 +203,10 @@ const HeaderIcon = styled.button`
 
 
 const Balance = styled.div`
-  font-weight: 300;
-  font-size: 1.1em;
-  margin-top: ${props => (props.yeed ? "26px;" : "inherit")};
-  margin-left: 5px;
-  width: 15px;
+  font-weight: 350;
+  font-size: 0.9em;
+  margin-top: 5px;
+  margin-left: 25px;
 `;
 
 
@@ -252,11 +258,14 @@ const AddressPresenter = ({ balance, address, selectAddress }) => (
                     </DetailAddress>
                   </FlexItem>
                 </Info>
-              </FlexItem> */}
+              </FlexItem> 
+              <Transaction/>*/}
               <Info>
-                <Flex full alignCenter>
+                <Flex full >
                   <FlexItem>
+                    <QR>
                       <QRCode value={store.selectAddress} />
+                    </QR>
                   </FlexItem>
                   <FlexItem>
                     <Label>Address</Label>
@@ -268,12 +277,13 @@ const AddressPresenter = ({ balance, address, selectAddress }) => (
                         {store.selectAddress}
                       </DetailAddress>
                     </CopyToClipboard>
+                    <Balance>Balance</Balance>
                   </FlexItem>
-                  <FlexItem>
-                      <DetailAddress>
-                        <Transaction/>
-                      </DetailAddress>
-                  </FlexItem>
+                </Flex>
+                <Flex full>
+                 <DetailAddress>
+                    <Transaction/>
+                  </DetailAddress>
                 </Flex>
               </Info>
 
