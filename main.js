@@ -55,7 +55,7 @@ const createWindow = () => {
     })
 
     mainWindow = new BrowserWindow({width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, center: true, icon: iconpath, resizable: false, frame: true, show: false,  title: "Yggdrash Wallet"})
-    mainWindow.setContentProtection(false)
+    mainWindow.setContentProtection(true)
     
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()

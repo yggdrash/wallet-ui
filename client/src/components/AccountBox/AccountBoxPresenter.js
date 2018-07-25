@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import ReactModal from 'react-modal';
 import yeed from 'assets/images/yeed-symbol.png';
-import ModalHeader from 'components/ModalHeader';
+import ModalHeader from 'components/AccountBoxHeader';
 import { Yeed } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
 import { PersonAdd } from 'styled-icons/material/PersonAdd';
@@ -64,7 +64,7 @@ const Modal = styled(ReactModal)`
   position: absolute;
   top: 30%;
   left: 25%;
-  background-color: #ecf0f1;
+  background-color: #508464;
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -81,15 +81,14 @@ const Info = styled.div`
   height: ${props => (props.mnemonic ? "40px;" : "80px;")};
   border: 0;
   border-radius: 5px;
-  background-color: ${props => (props.mnemonic ?  "#ecf0f1;" : "#e67e22;")};
-  color: ${props => (props.mnemonic ? "#508464;" : null)};
+  background-color: #ffffff; //${props => (props.mnemonic ?  "#ffffff;" : "#16a085")}; 
+  color: ${props => (props.mnemonic ?  "inherit" : "#c0392b")};
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
   text-align: ${props => (props.mnemonic ? "left;" : "center;")};
   margin:0 auto;
-  font-weight: 200;
+  font-weight: 400;
   font-size: ${props => (props.mnemonic ? "1em;" : "1.1em;")};
-  border:  ${props => (props.mnemonic ? "1px solid #305371" : "inherit")};
   padding-left: ${props => (props.mnemonic ? "10px" : "inherit")};
   padding-top: ${props => (props.mnemonic ? "9px" : "12px")};
 `;
@@ -99,33 +98,29 @@ const Passphrase = styled.div`
   margin-left:40px;
   margin-bottom: 30px;
   transition: all 0.1s linear;
-  color: #508464;
+  color: black;
 `;
 
 const AlertInfo = styled.div`
   margin-top:10px;
   margin-bottom: 10px;
   text-align: center;
-  font-size: 0.9em;
+  font-size: 1em;
+  font-weight: 400;
   transition: all 0.1s linear;
-  color:#e74c3c;
+  color:#e67e22
 `;
 
 const Submit = styled.input`
   border: 0;
   margin-right:10px;
   padding: 10px 0;
-  border: 1px solid #305371;
+  background-color: #ffffff;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  secureTextEntry:true;
   &:focus,
   &:active {
     outline: none;
-  }
-  &:hover{
-      box-shadow:none;
-      transform: translateY(-1px);
   }
   &:disabled{
       color:#999;
@@ -147,12 +142,7 @@ const Input = Submit.extend`
   font-size: 0.9em;
   margin-left:40px;
   padding-left: 10px;
-  background-color: #ecf0f1;
-  &:active {
-    background-color: transparent;
-  }
-  color: ${props => (props.hasError ? "#e74c3c" : "inherit")};
-  border-color: ${props => (props.hasError ? "#e74c3c" : "inherit")};
+  background-color: #ffffff;
 `;
 
 const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImportAccount }) => (
@@ -180,7 +170,6 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                 </Button>
                 <Button
                   onClick={() => store.createAccountModal()}
-                  // onClick={() => console.log(balance)}
                 >
                 <CreateAccount/>
                 CREATE ACCOUNT

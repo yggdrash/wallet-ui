@@ -29,8 +29,12 @@ Install from source:
 ```bash
 # Clone this repository
 git clone git@bitbucket.org:r2v/yggdrash-wallet.git
-# Go into the repository
+# Go into the electron repository
 cd yggdrash-wallet
+# Install dependencies
+yarn install
+# Go into the client repository
+cd client
 # Install dependencies
 yarn install
 ```

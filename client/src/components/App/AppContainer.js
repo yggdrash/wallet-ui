@@ -180,10 +180,11 @@ class AppContainer extends Component {
       });
     };
 
-    this._AccountModal = () => {
+    this._AccountModal = address => {
       this.setState(currentState => {
         return {
-          showAccountModal: !this.state.showAccountModal
+          showAccountModal: !this.state.showAccountModal,
+          selectAddress:address
         };
       });
     }
@@ -191,6 +192,7 @@ class AppContainer extends Component {
     this.state = {
       balance: "0",
       address:[],
+      selectAddress:"",
       mnemonic:"",
       showModal: false,
       showAccountModal: false,
