@@ -1,4 +1,4 @@
-const Wallet = require("./index.js");
+const Wallet = require("./wallet.js");
 const util = require("../utils");
 
 const ksHelper = {
