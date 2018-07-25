@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import AppPresenter from "./AppPresenter";
 import update from 'react-addons-update';
 import Store from "context/store";
+import { isThisSecond } from "date-fns";
 
 const HDKey = require("accounts/hdkey");
 const bip39 = require("bip39");
@@ -114,7 +115,7 @@ class AppContainer extends Component {
               AlertImportAccount:""
             };
           });
-        }, 1500)
+        }, 2000)
       } else {
         this.setState(() => {
           return {
@@ -127,7 +128,7 @@ class AppContainer extends Component {
               AlertImportAccount:""
             };
           });
-        }, 1500)
+        }, 2000)
       }
     };
 

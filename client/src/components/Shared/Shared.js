@@ -42,6 +42,12 @@ export const Yeed = styled.div`
   margin-top:3px;
 `;
 
+export const Line = styled.div`
+  border-bottom: 0.1px solid rgb(105,105,105);
+  width: 100%;
+  margin-top: ${props => (props.second ? "15px;" : "inherit")};
+`;
+
 export const Key = styled.h3`
   color: #508464;
   margin-bottom: 20px !important;

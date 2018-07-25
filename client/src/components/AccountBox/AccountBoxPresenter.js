@@ -4,12 +4,12 @@ import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import ReactModal from 'react-modal';
 import yeed from 'assets/images/yeed-symbol.png';
+import yeedSymbolShadow from 'assets/images/ygg_symbol_shadow.png';
 import ModalHeader from 'components/AccountBoxHeader';
-import { Yeed } from "components/Shared";
+import { Yeed, Line } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
 import { PersonAdd } from 'styled-icons/material/PersonAdd';
 import { Button } from 'components/Shared';
-import { AlertOctagon } from "styled-icons/feather/AlertOctagon";
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
@@ -18,11 +18,13 @@ const AccountBox = styled.div`
   background-color: #ffffff;
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   width: 50%;
+  height: 270px;
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 90px;
   box-sizing: border-box;
   border: 2px solid rgba(0,0,0,.0975);
+  overflow:scroll;
 `;
 
 const Title = styled.span`
@@ -32,31 +34,28 @@ const Title = styled.span`
   margin-left: 10px;
 `;
 
-const Line = styled.div`
-  border-bottom: 0.1px solid rgb(105,105,105);
-  width: 100%;
-  margin-top: ${props => (props.second ? "15px;" : "inherit")};
-`;
-
-const ImportAccount = styled(Download)`
+const ImportAccountIcon = styled(Download)`
   width: 20px;
   margin-right:7px;
 `
-
-const CreateAccount = styled(PersonAdd)`
+const CreateAccountIcon = styled(PersonAdd)`
   width: 20px;
   margin-right:7px;
 `
-
-const AlertIcon = styled(AlertOctagon)`
-  width: 20px;
-  margin-right:7px;
-`
-
-const LockIcon = styled(UserLock)`
+const LockIconIcon = styled(UserLock)`
   width: 15px;
   margin-right:7px;
 `
+const YeedAnimation = styled.div`
+  width: 60px;
+  margin 0 auto;
+  padding-top: 20px;
+  animation: App-logo-spin infinite 20s linear;
+  @keyframes App-logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+`;
 
 const Modal = styled(ReactModal)`
   border: 0;
@@ -81,13 +80,13 @@ const Info = styled.div`
   height: ${props => (props.mnemonic ? "40px;" : "80px;")};
   border: 0;
   border-radius: 5px;
-  background-color: #ffffff; //${props => (props.mnemonic ?  "#ffffff;" : "#16a085")}; 
+  background-color: #ffffff;
   color: ${props => (props.mnemonic ?  "inherit" : "#c0392b")};
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
   text-align: ${props => (props.mnemonic ? "left;" : "center;")};
   margin:0 auto;
-  font-weight: 400;
+  font-weight: 350;
   font-size: ${props => (props.mnemonic ? "1em;" : "1.1em;")};
   padding-left: ${props => (props.mnemonic ? "10px" : "inherit")};
   padding-top: ${props => (props.mnemonic ? "10px" : "12px")};
@@ -108,7 +107,7 @@ const AlertInfo = styled.div`
   font-size: 1em;
   font-weight: 400;
   transition: all 0.1s linear;
-  color:#e67e22
+  color:#353b48
 `;
 
 const Submit = styled.input`
@@ -165,13 +164,13 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                   import
                   onClick={() => store.importAccountModal()}
                 >
-                <ImportAccount/>
+                <ImportAccountIcon/>
                 IMPORT ACCOUNT
                 </Button>
                 <Button
                   onClick={() => store.createAccountModal()}
                 >
-                <CreateAccount/>
+                <CreateAccountIcon/>
                 CREATE ACCOUNT
                 </Button>
 
@@ -197,7 +196,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                   </FlexItem>
                   <FlexItem>
                     <Passphrase>
-                      <LockIcon/>Passphrase
+                      <LockIconIcon/>Passphrase
                     </Passphrase>
                   </FlexItem>
                   <FlexItem>
@@ -221,7 +220,6 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                   </FlexItem>
                   <FlexItem>
                     <AlertInfo>
-                      { AlertImportAccount ?  <AlertIcon/> : null}
                       { AlertImportAccount }
                     </AlertInfo>
                   </FlexItem>
@@ -250,7 +248,12 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
       </FlexItem>
     </Flex>
     <Line second/>
-      <Store.Consumer>
+    <Store.Consumer>
+        {store => (
+          store.address.length === 0 ? <YeedAnimation><img src={yeedSymbolShadow} alt="yeedAnimation" /></YeedAnimation> : ""
+        )}
+    </Store.Consumer>
+    <Store.Consumer>
           {store => {
             return store.address.map(key => (
               <Account

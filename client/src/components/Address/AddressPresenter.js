@@ -8,6 +8,9 @@ import { Button } from 'components/Shared';
 import ModalHeader from 'components/AddressHeader';
 import { Copy } from "styled-icons/feather/Copy";
 import { Send } from "styled-icons/feather/Send";
+import { Download } from "styled-icons/feather/Download";
+import { Edit2 } from "styled-icons/feather/Edit2";
+import { Delete } from "styled-icons/material/Delete";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import yeed from 'assets/images/yeed-symbol.png';
 import { Yeed } from "components/Shared";
@@ -74,7 +77,7 @@ const DetailAddress = styled.button`
   font-size: 1em;
   font-weight: 400;
   margin-bottom: 10px;
-  margin-left: ${props => (props.tx ? "300px" : "20px")}
+  margin-left: 20px;
   display:flex;
   flex: 1 1 100px;
   margin-top: 10px;
@@ -108,19 +111,73 @@ const DetailAddress = styled.button`
   }
 `;
 
+const AccountIcon = styled.button`
+  border: 0;
+  width: 100px;
+  height: 40px;
+  justify-content: center;
+  background-color: #ffffff;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-right: 50px;
+  margin-left: ${props => (props.first ? "30px;": "inherit")}
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  position: relative;
+  &:focus,
+  &:active {
+    outline: none;
+  }
+  &:hover {
+    transform: translateY(-1px);
+    background-color:  #ecf0f1;
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+  &:active {
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color:  #ecf0f1;
+    transform: translateY(1px);
+  }
+  &:disabled {
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: #009432;
+    transform: none;
+    cursor: progress;
+    &:focus,
+    &:active,
+    &:hover {
+      transform: none;
+    }
+  }
+`;
 
-const AddressCopy = styled(Copy)`
+
+const AddressCopyIcon = styled(Copy)`
   width:20px;
   margin-right:5px;
   color: black;
 `
-
-const Transaction = styled(Send)`
+const TransactionIcon = styled(Send)`
   width:20px;
   margin-right:5px;
   color: black;
 `
-
+const ExportIcon = styled(Download)`
+  width:20px;
+  margin-right:5px;
+  color: black;
+`
+const EditIcon = styled(Edit2)`
+  width:20px;
+  margin-right:5px;
+  color: black;
+`
+const DeleteIcon = styled(Delete)`
+  width:20px;
+  margin-right:5px;
+  color: black;
+`
 
 const Info = styled.div`
   width: 90%;
@@ -136,6 +193,78 @@ const Info = styled.div`
   font-weight: 200;
   font-size: 1em;
   padding-left: 10px;
+`;
+
+const TransactionInfo = styled.div`
+  width: 90%;
+  height: 450px;
+  margin-top: 40px;
+  margin-left: 65px;
+  margin-bottom: 5px;
+  border: 0;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.1s linear;
+  display: flex;
+  font-weight: 200;
+  font-size: 1em;
+  padding-left: 10px;
+  overflow:scroll;
+`;
+
+const Transactions = styled.button`
+  border: 0;
+  width: 150px;
+  height: 40px;
+  justify-content: center;
+  background-color: #ffffff;
+  border-bottom: 0.1px solid rgb(105,105,105);
+  align-items: center;
+  margin-top: 10px;
+  margin-right: 50px;
+  margin-left: ${props => (props.first ? "30px;": "inherit")}
+  font-size:1.1em;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  position: relative;
+  &:focus,
+  &:active {
+    outline: none;
+  }
+  &:hover {
+    transform: translateY(-1px);
+    background-color:  #ecf0f1;
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+  &:active {
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color:  #ecf0f1;
+    transform: translateY(1px);
+  }
+  &:disabled {
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: #009432;
+    transform: none;
+    cursor: progress;
+    &:focus,
+    &:active,
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+
+const TransactionsData = styled.button`
+  border: 0;
+  height: 40px;
+  background-color: #ffffff;
+  align-items: center;
+  margin-top: 10px;
+  margin-right: 50px;
+  margin-left:10px;
+  font-size:0.9em;
+  text-align:left;
 `;
 
 const Label = styled.div`
@@ -168,46 +297,6 @@ const Modal = styled(ReactModal)`
   }
 `
 
-const HeaderIcon = styled.button`
-  border: 0;
-  width: 35px;
-  height: 40px;
-  justify-content: center;
-  background-color: #ffffff;
-  align-items: center;
-  border-radius: 10px;
-  margin-right: 30px;
-  cursor: pointer;
-  transition: all 0.2s ease-out;
-  position: relative;
-  &:focus,
-  &:active {
-    outline: none;
-  }
-  &:hover {
-    transform: translateY(-1px);
-    background-color:  #ecf0f1;
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-  }
-  &:active {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    transform: translateY(1px);
-    background-color:  #ecf0f1;
-  }
-  &:disabled {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #009432;
-    transform: none;
-    cursor: progress;
-    &:focus,
-    &:active,
-    &:hover {
-      transform: none;
-    }
-  }
-`;
-
-
 const Balance = styled.div`
   font-weight: 400;
   font-size: 1em;
@@ -226,6 +315,9 @@ const AccountBoxYeed = styled.div`
 `;
 const AccountBoxBalance = styled.div`
 `;
+const Line = styled.div`
+  border-bottom: 0.1px solid rgb(105,105,105);
+`;
 
 const AddressPresenter = ({ balance, address, selectAddress }) => (
   <Fragment>
@@ -238,13 +330,13 @@ const AddressPresenter = ({ balance, address, selectAddress }) => (
                 onClick={() => store.AccountModal(address)}
               >
                 <Fragment>
-                <AccountBoxAddress>{address}</AccountBoxAddress>
+                  <AccountBoxAddress>{address}</AccountBoxAddress>
                 </Fragment>
                 <Fragment>
-                <AccountBoxYeed><img src={yeed} alt="yeed" /></AccountBoxYeed>
+                  <AccountBoxYeed><img src={yeed} alt="yeed" /></AccountBoxYeed>
                 </Fragment>
                 <Fragment>
-                <AccountBoxBalance>0</AccountBoxBalance>
+                  <AccountBoxBalance>0</AccountBoxBalance>
                 </Fragment>
               </Address>
             </FlexItem>
@@ -271,7 +363,7 @@ const AddressPresenter = ({ balance, address, selectAddress }) => (
                       onCopy={true}  
                     >
                       <DetailAddress>
-                        <AddressCopy/>
+                        <AddressCopyIcon/>
                         {store.selectAddress}
                       </DetailAddress>
                     </CopyToClipboard>
@@ -283,11 +375,58 @@ const AddressPresenter = ({ balance, address, selectAddress }) => (
                   </FlexItem>
                 </Flex>
                 <Flex full>
-                 <DetailAddress tx>
-                    <Transaction/>
-                  </DetailAddress>
+                  <AccountIcon first>
+                    <TransactionIcon/> TRANSFER
+                  </AccountIcon>
+                  <AccountIcon>
+                    <ExportIcon/> EXPORT
+                  </AccountIcon>
+                  <AccountIcon>
+                    <EditIcon/> EDIT
+                  </AccountIcon>
+                  <AccountIcon>
+                    <DeleteIcon/> DELETE
+                  </AccountIcon>
                 </Flex>
               </Info>
+
+              <TransactionInfo>
+                <Flex full >
+                  <FlexItem>
+                    <Transactions >
+                      TRANSACTIONS
+                    </Transactions>
+                    <Flex>
+                      <FlexItem>
+                        <TransactionsData >
+                          ID
+                        </TransactionsData>
+                      </FlexItem>
+                      <FlexItem>
+                        <TransactionsData >
+                          Confirmations
+                        </TransactionsData>
+                      </FlexItem>
+                      <FlexItem>
+                        <TransactionsData >
+                          Date
+                        </TransactionsData>
+                      </FlexItem>
+                      <FlexItem>
+                        <TransactionsData >
+                          From
+                        </TransactionsData>
+                      </FlexItem>
+                      <FlexItem>
+                        <TransactionsData >
+                          To
+                        </TransactionsData>
+                      </FlexItem>
+                      <Line/>
+                    </Flex>
+                  </FlexItem>
+                </Flex>
+              </TransactionInfo>
 
               <Flex alignCenter justifyBetween>
                 <FlexItem>
