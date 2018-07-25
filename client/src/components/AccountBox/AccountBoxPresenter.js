@@ -90,7 +90,7 @@ const Info = styled.div`
   font-weight: 400;
   font-size: ${props => (props.mnemonic ? "1em;" : "1.1em;")};
   padding-left: ${props => (props.mnemonic ? "10px" : "inherit")};
-  padding-top: ${props => (props.mnemonic ? "9px" : "12px")};
+  padding-top: ${props => (props.mnemonic ? "10px" : "12px")};
 `;
 
 const Passphrase = styled.div`

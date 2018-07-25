@@ -32,9 +32,12 @@ const Address = styled.button`
   margin-bottom: 10px;
   border-radius: 5px;
   background-color: #ffffff;
+  display: flex;
+
+  padding-top: 10px;
+  padding-left: 10px;
   box-shadow: 0 2px 3px rgba(50, 50, 93, 0.05), 0 1px 2px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
-  text-align: left;
   cursor: pointer;
   &:focus,
   &:active {
@@ -71,7 +74,9 @@ const DetailAddress = styled.button`
   font-size: 1em;
   font-weight: 400;
   margin-bottom: 10px;
-  margin-left: ${props => (props.tx ? "200px" : "20px")}
+  margin-left: ${props => (props.tx ? "300px" : "20px")}
+  display:flex;
+  flex: 1 1 100px;
   margin-top: 10px;
   transition: all 0.1s linear;
   text-align: left;
@@ -135,7 +140,7 @@ const Info = styled.div`
 
 const Label = styled.div`
   margin-top:20px;
-  margin-left:25px;
+  margin-left:20px;
   font-size:1.3em;
   font-weight:400;
 `;
@@ -204,29 +209,46 @@ const HeaderIcon = styled.button`
 
 
 const Balance = styled.div`
-  font-weight: 350;
-  font-size: 0.9em;
+  font-weight: 400;
+  font-size: 1em;
   margin-top: 5px;
   margin-left: ${props => (props.val ? "inherit" : "25px")}
 `;
 
+
+const AccountBoxAddress = styled.div`
+  text-align:left;
+  flex: 1 1 100px;
+`;
+const AccountBoxYeed = styled.div`
+  width: 15px;
+  margin-right:5px;
+`;
+const AccountBoxBalance = styled.div`
+`;
 
 const AddressPresenter = ({ balance, address, selectAddress }) => (
   <Fragment>
     <Store.Consumer>
       {store => (
           <Account>
-          <Flex alignCenter justifyBetween>
+          <Flex>
             <FlexItem>
+              <Address
+                onClick={() => store.AccountModal(address)}
+              >
                 <Fragment>
-                  <Address
-                    onClick={() => store.AccountModal(address)}
-                  >
-                    {address}
-                  </Address>
+                <AccountBoxAddress>{address}</AccountBoxAddress>
                 </Fragment>
+                <Fragment>
+                <AccountBoxYeed><img src={yeed} alt="yeed" /></AccountBoxYeed>
+                </Fragment>
+                <Fragment>
+                <AccountBoxBalance>0</AccountBoxBalance>
+                </Fragment>
+              </Address>
             </FlexItem>
-
+            
             <Modal
               isOpen={store.showAccountModal}
               style={{
@@ -236,31 +258,6 @@ const AddressPresenter = ({ balance, address, selectAddress }) => (
               }}
             >
             <ModalHeader/>
-
-              {/* <FlexItem>
-                <Info>
-                  <FlexItem>
-                    <QRCode value={store.selectAddress} />
-                  </FlexItem>
-                  <FlexItem>
-                  Address
-                  </FlexItem>
-                  <FlexItem>
-                    <Flex>
-                      d
-                    </Flex>
-                  </FlexItem>
-                  <FlexItem>
-                    <DetailAddress
-                      onClick={() => {}}
-                    >
-                    <AddressCopy/>
-                    {store.selectAddress}
-                    </DetailAddress>
-                  </FlexItem>
-                </Info>
-              </FlexItem> 
-              <Transaction/>*/}
               <Info>
                 <Flex full >
                   <FlexItem>

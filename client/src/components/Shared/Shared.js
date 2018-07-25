@@ -39,7 +39,7 @@ export const Yeed = styled.div`
   width: 15px;
   margin-left:10px;
   margin-right:7px;
-  margin-top:2px;
+  margin-top:3px;
 `;
 
 export const Key = styled.h3`

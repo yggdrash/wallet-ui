@@ -14,8 +14,18 @@ class AppContainer extends Component {
 
     this.componentDidMount = () => {
       const { sharedPort } = this.props;
+      document.body.addEventListener("keydown", this.closeLastPopup)
     };
 
+    this.closeLastPopup = e => {
+      if (!(e.key == "Escape" || e.keyCode == 27)) return
+      if(this.state.showModal === true){
+        this.setState({ showModal: !this.state.showModal})
+      }else if(this.state.showAccountModal === true){
+        this.setState({ showAccountModal: !this.state.showAccountModal})
+      }
+     }
+    
     /**
      * bip39, mnemonic생성
      * Create HDwallet from Master Seed 
@@ -181,7 +191,7 @@ class AppContainer extends Component {
     };
 
     this._AccountModal = address => {
-      this.setState(currentState => {
+      this.setState(() => {
         return {
           showAccountModal: !this.state.showAccountModal,
           selectAddress:address
