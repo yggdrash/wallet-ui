@@ -14,7 +14,6 @@ import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
 
-
 const AccountBox = styled.div`
   background-color: #ffffff;
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
@@ -181,6 +180,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                 </Button>
                 <Button
                   onClick={() => store.createAccountModal()}
+                  // onClick={() => console.log(balance)}
                 >
                 <CreateAccount/>
                 CREATE ACCOUNT

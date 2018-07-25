@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import AddressPresenter from "./AddressPresenter";
-// import Store from "context/store";
+import Store from "context/store";
 
 class AddressContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {};
+
   }
+
   render() {
-    return <AddressPresenter {...this.props} {...this.state} />;
+    return <AddressPresenter {...this.props} {...this.state}/>
   }
 }
 

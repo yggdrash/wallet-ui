@@ -26,7 +26,6 @@ class AppContainer extends Component {
       let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
       let wallet = hdwallet.derivePath(path).getWallet();
       let address = "0x" + wallet.getAddress().toString("hex");
-
       this.setState(currentState => {
         const newState = delete currentState.mnemonic;
         return {
@@ -45,7 +44,6 @@ class AppContainer extends Component {
         };
       });
     };
-
     this._createAccountModal = () => {
       let mnemonic = bip39.generateMnemonic();
         this.setState(currentState => {
@@ -72,9 +70,8 @@ class AppContainer extends Component {
         let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.importMnemonic));
         let wallet = hdwallet.derivePath(path).getWallet();
         let address = "0x" + wallet.getAddress().toString("hex");
-
         try{
-            this.state.address.map(addr => {
+            let check = this.state.address.map(addr => {
                 if(addr === address){
                     this.setState(() => {
                         return {
@@ -89,26 +86,9 @@ class AppContainer extends Component {
                         });
                     }, 2000)
                     throw Break;
-                    this.setState(currentState => {
-                        const newState = delete currentState.importMnemonic;
-                        return {
-                            ...currentState,
-                            account: {
-                                ...currentState.account
-                            },
-                            address: update(
-                                this.state.address,
-                                {
-                                    $push: [address]
-                                }
-                            ),
-                            showModal: !this.state.showModal,
-                            statusModal:"import",
-                            newState
-                        };
-                    });
                 }
             });
+            this.setImportAccount(address);
         } catch (e) {
             if (e!== Break) throw Break;
         }
@@ -141,6 +121,27 @@ class AppContainer extends Component {
       }
     };
 
+    this.setImportAccount = address => {
+      this.setState(currentState => {
+        const newState = delete currentState.importMnemonic;
+        return {
+            ...currentState,
+            account: {
+                ...currentState.account
+            },
+            address: update(
+                this.state.address,
+                {
+                    $push: [address]
+                }
+            ),
+            showModal: !this.state.showModal,
+            statusModal:"import",
+            newState
+        };
+      });
+    }
+
     this._importAccountModal = () =>{
       this.setState(currentState => {
         return {
@@ -154,23 +155,20 @@ class AppContainer extends Component {
       });
     };
 
-    this._closeModal = () =>{
+    this._closeModal = (e) =>{
       this.setState(currentState => {
-        try{
-          const newState = delete currentState.importMnemonic;
-          return {
-            ...currentState,
-            account: {
-              ...currentState.account
-            },
-            showModal: !this.state.showModal,
-            statusModal:"import",
-            newState,
-            AlertImportAccount:""
-          };
-        }catch(e){
-          console.log(e)
-        }
+        const newState = delete currentState.importMnemonic;
+        return {
+          ...currentState,
+          account: {
+            ...currentState.account
+          },
+          showModal: e === "account" ? this.state.showModal : !this.state.showModal,
+          showAccountModal: e === "account" ? !this.state.showAccountModal : this.state.showAccountModal,
+          statusModal:"import",
+          newState,
+          AlertImportAccount:""
+        };
       });
     }
 
@@ -182,11 +180,20 @@ class AppContainer extends Component {
       });
     };
 
+    this._AccountModal = () => {
+      this.setState(currentState => {
+        return {
+          showAccountModal: !this.state.showAccountModal
+        };
+      });
+    }
+
     this.state = {
       balance: "0",
       address:[],
       mnemonic:"",
       showModal: false,
+      showAccountModal: false,
       statusModal:"",
       importMnemonic:"",
       AlertImportAccount:"",
@@ -201,15 +208,16 @@ class AppContainer extends Component {
       importAccount: this._importAccount,
       importAccountModal: this._importAccountModal,
       handleInput:this._handleInput,
+      AccountModal:this._AccountModal,
       closeModal: this._closeModal
     };
   }
 
   render() {
     return (
-      <Store.Provider value={this.state}>
-        <AppPresenter />
-      </Store.Provider>
+        <Store.Provider value={this.state}>
+          <AppPresenter />
+        </Store.Provider>
     );
   }
 }

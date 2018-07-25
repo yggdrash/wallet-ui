@@ -158,117 +158,86 @@ const Input = Submit.extend`
 
 const DetailAccountPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImportAccount }) => (
     <AccountBox >
-        <Flex alignCenter justifyBetween>
-            <Title>
-Address
-            </Title>
-        </Flex>
-        <Line/>
-        <Flex alignCenter justifyBetween>
-            <FlexItem>
-                <Fragment>
-                    <Store.Consumer>
-                        {store => (
-                            <Fragment>
-                                <Button
-                                    import
-                                    onClick={() => store.importAccountModal()}
-                                >
-                                    <ImportAccount/>
-                                    IMPORT ACCOUNT
-                                </Button>
-                                <Button
-                                    onClick={() => store.createAccountModal()}
-                                >
-                                    <CreateAccount/>
-                                    CREATE ACCOUNT
-                                </Button>
+        <FlexItem>
+            <Fragment>
+                <Store.Consumer>
+                    {store => (
+                        <Fragment>
 
-                                <Modal
-                                    isOpen={store.showModal}
-                                    style={{
-                                        content: {
-                                            color: 'black'
-                                        }
-                                    }}
-                                >
-                                    <ModalHeader/>
-                                    <FlexItem>
-                                        <Info>
-                                            {
-                                                store.statusModal === "create"
-                                                    ?
-                                                    `Before proceeding further, first BACKUP THE PASSPHRASE SECURELY, this client does NOT store it and thus cannot recover your passphrase! If you lose it, delete it, or it gets stolen - we CANNOT help you recover it. There is no forgot my passphrase option!`
-                                                    :
-                                                    `Passphrase is case sensitive, each character change will result in importing a different Yggdrash address! Passphrases are not saved on this computer so always make sure you have them backed up safely!`
-                                            }
-                                        </Info>
-                                    </FlexItem>
-                                    <FlexItem>
-                                        <Passphrase>
-                                            <LockIcon/>Passphrase
-                                        </Passphrase>
-                                    </FlexItem>
-                                    <FlexItem>
+                            <Modal
+                                isOpen={store.showModal}
+                                style={{
+                                    content: {
+                                        color: 'black'
+                                    }
+                                }}
+                            >
+                                <ModalHeader/>
+                                <FlexItem>
+                                    <Info>
                                         {
                                             store.statusModal === "create"
                                                 ?
-                                                <Info mnemonic>
-                                                    {mnemonic}
-                                                </Info>
+                                                `Before proceeding further, first BACKUP THE PASSPHRASE SECURELY, this client does NOT store it and thus cannot recover your passphrase! If you lose it, delete it, or it gets stolen - we CANNOT help you recover it. There is no forgot my passphrase option!`
                                                 :
-                                                <Input
-                                                    placeholder={"PASSPHRASE"}
-                                                    required
-                                                    max={"5"}
-                                                    name="importMnemonic"
-                                                    value={importMnemonic}
-                                                    type={"text"}
-                                                    onChange={store.handleInput}
-                                                />
+                                                `Passphrase is case sensitive, each character change will result in importing a different Yggdrash address! Passphrases are not saved on this computer so always make sure you have them backed up safely!`
                                         }
+                                    </Info>
+                                </FlexItem>
+                                <FlexItem>
+                                    <Passphrase>
+                                        <LockIcon/>Passphrase
+                                    </Passphrase>
+                                </FlexItem>
+                                <FlexItem>
+                                    {
+                                        store.statusModal === "create"
+                                            ?
+                                            <Info mnemonic>
+                                                {mnemonic}
+                                            </Info>
+                                            :
+                                            <Input
+                                                placeholder={"PASSPHRASE"}
+                                                required
+                                                max={"5"}
+                                                name="importMnemonic"
+                                                value={importMnemonic}
+                                                type={"text"}
+                                                onChange={store.handleInput}
+                                            />
+                                    }
+                                </FlexItem>
+                                <FlexItem>
+                                    <AlertInfo>
+                                        { AlertImportAccount ?  <AlertIcon/> : null}
+                                        { AlertImportAccount }
+                                    </AlertInfo>
+                                </FlexItem>
+                                <Flex alignCenter justifyBetween>
+                                    <FlexItem>
+                                        <Fragment>
+                                        </Fragment>
                                     </FlexItem>
                                     <FlexItem>
-                                        <AlertInfo>
-                                            { AlertImportAccount ?  <AlertIcon/> : null}
-                                            { AlertImportAccount }
-                                        </AlertInfo>
+                                        <Fragment>
+                                            <Button
+                                                onClick={() => store.statusModal === "create"  ? store.createAccount() : store.importAccount()}>
+                                                {store.statusModal === "create"  ? `CREATE` : `IMPORT`}
+                                            </Button>
+                                            <Button
+                                                onClick={() => store.closeModal()}>
+                                                CANCLE
+                                            </Button>
+                                        </Fragment>
                                     </FlexItem>
-                                    <Flex alignCenter justifyBetween>
-                                        <FlexItem>
-                                            <Fragment>
-                                            </Fragment>
-                                        </FlexItem>
-                                        <FlexItem>
-                                            <Fragment>
-                                                <Button
-                                                    onClick={() => store.statusModal === "create"  ? store.createAccount() : store.importAccount()}>
-                                                    {store.statusModal === "create"  ? `CREATE` : `IMPORT`}
-                                                </Button>
-                                                <Button
-                                                    onClick={() => store.closeModal()}>
-                                                    CANCLE
-                                                </Button>
-                                            </Fragment>
-                                        </FlexItem>
-                                    </Flex>
-                                </Modal>
-                            </Fragment>
-                        )}
-                    </Store.Consumer>
-                </Fragment>
-            </FlexItem>
-        </Flex>
-        <Line second/>
-        <Store.Consumer>
-            {store => {
-                return store.address.map(key => (
-                    <Account
-                        address={key}
-                    />
-                ));
-            }}
-        </Store.Consumer>
+                                </Flex>
+                            </Modal>
+                        </Fragment>
+                    )}
+                </Store.Consumer>
+            </Fragment>
+        </FlexItem>
     </AccountBox>
 );
 
