@@ -5,6 +5,7 @@ import Flex from "styled-flex-component";
 import AccountBox from "components/AccountBox";
 import NetworkBox from "components/NetworkBox";
 import Header from 'components/Header';
+import germinal from 'assets/images/germinal2.png';
 import Store from "context/store";
 
 const Footer = styled.span`
@@ -12,6 +13,10 @@ const Footer = styled.span`
   color: #508464;
   margin-top: 100px;
   margin-bottom: 30px;
+`;
+
+const Germinal = styled.div`
+  width:50px;
 `;
 
 const AppPresenter = ({ }) => (
@@ -37,6 +42,7 @@ const AppPresenter = ({ }) => (
             </Store.Consumer>
           </Flex>
           <Flex alignCenter full column>
+          <Germinal><img src={germinal} alt="germinal" /></Germinal>
             <Store.Consumer>
               {store => {
                 return Object.keys(store.account).map(key => (

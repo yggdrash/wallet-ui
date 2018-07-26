@@ -13,6 +13,7 @@ import { Button } from 'components/Shared';
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
+import germinal from 'assets/images/germinal.png';
 
 const AccountBox = styled.div`
   background-color: #ffffff;
@@ -21,10 +22,14 @@ const AccountBox = styled.div`
   height: 270px;
   padding: 20px;
   border-radius: 10px;
-  margin-bottom: 90px;
+  margin-bottom: 40px;
   box-sizing: border-box;
   border: 2px solid rgba(0,0,0,.0975);
   overflow:scroll;
+`;
+
+const Germinal = styled.div`
+  width:50px;
 `;
 
 const Title = styled.span`
@@ -49,12 +54,12 @@ const LockIconIcon = styled(UserLock)`
 const YeedAnimation = styled.div`
   width: 60px;
   margin 0 auto;
-  padding-top: 20px;
-  animation: App-logo-spin infinite 20s linear;
-  @keyframes App-logo-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
+  padding-top: 25px;
+  // animation: App-logo-spin infinite 20s linear;
+  // @keyframes App-logo-spin {
+  //   from { transform: rotate(0deg); }
+  //   to { transform: rotate(360deg); }
+  // }
 `;
 
 const Modal = styled(ReactModal)`
@@ -107,7 +112,7 @@ const AlertInfo = styled.div`
   font-size: 1em;
   font-weight: 400;
   transition: all 0.1s linear;
-  color:#353b48
+  color:black;
 `;
 
 const Submit = styled.input`
@@ -250,7 +255,8 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
     <Line second/>
     <Store.Consumer>
         {store => (
-          store.address.length === 0 ? <YeedAnimation><img src={yeedSymbolShadow} alt="yeedAnimation" /></YeedAnimation> : ""
+          // store.address.length === 0 ? <YeedAnimation><img src={yeedSymbolShadow} alt="yeedAnimation" /></YeedAnimation> : ""
+          store.address.length === 0 ? <YeedAnimation><img src={germinal} alt="germinal" /></YeedAnimation> : ""
         )}
     </Store.Consumer>
     <Store.Consumer>

@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import AppPresenter from "./AppPresenter";
 import update from 'react-addons-update';
 import Store from "context/store";
+import { toBuffer } from "utils"
+import { fromPrivateKey } from "accounts/wallet"
 import { isThisSecond } from "date-fns";
 
 const HDKey = require("accounts/hdkey");
@@ -36,7 +38,19 @@ class AppContainer extends Component {
     this._createAccount = () => {
       let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
       let wallet = hdwallet.derivePath(path).getWallet();
-      let address = "0x" + wallet.getAddress().toString("hex");
+      let address = wallet.getAddressString();
+
+      // transaction sign
+      // let fromPrivateKeyBuffer = wallet.getPrivateKey();
+      // const tx = new yeedTx(txData);
+      // tx.sign(fromPrivateKeyBuffer);
+
+      
+      // let privateKey = fromPrivateKeyBuffer.toString('hex');
+      // const yeedAccount = fromPrivateKey(toBuffer(`0x${privateKey}`));
+      // const fromAddress = yeedAccount.getAddressString();
+
+
       this.setState(currentState => {
         const newState = delete currentState.mnemonic;
         return {

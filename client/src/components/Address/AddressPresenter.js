@@ -261,7 +261,7 @@ const TransactionsData = styled.button`
   background-color: #ffffff;
   align-items: center;
   margin-top: 10px;
-  margin-right: 50px;
+  margin-right: 100px;
   margin-left:10px;
   font-size:0.9em;
   text-align:left;
