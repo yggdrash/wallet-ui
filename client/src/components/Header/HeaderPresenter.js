@@ -19,7 +19,7 @@ const Header = styled.header`
 `;
 
 const Logo = styled.div`
-  width: 5%;
+  width: 4%;
   margin-top:20px;
 `;
 
@@ -32,7 +32,7 @@ const Title = styled.div`
 const Yggdrash = styled.div`
   margin-left: 15px;
   width: 15%;
-  margin-top:42px;
+  margin-top:35px;
 `;
 
 const Network = styled(Wifi)`

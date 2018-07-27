@@ -238,15 +238,6 @@ class AppContainer extends Component {
       });
     };
     
-    this._handleSubmit = async e => {
-      e.preventDefault();
-      const { word3, word6, word9 } = this.state;
-      this.setState({
-        word3: "",
-        word6: "",
-        word9: ""
-      });
-    };
     this._AccountModal = address => {
       this.setState(() => {
         return {
@@ -282,12 +273,10 @@ class AppContainer extends Component {
       importAccountModal: this._importAccountModal,
       handleImportInput:this._handleImportInput,
       handleConfirmInput: this._handleConfirmInput,
-      handleSubmit: this._handleSubmit,
       AccountModal:this._AccountModal,
       closeModal: this._closeModal
     };
   }
-
   render() {
     return (
         <Store.Provider value={this.state}>
