@@ -23,9 +23,27 @@ class AppContainer extends Component {
     this.closeLastPopup = e => {
       if (!(e.key == "Escape" || e.keyCode == 27)) return
       if(this.state.showModal === true){
-        this.setState({ showModal: !this.state.showModal})
+        this.setState({ 
+          showModal: !this.state.showModal,
+          word3:"",
+          word6:"",
+          word9:"",
+          AlertImportAccount:"",
+          importMnemonic:""
+        })
       }else if(this.state.showAccountModal === true){
-        this.setState({ showAccountModal: !this.state.showAccountModal})
+        this.setState({ 
+          showAccountModal: !this.state.showAccountModal,
+          word3:"",
+          word6:"",
+          word9:"",
+          AlertImportAccount:"",
+          importMnemonic:""
+        })
+      }else if(this.state.hidden === false){
+        this.setState({ 
+          hidden: !this.state.hidden
+        })
       }
      }
     
@@ -215,29 +233,22 @@ class AppContainer extends Component {
           },
           showModal: e === "account" ? this.state.showModal : !this.state.showModal,
           showAccountModal: e === "account" ? !this.state.showAccountModal : this.state.showAccountModal,
-          statusModal:"import",
           newState,
-          AlertImportAccount:""
+          AlertImportAccount:"",
+          word3:"",
+          word6:"",
+          word9:""
         };
       });
     }
 
-    this._handleImportInput = e => {
+    this._handleInput = e => {
       const { target: { name, value } } = e;
       this.setState({
         [name]: value,
         AlertImportAccount:""
       });
     };
-
-    this._handleConfirmInput = e => {
-      const { target: { name, value } } = e;
-      console.log(e.target)
-      this.setState({
-        [name]: value
-      });
-    };
-    
     this._AccountModal = address => {
       this.setState(() => {
         return {
@@ -247,6 +258,12 @@ class AppContainer extends Component {
       });
     }
 
+    this._handleOpenCloseDropdown = () => {
+      this.setState({
+        hidden: !this.state.hidden,
+      });
+    };
+
     this.state = {
       balance: "0",
       address:[],
@@ -254,6 +271,7 @@ class AppContainer extends Component {
       mnemonic:"",
       showModal: false,
       showAccountModal: false,
+      hidden:true,
       statusModal:"",
       importMnemonic:"",
       word3:"",
@@ -266,15 +284,15 @@ class AppContainer extends Component {
           id: 1
         }
       },
+      handleOpenCloseDropdown: this._handleOpenCloseDropdown,
       createAccount: this._createAccount,
       createAccountModal: this._createAccountModal,
       confirmCreateAccount: this._confirmCreateAccount,
       importAccount: this._importAccount,
       importAccountModal: this._importAccountModal,
-      handleImportInput:this._handleImportInput,
-      handleConfirmInput: this._handleConfirmInput,
+      handleInput:this._handleInput,
       AccountModal:this._AccountModal,
-      closeModal: this._closeModal
+      closeModal: this._closeModal,
     };
   }
   render() {

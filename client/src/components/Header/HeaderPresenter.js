@@ -6,8 +6,19 @@ import { Wifi } from 'styled-icons/fa-solid/Wifi';
 import { ExitToApp } from 'styled-icons/material/ExitToApp';
 import { Location } from 'styled-icons/octicons/Location';
 import { UsersCog } from 'styled-icons/fa-solid/UsersCog';
-// import Store from "context/store";
+import Store from "context/store";
 import textLogo from "assets/images/yggdrash-text-logo.png";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownDivider,
+  DropdownMenu,
+} from 'styled-dropdown-component';
+import {
+  Alert,
+  AlertHeading,
+} from 'styled-alert-component';
+
 
 const Header = styled.header`
   height: 90px;
@@ -53,7 +64,7 @@ const Cog = styled(UsersCog)`
 `
 
 const HeaderIcon = styled.button`
-  border: 0;
+  border: none;
   width: 35px;
   height: 40px;
   justify-content: center;
@@ -101,20 +112,40 @@ const HeaderPresenter = () => (
         </Title>
       </FlexItem>
       <FlexItem>
-        <Flex>
-          <HeaderIcon>
-            <Network/>
-          </HeaderIcon>
-          <HeaderIcon>
-            <Peer/>
-          </HeaderIcon>
-          <HeaderIcon>
-            <Cog/>
-          </HeaderIcon>
-          <HeaderIcon>
-            <Exit/>
-          </HeaderIcon>
-        </Flex>
+        <Store.Consumer>
+        {store => (
+          <Flex>
+            <Dropdown>
+              <HeaderIcon
+                secondary
+                dropdownToggle
+                onClick={() => store.handleOpenCloseDropdown()}
+              >
+                <Network/>
+              </HeaderIcon>
+              <DropdownMenu 
+                hidden={store.hidden}
+                mt="15px"
+              >
+                <DropdownItem py="10px">MAINNET</DropdownItem>
+                <DropdownDivider />
+                <DropdownItem py="10px">TESTNET</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <HeaderIcon
+
+            >
+              <Peer/>
+            </HeaderIcon>
+            <HeaderIcon>
+              <Cog/>
+            </HeaderIcon>
+            <HeaderIcon>
+              <Exit/>
+            </HeaderIcon>
+          </Flex>
+        )}
+        </Store.Consumer>
       </FlexItem>
     </Flex>
   </Header>

@@ -6,7 +6,7 @@ import AccountBox from "components/AccountBox";
 import NetworkBox from "components/NetworkBox";
 import Header from 'components/Header';
 import germinal from 'assets/images/germinal2.png';
-// import grass from 'assets/images/grass.png';
+// import grass from 'assets/images/foot.png';
 import Store from "context/store";
 
 const Footer = styled.div`
@@ -14,7 +14,7 @@ const Footer = styled.div`
   // color: #508464;
   // margin-top: 100px;
   // margin-bottom: 30px;
-  width:230px;
+  width:100px;
 `;
 
 const Germinal = styled.div`

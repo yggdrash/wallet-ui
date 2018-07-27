@@ -332,10 +332,10 @@ const AccountBoxYeed = styled.div`
 `;
 const AccountBoxBalance = styled.div`
 `;
-const Line = styled.div`
-  border-bottom: 0.1px solid rgb(105,105,105);
-  width:410%;
-`;
+// const Line = styled.div`
+//   border-bottom: 0.1px solid rgb(105,105,105);
+//   width:410%;
+// `;
 
 const AddressPresenter = ({ balance, address }) => (
   <Fragment>
@@ -380,7 +380,9 @@ const AddressPresenter = ({ balance, address }) => (
                     <CopyToClipboard text={store.selectAddress}
                       onCopy={true}  
                     >
-                      <DetailAddress>
+                      <DetailAddress
+                        
+                      >
                         <AddressCopyIcon/>
                         {store.selectAddress}
                       </DetailAddress>

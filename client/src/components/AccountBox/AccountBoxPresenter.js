@@ -12,8 +12,7 @@ import { Button } from 'components/Shared';
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
-import germinal from 'assets/images/germinal.png';
-// import yggtree from 'assets/images/yggtree.gif';
+import germinal from 'assets/images/ygg_symbol_shadow.png';
 
 const AccountBox = styled.div`
   background-color: #ffffff;
@@ -55,11 +54,11 @@ const YeedAnimation = styled.div`
   width: 60px;
   margin 0 auto;
   padding-top: 25px;
-  // animation: App-logo-spin infinite 20s linear;
-  // @keyframes App-logo-spin {
-  //   from { transform: rotate(0deg); }
-  //   to { transform: rotate(360deg); }
-  // }
+  animation: App-logo-spin infinite 20s linear;
+  @keyframes App-logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
 `;
 
 const Modal = styled(ReactModal)`
@@ -101,7 +100,7 @@ const Info = styled.div`
   border-radius: 5px;
   border-bottom: 0.2px solid ${props => (props.mnemonic ?"rgb(051,153,051);" : "inherit")}
   background-color: ${props => (props.mnemonic ?  "#fafafa;" : "#ffffff;")};
-  color: ${props => (props.mnemonic || props.confirm ?  "inherit" : "#c0392b")};
+  color: ${props => (props.mnemonic || props.confirm ?  "inherit" : "#EA2027;")};
   box-shadow: ${props => (props.mnemonic ?  "inherit" : "0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);")}
   transition: all 0.1s linear;
   text-align: ${props => (props.mnemonic ? "left;" : "center;")};
@@ -175,7 +174,7 @@ const Confirm = styled.input`
   margin-right:10px;
   padding: 10px 0;
   background-color:  #FAFAFA;
-  border-bottom: 0.2px solid rgb(051,153,051);
+  border-bottom: 0.2px solid ${props => (props.AlertImportAccount ?"rgb(204,000,000);" : "rgb(051,153,051);")}
   &:focus,
   &:active {
     outline: none;
@@ -267,32 +266,32 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                     { store.statusModal === "confirm" 
                     ? 
                     <FlexItem>
-                      <ConfirmInput
+                      <ConfirmInput AlertImportAccount={ AlertImportAccount }
                         placeholder={"Word3"}
                         required
                         maxLength={20}
                         name="word3"
                         value={word3}
                         type={"text"}
-                        onChange={store.handleConfirmInput}
+                        onChange={store.handleInput}
                       />
-                      <ConfirmInput
+                      <ConfirmInput AlertImportAccount={ AlertImportAccount }
                         placeholder={"Word6"}
                         required
                         maxLength={20}
                         name="word6"
                         value={word6}
                         type={"text"}
-                        onChange={store.handleConfirmInput}
+                        onChange={store.handleInput}
                       />
-                      <ConfirmInput
+                      <ConfirmInput AlertImportAccount={ AlertImportAccount }
                         placeholder={"Word9"}
                         required
                         maxLength={20}
                         name="word9"
                         value={word9}
                         type={"text"}
-                        onChange={store.handleConfirmInput}
+                        onChange={store.handleInput}
                       />
                     </FlexItem>
                     : 
@@ -307,7 +306,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                         name="importMnemonic"
                         value={importMnemonic}
                         type={"text"}
-                        onChange={store.handleImportInput}
+                        onChange={store.handleInput}
                       /> 
                       : 
                       "" 
@@ -356,9 +355,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
     <Line second/>
     <Store.Consumer>
         {store => (
-          // store.address.length === 0 ? <YeedAnimation><img src={yeedSymbolShadow} alt="yeedAnimation" /></YeedAnimation> : ""
           store.address.length === 0 ? <YeedAnimation><img src={germinal} alt="germinal" /></YeedAnimation> : ""
-          // store.address.length === 0 ? <YeedAnimation><img src={yggtree} alt="yggtree" /></YeedAnimation> : ""
         )}
     </Store.Consumer>
     <Store.Consumer>
