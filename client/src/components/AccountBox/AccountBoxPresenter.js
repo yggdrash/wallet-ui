@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import ReactModal from 'react-modal';
 import yeed from 'assets/images/yeed-symbol.png';
-import yeedSymbolShadow from 'assets/images/ygg_symbol_shadow.png';
 import ModalHeader from 'components/AccountBoxHeader';
 import { Yeed, Line } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
@@ -14,6 +13,7 @@ import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
 import germinal from 'assets/images/germinal.png';
+// import yggtree from 'assets/images/yggtree.gif';
 
 const AccountBox = styled.div`
   background-color: #ffffff;
@@ -68,7 +68,8 @@ const Modal = styled(ReactModal)`
   position: absolute;
   top: 30%;
   left: 25%;
-  background-color: #508464;
+  background-color: #FAFAFA;
+  background-image: url('../assets/images/how-bg-opti.png');
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -77,6 +78,19 @@ const Modal = styled(ReactModal)`
   &:focus,
   &:active {
     outline: none;
+  }
+  -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.3ss;
+    animation-name: zoom;
+    animation-duration: 0.3s;
+  @-webkit-keyframes zoom {
+      from {-webkit-transform:scale(0)} 
+      to {-webkit-transform:scale(1)}
+  }
+  
+  @keyframes zoom {
+      from {transform:scale(0)} 
+      to {transform:scale(1)}
   }
 `
 
@@ -112,7 +126,7 @@ const AlertInfo = styled.div`
   font-size: 1em;
   font-weight: 400;
   transition: all 0.1s linear;
-  color:black;
+  color:#EA2027;
 `;
 
 const Submit = styled.input`
@@ -257,6 +271,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
         {store => (
           // store.address.length === 0 ? <YeedAnimation><img src={yeedSymbolShadow} alt="yeedAnimation" /></YeedAnimation> : ""
           store.address.length === 0 ? <YeedAnimation><img src={germinal} alt="germinal" /></YeedAnimation> : ""
+          // store.address.length === 0 ? <YeedAnimation><img src={yggtree} alt="yggtree" /></YeedAnimation> : ""
         )}
     </Store.Consumer>
     <Store.Consumer>

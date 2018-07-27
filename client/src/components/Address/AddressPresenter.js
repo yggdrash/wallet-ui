@@ -259,12 +259,14 @@ const TransactionsData = styled.button`
   border: 0;
   height: 40px;
   background-color: #ffffff;
-  align-items: center;
   margin-top: 10px;
-  margin-right: 100px;
   margin-left:10px;
   font-size:0.9em;
   text-align:left;
+  &:focus,
+  &:active {
+    outline: none;
+  }
 `;
 
 const Label = styled.div`
@@ -285,7 +287,7 @@ const Modal = styled(ReactModal)`
   position: absolute;
   top: 5%
   left: 5%;
-  background-color: #508464; //#2c3e50
+  background-color: #FAFAFA;
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -294,6 +296,19 @@ const Modal = styled(ReactModal)`
   &:focus,
   &:active {
     outline: none;
+  }
+  -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.5s;
+    animation-name: zoom;
+    animation-duration: 0.5s;
+  @-webkit-keyframes zoom {
+      from {-webkit-transform:scale(0)} 
+      to {-webkit-transform:scale(1)}
+  }
+  
+  @keyframes zoom {
+      from {transform:scale(0)} 
+      to {transform:scale(1)}
   }
 `
 
@@ -317,9 +332,10 @@ const AccountBoxBalance = styled.div`
 `;
 const Line = styled.div`
   border-bottom: 0.1px solid rgb(105,105,105);
+  width:410%;
 `;
 
-const AddressPresenter = ({ balance, address, selectAddress }) => (
+const AddressPresenter = ({ balance, address }) => (
   <Fragment>
     <Store.Consumer>
       {store => (
@@ -412,7 +428,7 @@ const AddressPresenter = ({ balance, address, selectAddress }) => (
                           Date
                         </TransactionsData>
                       </FlexItem>
-                      <FlexItem>
+                      <FlexItem>               
                         <TransactionsData >
                           From
                         </TransactionsData>
@@ -422,7 +438,36 @@ const AddressPresenter = ({ balance, address, selectAddress }) => (
                           To
                         </TransactionsData>
                       </FlexItem>
-                      <Line/>
+                    </Flex>
+                    <Line/>
+                    
+                    {/* transaction data */}
+                    <Flex>
+                      {/* <FlexItem>
+                        <TransactionsData >
+                          id
+                        </TransactionsData>
+                      </FlexItem>
+                      <FlexItem>
+                        <TransactionsData >
+                          confirmations
+                        </TransactionsData>
+                      </FlexItem>
+                      <FlexItem>
+                        <TransactionsData >
+                          date
+                        </TransactionsData>
+                      </FlexItem>
+                      <FlexItem>
+                        <TransactionsData >
+                          from
+                        </TransactionsData>
+                      </FlexItem>
+                      <FlexItem>
+                        <TransactionsData >
+                          to
+                        </TransactionsData>
+                      </FlexItem> */}
                     </Flex>
                   </FlexItem>
                 </Flex>

@@ -70,7 +70,7 @@ export const Button = styled.button`
   margin-right:10px;
   margin-top:15px;
   margin-bottom:15px;
-  background-color: #006266;
+  background-color: #1C885F;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;

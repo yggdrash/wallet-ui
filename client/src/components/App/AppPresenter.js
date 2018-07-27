@@ -6,17 +6,20 @@ import AccountBox from "components/AccountBox";
 import NetworkBox from "components/NetworkBox";
 import Header from 'components/Header';
 import germinal from 'assets/images/germinal2.png';
+// import grass from 'assets/images/grass.png';
 import Store from "context/store";
 
-const Footer = styled.span`
-  font-weight: 600;
-  color: #508464;
-  margin-top: 100px;
-  margin-bottom: 30px;
+const Footer = styled.div`
+  // font-weight: 600;
+  // color: #508464;
+  // margin-top: 100px;
+  // margin-bottom: 30px;
+  width:230px;
 `;
 
 const Germinal = styled.div`
   width:50px;
+  margin-bottom:10px;
 `;
 
 const AppPresenter = ({ }) => (
@@ -42,7 +45,7 @@ const AppPresenter = ({ }) => (
             </Store.Consumer>
           </Flex>
           <Flex alignCenter full column>
-          <Germinal><img src={germinal} alt="germinal" /></Germinal>
+          <Germinal><img src={germinal} alt="yggtree" /></Germinal>
             <Store.Consumer>
               {store => {
                 return Object.keys(store.account).map(key => (
@@ -54,7 +57,7 @@ const AppPresenter = ({ }) => (
             </Store.Consumer>
           </Flex>
           <Flex alignCenter full column>
-            <Footer>© 2018 YGGDRASH</Footer>
+            {/* <Footer><img src={grass} alt="grass" /></Footer> */}
           </Flex>
       </Fragment>
 );

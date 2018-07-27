@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment }  from "react";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import logo from 'assets/images/ygg-logo-green.png';
@@ -7,6 +7,7 @@ import { ExitToApp } from 'styled-icons/material/ExitToApp';
 import { Location } from 'styled-icons/octicons/Location';
 import { UsersCog } from 'styled-icons/fa-solid/UsersCog';
 // import Store from "context/store";
+import textLogo from "assets/images/yggdrash-text-logo.png";
 
 const Header = styled.header`
   height: 90px;
@@ -18,7 +19,7 @@ const Header = styled.header`
 `;
 
 const Logo = styled.div`
-  width: 7%;
+  width: 5%;
   margin-top:20px;
 `;
 
@@ -28,12 +29,10 @@ const Title = styled.div`
   font-family: 'Titillium Web', sans-serif
 `;
 
-const Yggdrash = styled.h5`
-  color: #508464;
-  display: flex;
-  font-size: 1.5em;
-  margin-top: 33px;
-  margin-left: 20px;
+const Yggdrash = styled.div`
+  margin-left: 15px;
+  width: 15%;
+  margin-top:42px;
 `;
 
 const Network = styled(Wifi)`
@@ -97,8 +96,8 @@ const HeaderPresenter = () => (
     <Flex full justifyBetween alignCenter>
       <FlexItem>
         <Title>
-          <Logo><img src={logo} alt="logo" /></Logo>
-          <Yggdrash>YGGDRASH</Yggdrash>
+          <Fragment><Logo><img src={logo} alt="logo" /></Logo></Fragment>
+          <Fragment><Yggdrash><img src={textLogo} alt="logo" /></Yggdrash></Fragment>
         </Title>
       </FlexItem>
       <FlexItem>
