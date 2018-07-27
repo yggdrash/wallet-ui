@@ -263,6 +263,8 @@ const TransactionsData = styled.button`
   margin-left:10px;
   font-size:0.9em;
   text-align:left;
+  // display:flex;
+  flex-wrap:wrap;
   &:focus,
   &:active {
     outline: none;
@@ -413,7 +415,7 @@ const AddressPresenter = ({ balance, address }) => (
                       TRANSACTIONS
                     </Transactions>
                     <Flex>
-                      <FlexItem>
+                      {/* <FlexItem>
                         <TransactionsData >
                           ID
                         </TransactionsData>
@@ -437,9 +439,25 @@ const AddressPresenter = ({ balance, address }) => (
                         <TransactionsData >
                           To
                         </TransactionsData>
+                      </FlexItem> */}
+                      <FlexItem>
+                        <TransactionsData >
+                          ID
+                        </TransactionsData>
+                        <TransactionsData >
+                          Confirmations
+                        </TransactionsData>
+                        <TransactionsData >
+                          Date
+                        </TransactionsData>           
+                        <TransactionsData >
+                          From
+                        </TransactionsData>
+                        <TransactionsData >
+                          To
+                        </TransactionsData>
                       </FlexItem>
                     </Flex>
-                    <Line/>
                     
                     {/* transaction data */}
                     <Flex>

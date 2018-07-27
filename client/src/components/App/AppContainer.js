@@ -36,38 +36,55 @@ class AppContainer extends Component {
      * @param mnemonicToSeed mnemonic buffer한 값
     */
     this._createAccount = () => {
-      let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
-      let wallet = hdwallet.derivePath(path).getWallet();
-      let address = wallet.getAddressString();
+      let wordSplit = this.state.mnemonic.split(" ");
+      if(wordSplit[2]=== this.state.word3 && wordSplit[5]=== this.state.word6 && wordSplit[8]=== this.state.word9){
+        let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
+        let wallet = hdwallet.derivePath(path).getWallet();
+        let address = wallet.getAddressString();
 
-      // transaction sign
+        this.setState(currentState => {
+          const newState = delete currentState.mnemonic;
+          return {
+            ...currentState,
+            account: {
+              ...currentState.account,
+            },
+            address: update(
+              this.state.address,
+              {
+                  $push: [address]
+              }
+            ),
+            word3:"",
+            word6:"",
+            word9:"",
+            showModal: !this.state.showModal,
+            newState
+          };
+        });
+      }else {
+        this.setState(() => {
+          return {
+              AlertImportAccount:"The words does not match the original passphrase."
+          };
+        });
+        setTimeout(() =>{
+          this.setState(() => {
+              return {
+                  AlertImportAccount:""
+              };
+          });
+        }, 2000)
+      }
+
+      // ** transaction sign ** 
       // let fromPrivateKeyBuffer = wallet.getPrivateKey();
       // const tx = new yeedTx(txData);
       // tx.sign(fromPrivateKeyBuffer);
-
       
       // let privateKey = fromPrivateKeyBuffer.toString('hex');
       // const yeedAccount = fromPrivateKey(toBuffer(`0x${privateKey}`));
       // const fromAddress = yeedAccount.getAddressString();
-
-
-      this.setState(currentState => {
-        const newState = delete currentState.mnemonic;
-        return {
-          ...currentState,
-          account: {
-            ...currentState.account,
-          },
-          address: update(
-            this.state.address,
-            {
-                $push: [address]
-            }
-          ),
-          showModal: !this.state.showModal,
-          newState
-        };
-      });
     };
     this._createAccountModal = () => {
       let mnemonic = bip39.generateMnemonic();
@@ -80,6 +97,14 @@ class AppContainer extends Component {
             mnemonic:mnemonic,
             showModal: !this.state.showModal,
             statusModal:"create"
+          };
+        });
+    };
+
+    this._confirmCreateAccount = () => {
+        this.setState(() => {
+          return {
+            statusModal:"confirm"
           };
         });
     };
@@ -197,7 +222,7 @@ class AppContainer extends Component {
       });
     }
 
-    this._handleInput = e => {
+    this._handleImportInput = e => {
       const { target: { name, value } } = e;
       this.setState({
         [name]: value,
@@ -205,6 +230,23 @@ class AppContainer extends Component {
       });
     };
 
+    this._handleConfirmInput = e => {
+      const { target: { name, value } } = e;
+      console.log(e.target)
+      this.setState({
+        [name]: value
+      });
+    };
+    
+    this._handleSubmit = async e => {
+      e.preventDefault();
+      const { word3, word6, word9 } = this.state;
+      this.setState({
+        word3: "",
+        word6: "",
+        word9: ""
+      });
+    };
     this._AccountModal = address => {
       this.setState(() => {
         return {
@@ -223,6 +265,9 @@ class AppContainer extends Component {
       showAccountModal: false,
       statusModal:"",
       importMnemonic:"",
+      word3:"",
+      word6:"",
+      word9:"",
       AlertImportAccount:"",
       text: `My Accounts`,
       account: {
@@ -232,9 +277,12 @@ class AppContainer extends Component {
       },
       createAccount: this._createAccount,
       createAccountModal: this._createAccountModal,
+      confirmCreateAccount: this._confirmCreateAccount,
       importAccount: this._importAccount,
       importAccountModal: this._importAccountModal,
-      handleInput:this._handleInput,
+      handleImportInput:this._handleImportInput,
+      handleConfirmInput: this._handleConfirmInput,
+      handleSubmit: this._handleSubmit,
       AccountModal:this._AccountModal,
       closeModal: this._closeModal
     };

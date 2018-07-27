@@ -38,6 +38,9 @@ const AppPresenter = ({ }) => (
                     balance={store.balance}
                     mnemonic={store.mnemonic}
                     importMnemonic={store.importMnemonic}
+                    word3={store.word3}
+                    word6={store.word6}
+                    word9={store.word9}
                     AlertImportAccount={store.AlertImportAccount}
                   />
                 ));
