@@ -18,6 +18,11 @@ import {
   Alert,
   AlertHeading,
 } from 'styled-alert-component';
+import {
+  Tooltip,
+  TooltipArrow,
+  TooltipInner,
+} from 'styled-tooltip-component';
 
 
 const Header = styled.header`
@@ -120,11 +125,24 @@ const HeaderPresenter = () => (
                 secondary
                 dropdownToggle
                 onClick={() => store.handleOpenCloseDropdown()}
+                onMouseEnter={(ev) => store.handleTooltip(ev, false)}
+                onMouseLeave={(ev) => store.handleTooltip(ev, true)}
               >
                 <Network/>
+                {/* <Tooltip
+                  hidden={store.iconHidden}
+                  style={{
+                    top: `${store.top}px`,
+                    left: `${store.left}px`
+                  }}
+                  bottom={true}
+                >
+                  <TooltipArrow bottom={true} />
+                  <TooltipInner bottom={true}>Network</TooltipInner>
+                </Tooltip> */}
               </HeaderIcon>
               <DropdownMenu 
-                hidden={store.hidden}
+                hidden={store.menuHidden}
                 mt="15px"
               >
                 <DropdownItem py="10px">MAINNET</DropdownItem>

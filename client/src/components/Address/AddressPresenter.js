@@ -15,6 +15,16 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import yeed from 'assets/images/yeed-symbol.png';
 import { Yeed } from "components/Shared";
 import Store from "context/store";
+import {
+  Tooltip,
+  TooltipArrow,
+  TooltipInner,
+} from 'styled-tooltip-component';
+import {
+  Table,
+  Tr,
+} from 'styled-table-component';
+
 
 const accountProp = "account"
 
@@ -219,10 +229,10 @@ const Transactions = styled.button`
   height: 40px;
   justify-content: center;
   background-color: #ffffff;
-  border-bottom: 0.1px solid rgb(105,105,105);
   align-items: center;
   margin-top: 10px;
   margin-right: 50px;
+  margin-bottom: 10px;
   margin-left: ${props => (props.first ? "30px;": "inherit")}
   font-size:1.1em;
   cursor: pointer;
@@ -234,12 +244,9 @@ const Transactions = styled.button`
   }
   &:hover {
     transform: translateY(-1px);
-    background-color:  #ecf0f1;
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    border-bottom: 0.1px solid rgb(051,153,051);
   }
   &:active {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color:  #ecf0f1;
     transform: translateY(1px);
   }
   &:disabled {
@@ -255,21 +262,6 @@ const Transactions = styled.button`
   }
 `;
 
-const TransactionsData = styled.button`
-  border: 0;
-  height: 40px;
-  background-color: #ffffff;
-  margin-top: 10px;
-  margin-left:10px;
-  font-size:0.9em;
-  text-align:left;
-  // display:flex;
-  flex-wrap:wrap;
-  &:focus,
-  &:active {
-    outline: none;
-  }
-`;
 
 const Label = styled.div`
   margin-top:20px;
@@ -332,10 +324,10 @@ const AccountBoxYeed = styled.div`
 `;
 const AccountBoxBalance = styled.div`
 `;
-// const Line = styled.div`
-//   border-bottom: 0.1px solid rgb(105,105,105);
-//   width:410%;
-// `;
+
+const Alert = styled.div`
+  background-color: #FAFAFA;
+`
 
 const AddressPresenter = ({ balance, address }) => (
   <Fragment>
@@ -378,15 +370,26 @@ const AddressPresenter = ({ balance, address }) => (
                   <FlexItem>
                     <Label>Address</Label>
                     <CopyToClipboard text={store.selectAddress}
-                      onCopy={true}  
                     >
                       <DetailAddress
-                        
+                        onMouseEnter={(ev) => store.handleTooltip(ev, false)}
+                        onMouseLeave={(ev) => store.handleTooltip(ev, true)}
                       >
                         <AddressCopyIcon/>
                         {store.selectAddress}
                       </DetailAddress>
                     </CopyToClipboard>
+                    <Tooltip
+                      hidden={store.iconHidden}
+                      style={{
+                        top: `${store.top}px`,
+                        left: `${store.left}px`
+                      }}
+                      left
+                    >
+                      <TooltipArrow right={true} />
+                      <TooltipInner left>Copy</TooltipInner>
+                    </Tooltip>
                     <Flex>
                       <Balance>Balance </Balance>
                       <Yeed><img src={yeed} alt="yeed" /></Yeed>
@@ -417,82 +420,44 @@ const AddressPresenter = ({ balance, address }) => (
                       TRANSACTIONS
                     </Transactions>
                     <Flex>
-                      {/* <FlexItem>
-                        <TransactionsData >
-                          ID
-                        </TransactionsData>
-                      </FlexItem>
-                      <FlexItem>
-                        <TransactionsData >
-                          Confirmations
-                        </TransactionsData>
-                      </FlexItem>
-                      <FlexItem>
-                        <TransactionsData >
-                          Date
-                        </TransactionsData>
-                      </FlexItem>
-                      <FlexItem>               
-                        <TransactionsData >
-                          From
-                        </TransactionsData>
-                      </FlexItem>
-                      <FlexItem>
-                        <TransactionsData >
-                          To
-                        </TransactionsData>
-                      </FlexItem> */}
-                      <FlexItem>
-                        <TransactionsData >
-                          ID
-                        </TransactionsData>
-                        <TransactionsData >
-                          Confirmations
-                        </TransactionsData>
-                        <TransactionsData >
-                          Date
-                        </TransactionsData>           
-                        <TransactionsData >
-                          From
-                        </TransactionsData>
-                        <TransactionsData >
-                          To
-                        </TransactionsData>
-                      </FlexItem>
-                    </Flex>
-                    
-                    {/* transaction data */}
-                    <Flex>
-                      {/* <FlexItem>
-                        <TransactionsData >
-                          id
-                        </TransactionsData>
-                      </FlexItem>
-                      <FlexItem>
-                        <TransactionsData >
-                          confirmations
-                        </TransactionsData>
-                      </FlexItem>
-                      <FlexItem>
-                        <TransactionsData >
-                          date
-                        </TransactionsData>
-                      </FlexItem>
-                      <FlexItem>
-                        <TransactionsData >
-                          from
-                        </TransactionsData>
-                      </FlexItem>
-                      <FlexItem>
-                        <TransactionsData >
-                          to
-                        </TransactionsData>
-                      </FlexItem> */}
+                    <Table hover width={"1200px"} ml={"15px"}>
+                        <thead>
+                          <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Confirmations</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">From</th>
+                            <th scope="col">To</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                          </tr>
+                        </tbody>
+                      </Table>
                     </Flex>
                   </FlexItem>
                 </Flex>
               </TransactionInfo>
-
               <Flex alignCenter justifyBetween>
                 <FlexItem>
                   <Fragment/>
@@ -515,7 +480,11 @@ const AddressPresenter = ({ balance, address }) => (
 );
 
 AddressPresenter.propTypes = {
-  address: PropTypes.array
+  address: PropTypes.array,
+  AccountModal: PropTypes.func.isRequired,
+  selectAddress: PropTypes.string,
+  closeModal: PropTypes.func.isRequired,
+  handleTooltip: PropTypes.func.isRequired
 };
 
 ReactModal.setAppElement('body');

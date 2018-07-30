@@ -372,6 +372,13 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
 
 AccountBoxPresenter.propTypes = {
   text: PropTypes.string.isRequired,
+  createAccount: PropTypes.func.isRequired,
+  createAccountModal: PropTypes.func.isRequired,
+  importAccountModal: PropTypes.func.isRequired,
+  importAccount: PropTypes.func.isRequired,
+  confirmCreateAccount: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  // password: Proptypes.string,
   balance: PropTypes.string,
   id: PropTypes.number.isRequired,
   importMnemonic: PropTypes.string

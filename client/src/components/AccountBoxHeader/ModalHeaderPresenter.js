@@ -11,6 +11,7 @@ const Header = styled.header`
   border-top-left-radius:5px;
   border-top-right-radius:5px;
   margin-bottom:40px;
+  font-weight: 700;
 `;
 
 const Title = styled.div`
@@ -26,7 +27,7 @@ const ModalHeaderPresenter = () => (
         <Store.Consumer>
             {store => (
               <Title>
-                {store.statusModal === "create" || "confirm" ? `CREATE ACCOUNT` :`IMPORT ACCOUNT`}
+                {store.statusModal === "create" || store.statusModal === "confirm" ? `CREATE ACCOUNT` :`IMPORT ACCOUNT`}
               </Title>
             )}
         </Store.Consumer>

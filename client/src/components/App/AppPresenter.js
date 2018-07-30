@@ -32,6 +32,7 @@ const AppPresenter = ({ }) => (
                   <AccountBox
                     key={store.account[key].id}
                     id={store.account[key].id}
+                    password={store.password}
                     text={store.text}
                     address={store.address}
                     selectAddress={store.selectAddress}

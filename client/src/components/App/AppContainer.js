@@ -5,8 +5,10 @@ import update from 'react-addons-update';
 import Store from "context/store";
 import { toBuffer } from "utils"
 import { fromPrivateKey } from "accounts/wallet"
-import { isThisSecond } from "date-fns";
 
+var bip38 = require('bip38')
+var bip38Decrypt = require('bip38-decrypt');
+var wif = require('wif')
 const HDKey = require("accounts/hdkey");
 const bip39 = require("bip39");
 const path = "m/44'/60'/0'/0/0";
@@ -40,9 +42,9 @@ class AppContainer extends Component {
           AlertImportAccount:"",
           importMnemonic:""
         })
-      }else if(this.state.hidden === false){
+      }else if(this.state.menuHidden === false){
         this.setState({ 
-          hidden: !this.state.hidden
+          menuHidden: !this.state.menuHidden
         })
       }
      }
@@ -55,10 +57,31 @@ class AppContainer extends Component {
     */
     this._createAccount = () => {
       let wordSplit = this.state.mnemonic.split(" ");
+      // bip38Decrypt(encryptedKey,'TestingOneTwoThree', (err, decryptedPrivateWif) => {
+      //   if (err){
+      //     console.log(err.msg);
+      //     return err;
+      //   }
+      //   else {
+      //     console.log(decryptedPrivateWif);
+      //     const decoded = wif.decode(decryptedPrivateWif)
+      //     console.log(decoded.privateKey.toString("hex"));
+      //     return decryptedPrivateWif;
+      //   }
+      // });
+
       if(wordSplit[2]=== this.state.word3 && wordSplit[5]=== this.state.word6 && wordSplit[8]=== this.state.word9){
-        let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
-        let wallet = hdwallet.derivePath(path).getWallet();
+        const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
+        const wallet = hdwallet.derivePath(path).getWallet();
         let address = wallet.getAddressString();
+        // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
+        const fromPrivateKeyBuffer = wallet.getPrivateKey();
+        const encryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, this.state.password)
+        const params = {
+          n: 4096
+        };
+        const keystoreData = JSON.stringify(wallet.toV3(this.state.password, params));
+        console.log(keystoreData)
 
         this.setState(currentState => {
           const newState = delete currentState.mnemonic;
@@ -76,6 +99,7 @@ class AppContainer extends Component {
             word3:"",
             word6:"",
             word9:"",
+            password:this.state.password,
             showModal: !this.state.showModal,
             newState
           };
@@ -260,18 +284,33 @@ class AppContainer extends Component {
 
     this._handleOpenCloseDropdown = () => {
       this.setState({
-        hidden: !this.state.hidden,
+        menuHidden: !this.state.menuHidden,
+        iconHidden: !this.state.iconHidden
       });
     };
 
+    this._handleTooltip = (ev, iconHidden) => {
+      this.setState({
+        top: ev.target.offsetTop + 5,
+        left: ev.target.offsetLeft + ev.target.offsetWidth + 5,
+        iconHidden,
+      });
+    }
+
+
     this.state = {
       balance: "0",
+      // address:{title:"", address:""},
       address:[],
       selectAddress:"",
       mnemonic:"",
+      password:"",
       showModal: false,
       showAccountModal: false,
-      hidden:true,
+      menuHidden:true,
+      iconHidden:true,
+      top: 0,
+      left: 0,
       statusModal:"",
       importMnemonic:"",
       word3:"",
@@ -285,6 +324,7 @@ class AppContainer extends Component {
         }
       },
       handleOpenCloseDropdown: this._handleOpenCloseDropdown,
+      handleTooltip: this._handleTooltip,
       createAccount: this._createAccount,
       createAccountModal: this._createAccountModal,
       confirmCreateAccount: this._confirmCreateAccount,
