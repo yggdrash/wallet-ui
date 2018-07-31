@@ -6,7 +6,6 @@ import Store from "context/store";
 const Header = styled.header`
   height: 60px;
   background-color: #1C885F;
-  // background-color: black;
   padding: 0 40px;
   border-bottom: 1px solid rgba(0,0,0,.0975);
   border-top-left-radius:10px;
@@ -18,19 +17,18 @@ const Header = styled.header`
 
 const Title = styled.div`
   color:white;
-  // color:#1C885F;
   font-family: 'Titillium Web', sans-serif
 `;
 
 
-const ModalHeaderPresenter = () => (
+const ModalHeaderPresenter = (status) => (
   <Header>
     <Flex full justifyBetween alignCenter>
       <FlexItem>
         <Store.Consumer>
             {store => (
               <Title>
-                My Account
+                {status.myAccount ? "My Account" : "Transfer"}
               </Title>
             )}
         </Store.Consumer>

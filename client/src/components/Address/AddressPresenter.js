@@ -27,6 +27,7 @@ import {
 
 
 const accountProp = "account"
+const txProp = "transfer"
 
 const Account = styled.div`
   width: 100%;
@@ -306,6 +307,38 @@ const Modal = styled(ReactModal)`
   }
 `
 
+const TransferModal = styled(ReactModal)`
+  border: 0;
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  top: 5%
+  left: 25%;
+  background-color: #FAFAFA;
+  border: 2px solid rgba(0,0,0,.0975);
+  box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  box-sizing: border-box;
+  border-color: rgba(70, 219, 115, 0);
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
+  -webkit-animation: mymove 0.5s;  
+  -webkit-animation-fill-mode: forwards;
+  animation: mymove 0.5s;
+  animation-fill-mode: forwards;
+  @-webkit-keyframes mymove {
+    from {top: 100px;}
+    to {top: 200px; }
+  }
+  @keyframes mymove {
+      from {top: 100px;}
+      to {top: 200px; }
+  }
+`
+
 const Balance = styled.div`
   font-weight: 400;
   font-size: 1em;
@@ -325,11 +358,44 @@ const AccountBoxYeed = styled.div`
 const AccountBoxBalance = styled.div`
 `;
 
-const Alert = styled.div`
-  background-color: #FAFAFA;
-`
+const SendTxForm = styled.form`
+  margin-top: 25px;
+`;
 
-const AddressPresenter = ({ balance, address }) => (
+const Submit = styled.input`
+  border: 0;
+  margin-right:10px;
+  padding: 10px 0;
+  background-color: #FAFAFA;
+  border-bottom: 0.2px solid ${props => (props.AlertImportAccount ?"rgb(204,000,000);" : "rgb(051,153,051);")}
+  &:focus,
+  &:active {
+    outline: none;
+  }
+  &:disabled{
+      color:#999;
+      border: 2px solid #999;
+      cursor:not-allowed;
+      transform: none;
+      box-shadow:none;
+      &:focus,
+      &:active,
+      &:hover {
+        transform: none;
+      }
+  }
+`;
+
+const Input = Submit.extend`
+  width: 90%;
+  height: 40px;
+  font-size: 0.9em;
+  margin-left:40px;
+  padding-left: 10px;
+  margin-top:${props => (props.amountInput ? "10px" : "")}
+`;
+
+const AddressPresenter = ({ balance, address, toAddress, amount, handleInput, handleSubmit }) => (
   <Fragment>
     <Store.Consumer>
       {store => (
@@ -350,8 +416,8 @@ const AddressPresenter = ({ balance, address }) => (
                 </Fragment>
               </Address>
             </FlexItem>
-            
-            <Modal
+          </Flex>
+          <Modal
               isOpen={store.showAccountModal}
               style={{
                 content: {
@@ -359,7 +425,7 @@ const AddressPresenter = ({ balance, address }) => (
                 }
               }}
             >
-            <ModalHeader/>
+            <ModalHeader myAccount/>
               <Info>
                 <Flex full >
                   <FlexItem>
@@ -398,7 +464,9 @@ const AddressPresenter = ({ balance, address }) => (
                   </FlexItem>
                 </Flex>
                 <Flex full>
-                  <AccountIcon first>
+                  <AccountIcon first
+                    onClick={() => store.TransferModal()}
+                  >
                     <TransactionIcon/> TRANSFER
                   </AccountIcon>
                   <AccountIcon>
@@ -418,6 +486,15 @@ const AddressPresenter = ({ balance, address }) => (
                   <FlexItem>
                     <Transactions >
                       TRANSACTIONS
+                    </Transactions>
+                    <Transactions >
+                      STEM STATUS
+                    </Transactions>
+                    <Transactions >
+                      CONTRACT
+                    </Transactions>
+                    <Transactions >
+                      OFFCHAIN
                     </Transactions>
                     <Flex>
                     <Table hover width={"1200px"} ml={"15px"}>
@@ -472,7 +549,55 @@ const AddressPresenter = ({ balance, address }) => (
                 </FlexItem>
               </Flex>
             </Modal>
-          </Flex>
+          <TransferModal
+              isOpen={store.showTransferModal}
+              style={{
+                content: {
+                  color: 'black'
+                }
+              }}
+            >
+            <ModalHeader/>  
+            <SendTxForm onSubmit={store.handleSubmit}>
+              <Input
+                placeholder={"Address"}
+                required
+                name="toAddress"
+                value={toAddress}
+                type={"text"}
+                onChange={store.handleInput}
+              />
+              <Input amountInput
+                placeholder={"Amount"}
+                required
+                name="amount"
+                type={"number"}
+                value={amount}
+                onChange={store.handleInput}
+                max={balance}
+              />
+            </SendTxForm>
+              <Flex alignCenter justifyBetween>
+                <FlexItem>
+                  <Fragment/>
+                </FlexItem>
+                <FlexItem>
+                  <Fragment>
+                    <Button 
+                      onClick={() => store.closeModal(txProp)}
+                    >
+                      SEND
+                    </Button>
+                  </Fragment>
+                  <Fragment>
+                    <Button 
+                      onClick={() => store.closeModal(txProp)}>
+                      CLOSE
+                    </Button>
+                  </Fragment>
+                </FlexItem>
+              </Flex>
+            </TransferModal>
           </Account>
       )}
     </Store.Consumer>
@@ -484,7 +609,11 @@ AddressPresenter.propTypes = {
   AccountModal: PropTypes.func.isRequired,
   selectAddress: PropTypes.string,
   closeModal: PropTypes.func.isRequired,
-  handleTooltip: PropTypes.func.isRequired
+  handleTooltip: PropTypes.func.isRequired,
+  toAddress: PropTypes.string.isRequired,
+  amount: PropTypes.string.isRequired,
+  handleInput: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired
 };
 
 ReactModal.setAppElement('body');

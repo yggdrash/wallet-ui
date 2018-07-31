@@ -43,6 +43,8 @@ const AppPresenter = ({ }) => (
                     word6={store.word6}
                     word9={store.word9}
                     AlertImportAccount={store.AlertImportAccount}
+                    toAddress={store.toAddress}
+                    amount={store.amount}
                   />
                 ));
               }}

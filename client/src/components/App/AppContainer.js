@@ -6,13 +6,17 @@ import Store from "context/store";
 import { toBuffer } from "utils"
 import { fromPrivateKey } from "accounts/wallet"
 
-var bip38 = require('bip38')
-var bip38Decrypt = require('bip38-decrypt');
-var wif = require('wif')
-const HDKey = require("accounts/hdkey");
-const bip39 = require("bip39");
-const path = "m/44'/60'/0'/0/0";
-
+const elliptic = require("elliptic"),
+  path = require("path"),
+  fs = require("fs"),
+  bip38 = require('bip38'),
+  bip38Decrypt = require('bip38-decrypt'),
+  wif = require('wif'),
+  HDKey = require("accounts/hdkey"),
+  bip39 = require("bip39")
+  
+const HDpath = "m/44'/60'/0'/0/0";
+const privateKeyLocation = path.join(__dirname, "keystore/keystoredata");
 class AppContainer extends Component {
   constructor(props) {
     super(props);
@@ -22,11 +26,26 @@ class AppContainer extends Component {
       document.body.addEventListener("keydown", this.closeLastPopup)
     };
 
+    // this.getPrivateFromWallet = () => {
+    //   console.log("Asdf")
+    //   const buffer = fs.readFileSync(privateKeyLocation, "utf8");
+    //   return buffer.toString();
+    // };
+
     this.closeLastPopup = e => {
       if (!(e.key == "Escape" || e.keyCode == 27)) return
       if(this.state.showModal === true){
         this.setState({ 
           showModal: !this.state.showModal,
+          word3:"",
+          word6:"",
+          word9:"",
+          AlertImportAccount:"",
+          importMnemonic:""
+        })
+      }else if(this.state.showAccountModal === true && this.state.showTransferModal === true){
+        this.setState({ 
+          showTransferModal: !this.state.showTransferModal,
           word3:"",
           word6:"",
           word9:"",
@@ -69,10 +88,20 @@ class AppContainer extends Component {
       //     return decryptedPrivateWif;
       //   }
       // });
+      
+      // if (fs.existsSync(privateKeyLocation)) {
+      //   return;
+      // }
+
+      // const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
+      // const wallet = hdwallet.derivePath(HDpath).getWallet();
+      // let address = wallet.getAddressString();
+      // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
+      // fs.writeFileSync(privateKeyLocation, privateKey);
 
       if(wordSplit[2]=== this.state.word3 && wordSplit[5]=== this.state.word6 && wordSplit[8]=== this.state.word9){
         const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
-        const wallet = hdwallet.derivePath(path).getWallet();
+        const wallet = hdwallet.derivePath(HDpath).getWallet();
         let address = wallet.getAddressString();
         // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
         const fromPrivateKeyBuffer = wallet.getPrivateKey();
@@ -160,7 +189,7 @@ class AppContainer extends Component {
       var Break = new Error('Break')
       if(bip39.validateMnemonic(this.state.importMnemonic)){
         let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.importMnemonic));
-        let wallet = hdwallet.derivePath(path).getWallet();
+        let wallet = hdwallet.derivePath(HDpath).getWallet();
         let address = "0x" + wallet.getAddress().toString("hex");
         try{
             let check = this.state.address.map(addr => {
@@ -255,8 +284,9 @@ class AppContainer extends Component {
           account: {
             ...currentState.account
           },
-          showModal: e === "account" ? this.state.showModal : !this.state.showModal,
-          showAccountModal: e === "account" ? !this.state.showAccountModal : this.state.showAccountModal,
+          showModal: e === "main" ? !this.state.showModal : null,
+          showTransferModal: e === "transfer" ? !this.state.showTransferModal : null,
+          showAccountModal: e === "transfer" ? this.state.showAccountModal : null,
           newState,
           AlertImportAccount:"",
           word3:"",
@@ -267,17 +297,32 @@ class AppContainer extends Component {
     }
 
     this._handleInput = e => {
+      console.log(e.target)
       const { target: { name, value } } = e;
       this.setState({
         [name]: value,
         AlertImportAccount:""
       });
     };
+
+    this._handleSubmit = async e => {
+      e.preventDefault();
+      const { amount, toAddress } = this.state;
+      // const request = await axios.post(`${SELF_NODE(sharedPort)}/transactions`, {
+      //   amount: Number(amount),
+      //   address: toAddress
+      // });
+      this.setState({
+        amount: "",
+        toAddress: ""
+      });
+    };
     this._AccountModal = address => {
       this.setState(() => {
         return {
           showAccountModal: !this.state.showAccountModal,
-          selectAddress:address
+          selectAddress:address,
+          statusModal:"account" 
         };
       });
     }
@@ -297,16 +342,27 @@ class AppContainer extends Component {
       });
     }
 
+    this._TransferModal = () => {
+      this.setState(() => {
+        return {
+          showTransferModal: !this.state.showTransferModal,
+          statusModal:"transfer" 
+        };
+      });
+    }
+
 
     this.state = {
       balance: "0",
-      // address:{title:"", address:""},
       address:[],
+      toAddress: "",
+      amount:0,
       selectAddress:"",
       mnemonic:"",
       password:"",
       showModal: false,
       showAccountModal: false,
+      showTransferModal: false,
       menuHidden:true,
       iconHidden:true,
       top: 0,
@@ -331,8 +387,10 @@ class AppContainer extends Component {
       importAccount: this._importAccount,
       importAccountModal: this._importAccountModal,
       handleInput:this._handleInput,
+      handleSubmit:this._handleSubmit,
       AccountModal:this._AccountModal,
       closeModal: this._closeModal,
+      TransferModal: this._TransferModal
     };
   }
   render() {
