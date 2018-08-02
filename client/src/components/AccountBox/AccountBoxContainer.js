@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import AccountBoxPresenter from "./AccountBoxPresenter";
 // import Store from "context/store";
 
@@ -14,6 +15,19 @@ class AccountBoxContainer extends Component {
   }
 }
 
-AccountBoxContainer.propTypes = {};
+AccountBoxContainer.propTypes = {
+  toAddress: PropTypes.string,
+  amount: PropTypes.string,
+  selectAddress: PropTypes.string,
+};
+
+AccountBoxContainer.defaultProps = {
+  createAccount: PropTypes.func,
+  createAccountModal: PropTypes.func,
+  importAccountModal: PropTypes.func,
+  importAccount: PropTypes.func,
+  confirmCreateAccount: PropTypes.func,
+  closeModal: PropTypes.func,
+};
 
 export default AccountBoxContainer;

@@ -41,7 +41,9 @@ class AppContainer extends Component {
           word6:"",
           word9:"",
           AlertImportAccount:"",
-          importMnemonic:""
+          importMnemonic:"",
+          confirmRecoveryPharse:true,
+          recoveryPharse:""
         })
       }else if(this.state.showAccountModal === true && this.state.showTransferModal === true){
         this.setState({ 
@@ -76,7 +78,31 @@ class AppContainer extends Component {
     */
     this._createAccount = () => {
       let wordSplit = this.state.mnemonic.split(" ");
-      // bip38Decrypt(encryptedKey,'TestingOneTwoThree', (err, decryptedPrivateWif) => {
+
+      // const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
+      // const wallet = hdwallet.derivePath(HDpath).getWallet();
+      // let address = wallet.getAddressString();
+
+      // const fromPrivateKeyBuffer = wallet.getPrivateKey();
+      // const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, 'TestingOneTwoThree')
+      // const passwordEncryptedKey = bip38.encrypt(this.state.password, true, 'TestingOneTwoThree')
+
+
+
+      // bip38Decrypt(privatekeyEncryptedKey,'TestingOneTwoThree', (err, decryptedPrivateWif) => {
+      //   if (err){
+      //     console.log(err.msg);
+      //     return err;
+      //   }
+      //   else {
+      //     console.log(decryptedPrivateWif);
+      //     const decoded = wif.decode(decryptedPrivateWif)
+      //     console.log(decoded.privateKey.toString("hex"));
+      //     return decryptedPrivateWif;
+      //   }
+      // });
+      
+      // bip38Decrypt(passwordEncryptedKey,'TestingOneTwoThree', (err, decryptedPrivateWif) => {
       //   if (err){
       //     console.log(err.msg);
       //     return err;
@@ -99,13 +125,19 @@ class AppContainer extends Component {
       // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
       // fs.writeFileSync(privateKeyLocation, privateKey);
 
+
+
       if(wordSplit[2]=== this.state.word3 && wordSplit[5]=== this.state.word6 && wordSplit[8]=== this.state.word9){
         const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
         const wallet = hdwallet.derivePath(HDpath).getWallet();
         let address = wallet.getAddressString();
         // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
+
+
         const fromPrivateKeyBuffer = wallet.getPrivateKey();
-        const encryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, this.state.password)
+        const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, this.state.password)
+        const passwordEncryptedKey = bip38.encrypt(this.state.password, true, this.state.password)
+
         const params = {
           n: 4096
         };
@@ -172,12 +204,21 @@ class AppContainer extends Component {
         });
     };
 
-    this._confirmCreateAccount = () => {
+    this._generationMnemonic = () => {
+      if(this.state.confirmRecoveryPharse === false){
         this.setState(() => {
           return {
-            statusModal:"confirm"
+            statusModal:"confirm",
+            recoveryPharse:""
           };
         });
+      }else{
+        this.setState(() => {
+          return {
+            AlertImportAccount:""
+          };
+        });
+      }
     };
 
     /**
@@ -291,13 +332,24 @@ class AppContainer extends Component {
           AlertImportAccount:"",
           word3:"",
           word6:"",
-          word9:""
+          word9:"",
+          confirmRecoveryPharse:true,
+          recoveryPharse:""
         };
       });
     }
 
     this._handleInput = e => {
-      console.log(e.target)
+    if(e.target.name === "recoveryPharse" && e.target.value === "I have written down the pharse"){
+      this.setState({
+        confirmRecoveryPharse:false
+      })
+    }else{
+      this.setState({
+        confirmRecoveryPharse:true
+      })
+    }
+
       const { target: { name, value } } = e;
       this.setState({
         [name]: value,
@@ -327,18 +379,24 @@ class AppContainer extends Component {
       });
     }
 
-    this._handleOpenCloseDropdown = () => {
-      this.setState({
-        menuHidden: !this.state.menuHidden,
-        iconHidden: !this.state.iconHidden
-      });
+    this._handleOpenCloseDropdown = e => {
+      if(e==="network"){
+        this.setState({
+          netMenuHidden: !this.state.netMenuHidden
+        });
+      }else if(e==="cog"){
+        this.setState({
+          cogMenuHidden: !this.state.cogMenuHidden
+        });
+      }
+      
     };
 
-    this._handleTooltip = (ev, iconHidden) => {
+    this._handleTooltip = (ev, copyHidden) => {
       this.setState({
         top: ev.target.offsetTop + 5,
         left: ev.target.offsetLeft + ev.target.offsetWidth + 5,
-        iconHidden,
+        copyHidden
       });
     }
 
@@ -363,12 +421,15 @@ class AppContainer extends Component {
       showModal: false,
       showAccountModal: false,
       showTransferModal: false,
-      menuHidden:true,
-      iconHidden:true,
+      netMenuHidden:true,
+      cogMenuHidden:true,
+      copyHidden:true,
       top: 0,
       left: 0,
       statusModal:"",
       importMnemonic:"",
+      recoveryPharse:"",
+      confirmRecoveryPharse:true,
       word3:"",
       word6:"",
       word9:"",
@@ -383,7 +444,7 @@ class AppContainer extends Component {
       handleTooltip: this._handleTooltip,
       createAccount: this._createAccount,
       createAccountModal: this._createAccountModal,
-      confirmCreateAccount: this._confirmCreateAccount,
+      generationMnemonic: this._generationMnemonic,
       importAccount: this._importAccount,
       importAccountModal: this._importAccountModal,
       handleInput:this._handleInput,
@@ -404,6 +465,18 @@ class AppContainer extends Component {
 
 AppContainer.propTypes = {
   sharedPort: PropTypes.number.isRequired
+};
+
+AppContainer.defaultProps = {
+  createAccount: PropTypes.func,
+  createAccountModal: PropTypes.func,
+  importAccountModal: PropTypes.func,
+  importAccount: PropTypes.func,
+  generationMnemonic: PropTypes.func,
+  closeModal: PropTypes.func,
+  selectAddress: PropTypes.string,
+  toAddress: PropTypes.string,
+  amount: PropTypes.string
 };
 
 export default AppContainer;

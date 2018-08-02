@@ -67,8 +67,8 @@ const NetworkBoxPresenter = ({ id, text }) => (
 );
 
 NetworkBoxPresenter.propTypes = {
-  text: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired
+  text: PropTypes.string,
+  id: PropTypes.number
 };
 
 export default NetworkBoxPresenter;

@@ -107,6 +107,11 @@ const HeaderIcon = styled.button`
   }
 `;
 
+const Version = styled.div`
+  margin-top:45px;
+  margin-left:10px;
+`
+
 const HeaderPresenter = () => (
   <Header>
     <Flex full justifyBetween alignCenter>
@@ -114,6 +119,7 @@ const HeaderPresenter = () => (
         <Title>
           <Fragment><Logo><img src={logo} alt="logo" /></Logo></Fragment>
           <Fragment><Yggdrash><img src={textLogo} alt="logo" /></Yggdrash></Fragment>
+          <Version>v 0.0.1</Version>
         </Title>
       </FlexItem>
       <FlexItem>
@@ -124,7 +130,7 @@ const HeaderPresenter = () => (
               <HeaderIcon
                 secondary
                 dropdownToggle
-                onClick={() => store.handleOpenCloseDropdown()}
+                onClick={() => store.handleOpenCloseDropdown("network")}
                 onMouseEnter={(ev) => store.handleTooltip(ev, false)}
                 onMouseLeave={(ev) => store.handleTooltip(ev, true)}
               >
@@ -142,7 +148,7 @@ const HeaderPresenter = () => (
                 </Tooltip> */}
               </HeaderIcon>
               <DropdownMenu 
-                hidden={store.menuHidden}
+                hidden={store.netMenuHidden}
                 mt="15px"
               >
                 <DropdownItem py="10px">MAINNET</DropdownItem>
@@ -150,14 +156,25 @@ const HeaderPresenter = () => (
                 <DropdownItem py="10px">TESTNET</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-            <HeaderIcon
-
-            >
+            <HeaderIcon>
               <Peer/>
             </HeaderIcon>
-            <HeaderIcon>
-              <Cog/>
-            </HeaderIcon>
+
+            <Dropdown>
+              <HeaderIcon
+                secondary
+                dropdownToggle
+                onClick={() => store.handleOpenCloseDropdown("cog")}
+              >
+                <Cog/>
+              </HeaderIcon>
+              <DropdownMenu 
+                  hidden={store.cogMenuHidden}
+                  mt="15px"
+              >
+                <DropdownItem py="10px">Recovery Account</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
             <HeaderIcon>
               <Exit/>
             </HeaderIcon>

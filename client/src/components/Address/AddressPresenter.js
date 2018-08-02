@@ -395,7 +395,7 @@ const Input = Submit.extend`
   margin-top:${props => (props.amountInput ? "10px" : "")}
 `;
 
-const AddressPresenter = ({ balance, address, toAddress, amount, handleInput, handleSubmit }) => (
+const AddressPresenter = ({ balance, address, toAddress, amount}) => (
   <Fragment>
     <Store.Consumer>
       {store => (
@@ -438,15 +438,15 @@ const AddressPresenter = ({ balance, address, toAddress, amount, handleInput, ha
                     <CopyToClipboard text={store.selectAddress}
                     >
                       <DetailAddress
-                        onMouseEnter={(ev) => store.handleTooltip(ev, false)}
-                        onMouseLeave={(ev) => store.handleTooltip(ev, true)}
+                        onMouseEnter={(ev) => store.handleTooltip(ev, false,"")}
+                        onMouseLeave={(ev) => store.handleTooltip(ev, true,"")}
                       >
                         <AddressCopyIcon/>
                         {store.selectAddress}
                       </DetailAddress>
                     </CopyToClipboard>
                     <Tooltip
-                      hidden={store.iconHidden}
+                      hidden={store.copyHidden}
                       style={{
                         top: `${store.top}px`,
                         left: `${store.left}px`
@@ -605,13 +605,13 @@ const AddressPresenter = ({ balance, address, toAddress, amount, handleInput, ha
 );
 
 AddressPresenter.propTypes = {
-  address: PropTypes.array,
+  address: PropTypes.string,
   AccountModal: PropTypes.func.isRequired,
   selectAddress: PropTypes.string,
   closeModal: PropTypes.func.isRequired,
   handleTooltip: PropTypes.func.isRequired,
-  toAddress: PropTypes.string.isRequired,
-  amount: PropTypes.string.isRequired,
+  toAddress: PropTypes.string,
+  amount: PropTypes.string,
   handleInput: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired
 };
