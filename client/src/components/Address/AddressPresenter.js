@@ -395,7 +395,7 @@ const Input = Submit.extend`
   margin-top:${props => (props.amountInput ? "10px" : "")}
 `;
 
-const AddressPresenter = ({ balance, address, toAddress, amount}) => (
+const AddressPresenter = ({ balance, address }) => (
   <Fragment>
     <Store.Consumer>
       {store => (
@@ -563,7 +563,7 @@ const AddressPresenter = ({ balance, address, toAddress, amount}) => (
                 placeholder={"Address"}
                 required
                 name="toAddress"
-                value={toAddress}
+                value={store.toAddress}
                 type={"text"}
                 onChange={store.handleInput}
               />
@@ -572,7 +572,7 @@ const AddressPresenter = ({ balance, address, toAddress, amount}) => (
                 required
                 name="amount"
                 type={"number"}
-                value={amount}
+                value={store.amount}
                 onChange={store.handleInput}
                 max={balance}
               />

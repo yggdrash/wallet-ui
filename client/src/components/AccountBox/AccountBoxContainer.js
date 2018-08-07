@@ -26,7 +26,7 @@ AccountBoxContainer.defaultProps = {
   createAccountModal: PropTypes.func,
   importAccountModal: PropTypes.func,
   importAccount: PropTypes.func,
-  confirmCreateAccount: PropTypes.func,
+  generationMnemonic: PropTypes.func,
   closeModal: PropTypes.func,
 };
 

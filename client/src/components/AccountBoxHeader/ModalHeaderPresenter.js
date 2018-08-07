@@ -27,7 +27,7 @@ const ModalHeaderPresenter = () => (
         <Store.Consumer>
             {store => (
               <Title>
-                {store.statusModal === "create" || store.statusModal === "confirm" ? `CREATE ACCOUNT` :`IMPORT ACCOUNT`}
+                {store.statusModal === "password" || store.statusModal === "create" || store.statusModal === "confirm" ? `CREATE ACCOUNT` :`IMPORT ACCOUNT`}
               </Title>
             )}
         </Store.Consumer>

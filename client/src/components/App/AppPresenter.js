@@ -28,11 +28,12 @@ const AppPresenter = ({ }) => (
           <Flex alignCenter full column>
             <Store.Consumer>
               {store => {
-                return Object.keys(store.account).map(key => (
+                return Object.keys(store.accountBox).map(key => (
                   <AccountBox
-                    key={store.account[key].id}
-                    id={store.account[key].id}
+                    key={store.accountBox[key].id}
+                    id={store.accountBox[key].id}
                     password={store.password}
+                    confirmPassword={store.confirmPassword}
                     text={store.text}
                     address={store.address}
                     selectAddress={store.selectAddress}
@@ -46,6 +47,10 @@ const AppPresenter = ({ }) => (
                     toAddress={store.toAddress}
                     amount={store.amount}
                     recoveryPharse={store.recoveryPharse}
+                    accountName={store.accountName}
+                    AlertImportAccountName={store.AlertImportAccountName}
+                    AlertImportAccountPass={store.AlertImportAccountPass}
+                    AlertImportAccountConfirmPass={store.AlertImportAccountConfirmPass}
                   />
                 ));
               }}
@@ -55,7 +60,7 @@ const AppPresenter = ({ }) => (
           {/* <Germinal><img src={germinal} alt="yggtree" /></Germinal> */}
             <Store.Consumer>
               {store => {
-                return Object.keys(store.account).map(key => (
+                return Object.keys(store.accountBox).map(key => (
                   <NetworkBox
 
                   />
@@ -79,7 +84,7 @@ AppPresenter.propTypes = {
     createAccountModal: PropTypes.func.isRequired,
     importAccountModal: PropTypes.func.isRequired,
     importAccount: PropTypes.func.isRequired,
-    confirmCreateAccount: PropTypes.func.isRequired,
+    generationMnemonic: PropTypes.func.isRequired,
     closeModal: PropTypes.func.isRequired,
     selectAddress: PropTypes.string,
     toAddress: PropTypes.string,
@@ -91,7 +96,7 @@ AppPresenter.defaultProps = {
   createAccountModal: PropTypes.func,
   importAccountModal: PropTypes.func,
   importAccount: PropTypes.func,
-  confirmCreateAccount: PropTypes.func,
+  generationMnemonic: PropTypes.func,
   closeModal: PropTypes.func,
 };
 

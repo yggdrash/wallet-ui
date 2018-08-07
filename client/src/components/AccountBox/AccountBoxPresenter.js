@@ -59,7 +59,7 @@ const Modal = styled(ReactModal)`
   border: 0;
   width: 50%;
   position: absolute;
-  top: 25%;
+  top: ${props => (props.import ? "20%" : "25%")}
   left: 25%;
   background-color: #FAFAFA;
   background-image: url('../assets/images/how-bg-opti.png');
@@ -111,11 +111,29 @@ const Info = styled.div`
     }
   }};
 `;
+const PasswordStrength = styled.div`
+  width: 90%;
+  height: 5px;
+  border: 0;
+  background-color: #ffffff;
+  color: #EA2027;
+  transition: all 0.1s linear;
+  text-align: left;
+  margin:0 auto;
+`;
+const PasswordStrengthMeter = styled.div`
+  width: 20%;
+  height: 5px;
+  border: 0;
+  background-color: red
+  transition: all 0.1s linear;
+  text-align: left;
+`;
 const Passphrase = styled.div`
-  margin-top: ${props => (props.recoveryPharse ? "20px;" : "50px;")};
+  margin-top: ${props => (props.descriptive ? "20px;" : "50px;")};
   margin-left:40px;
-  margin-bottom: ${props => (props.recoveryPharse ? "10px;" : "30px;")};
-  font-size: ${props => (props.recoveryPharse ? "0.7em" : "inherit")};
+  margin-bottom: ${props => (props.descriptive ? "10px;" : "30px;")};
+  font-size: ${props => (props.descriptive ? "0.7em" : "inherit")};
   transition: all 0.1s linear;
   color: black;
 `;
@@ -135,7 +153,7 @@ const Submit = styled.input`
   padding: 10px 0;
   background-color: #FAFAFA;
   border-bottom: 0.2px solid ${props => {
-    if (props.AlertImportAccount || props.recoveryPharse) {
+    if (props.AlertImportAccount || props.descriptive || props.AlertImportAccountName || props.AlertImportAccountPass || props.AlertImportAccountConfirmPass) {
       return "rgb(204,000,000);";
     } else {
       return "rgb(051,153,051);";
@@ -159,7 +177,13 @@ const Submit = styled.input`
   }
 `;
 const Input = Submit.extend`
-  width: ${props => (props.confirm ?"15%;" : "90%;")}
+  width: ${props => {
+    if (props.confirm) {
+      return "15%;";
+    }else {
+      return "90%;";
+    }
+  }};
   height: 40px;
   font-size: 0.9em;
   margin-left:40px;
@@ -167,7 +191,7 @@ const Input = Submit.extend`
 `;
 
 
-const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImportAccount, word3, word6, word9, recoveryPharse }) => (
+const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImportAccount, word3, word6, word9, recoveryPharse, accountName, password, confirmPassword, AlertImportAccountName, AlertImportAccountPass, AlertImportAccountConfirmPass }) => (
   <AccountBox >
     <Flex alignCenter justifyBetween>
       <Title>
@@ -198,6 +222,8 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                 </Button>
 
                 <Modal
+                  oncopy={"false"}
+                  import={store.statusModal==="import"}
                   isOpen={store.showModal}
                   style={{
                     content: {
@@ -207,16 +233,78 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                 >
                   <ModalHeader/>
                   <FlexItem>
-                    <Info confirm={store.statusModal === "confirm"}>
-                      { store.statusModal === "create" ? `Before proceeding further, first BACKUP THE PASSPHRASE SECURELY, this client does NOT store it and thus cannot recover your passphrase! If you lose it, delete it, or it gets stolen - we CANNOT help you recover it. There is no forgot my passphrase option!` : ``}
-                      { store.statusModal === "confirm" ? `Please type word 3, 6 and 9 from your passphrase to validate the account creation.` : "" }
-                      { store.statusModal === "import" ? `Passphrase is case sensitive, each character change will result in importing a different Yggdrash address! Passphrases are not saved on this computer so always make sure you have them backed up safely!` : ``}
-                    </Info>
+                    {
+                      store.statusModal === "password" || store.statusModal === "import"
+                      ?
+                      <Fragment>
+                        <Passphrase descriptive>account name</Passphrase>
+                        <Input AlertImportAccountName={ AlertImportAccountName }
+                            placeholder={"a descriptive name for the account"}
+                            required
+                            maxLength={130}
+                            name="accountName"
+                            value={accountName}
+                            type={"text"}
+                            onChange={store.handleInput}
+                        />
+                        <Passphrase descriptive>password</Passphrase>
+                        <Input AlertImportAccountPass={ AlertImportAccountPass }
+                            placeholder={"a strong, unique password"}
+                            required
+                            maxLength={130}
+                            name="password"
+                            value={password}
+                            type={"text"}
+                            onChange={store.handleInput}
+                        />
+                        <Passphrase descriptive>password(repeat)</Passphrase>
+                        <Input AlertImportAccountConfirmPass={ AlertImportAccountConfirmPass }
+                            placeholder={"verify your password"}
+                            required
+                            maxLength={130}
+                            name="confirmPassword"
+                            value={confirmPassword}
+                            type={"text"}
+                            onChange={store.handleInput}
+                        />
+                        <Passphrase descriptive>password strength</Passphrase>
+                        <PasswordStrength>
+                          <PasswordStrengthMeter></PasswordStrengthMeter>
+                        </PasswordStrength>
+                        <Passphrase descriptive>Use a few words, avoid common phrases No need for symbols, digits, or uppercase letters</Passphrase>
+                      </Fragment>
+                      :
+                      ""
+                    }
+                    { 
+                      store.statusModal === "create" 
+                      ? 
+                      <Info confirm={store.statusModal === "confirm"}>
+                        Before proceeding further, first BACKUP THE PASSPHRASE SECURELY, this client does NOT store it and thus cannot recover your passphrase! If you lose it, delete it, or it gets stolen - we CANNOT help you recover it. There is no forgot my passphrase option!
+                      </Info>
+                      :
+                      ""
+                    }
+                    { 
+                      store.statusModal === "confirm" 
+                      ? 
+                      <Info confirm={store.statusModal === "confirm"}>
+                        Please type word 3, 6 and 9 from your passphrase to validate the account creation.
+                      </Info>
+                      :
+                      ""
+                    }
                   </FlexItem>
                   <FlexItem>
-                    <Passphrase>
-                      <LockIconIcon/>Passphrase
-                    </Passphrase>
+                    {
+                      store.statusModal === "password"
+                      ?
+                      ""
+                      : 
+                      <Passphrase>
+                        <LockIconIcon/>Passphrase
+                      </Passphrase>
+                    }
                   </FlexItem>
                   <FlexItem>
                     {
@@ -226,15 +314,15 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                         <Info mnemonic>
                           {mnemonic}
                         </Info>
-                        <Passphrase recoveryPharse>Type "I have written down the pharse" below to confirm it is backed up.</Passphrase>
-                        <Input recoveryPharse={store.confirmRecoveryPharse} AlertImportAccount={ AlertImportAccount }
-                        placeholder={"the account recovery phrase"}
-                        required
-                        maxLength={130}
-                        name="recoveryPharse"
-                        value={recoveryPharse}
-                        type={"text"}
-                        onChange={store.handleInput}
+                        <Passphrase descriptive>Type "I have written down the pharse" below to confirm it is backed up.</Passphrase>
+                        <Input descriptive={store.confirmRecoveryPharse} AlertImportAccount={ AlertImportAccount }
+                          placeholder={"the account recovery phrase"}
+                          required
+                          maxLength={130}
+                          name="recoveryPharse"
+                          value={recoveryPharse}
+                          type={"text"}
+                          onChange={store.handleInput}
                         />
                       </Fragment> 
                       :
@@ -292,6 +380,9 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                   <FlexItem>
                     <AlertInfo>
                       { AlertImportAccount }
+                      { AlertImportAccountName }
+                      { AlertImportAccountPass }
+                      { AlertImportAccountConfirmPass }
                     </AlertInfo>
                   </FlexItem>
                   <Flex alignCenter justifyBetween>
@@ -302,17 +393,24 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                       <Fragment>
                         <Button 
                         onClick={() => {
-                          if(store.statusModal === "create"){
+                            if(store.statusModal === "password"){
+                              store.setPassword() 
+                            }else if(store.statusModal === "create"){
                               store.generationMnemonic() 
-                            }else if(store.statusModal === "import"){
-                              store.importAccount()
                             }else if(store.statusModal === "confirm"){
                               store.createAccount()
+                            }else if(store.statusModal === "import"){
+                              store.importAccount()
                             }
                           }}
-                        disabled={store.statusModal === "create" && store.confirmRecoveryPharse === true}
+                        disabled={
+                          (store.statusModal === "create" && store.confirmRecoveryPharse === true) 
+                          || (store.statusModal === "password" && !password && !confirmPassword && !accountName)
+                          || (store.statusModal === "import" && !password && !confirmPassword && !accountName)
+                        }
                         >
-                          {store.statusModal === "create"  ? `NEXT` : ``}
+                          {store.statusModal === "password" ? `NEXT` : ``}
+                          {store.statusModal === "create" ? `NEXT` : ``}
                           {store.statusModal === "confirm"  ? `CREATE` : ``}
                           {store.statusModal === "import"  ? `IMPORT` : ``}
                         </Button>
@@ -333,14 +431,14 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
     <Line second/>
     <Store.Consumer>
         {store => (
-          store.address.length === 0 ? <YeedAnimation><img src={germinal} alt="germinal" /></YeedAnimation> : ""
+          store.accounts.length === 0 ? <YeedAnimation><img src={germinal} alt="germinal" /></YeedAnimation> : ""
         )}
     </Store.Consumer>
     <Store.Consumer>
           {store => {
-            return store.address.map(key => (
+            return store.accounts.map(key => (
               <Account
-                address={key}
+                address={key.address}
               />
             ));
           }}
