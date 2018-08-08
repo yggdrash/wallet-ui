@@ -5,17 +5,17 @@ import Store from "context/store";
 
 const Header = styled.header`
   height: 60px;
-  background-color: black;
-  color:  #508464;
+  background-color: #1C885F;
   padding: 0 40px;
   border-bottom: 1px solid rgba(0,0,0,.0975);
   border-top-left-radius:5px;
   border-top-right-radius:5px;
   margin-bottom:40px;
+  font-weight: 700;
 `;
 
 const Title = styled.div`
-  color: #508464;
+  color: white
   font-family: 'Titillium Web', sans-serif
 `;
 
@@ -27,7 +27,7 @@ const ModalHeaderPresenter = () => (
         <Store.Consumer>
             {store => (
               <Title>
-                {store.statusModal === "create" ? `CREATE ACCOUNT` :`IMPORT ACCOUNT`}
+                {store.statusModal === "password" || store.statusModal === "create" || store.statusModal === "confirm" ? `CREATE ACCOUNT` :`IMPORT ACCOUNT`}
               </Title>
             )}
         </Store.Consumer>

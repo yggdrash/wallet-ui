@@ -42,6 +42,12 @@ export const Yeed = styled.div`
   margin-top:3px;
 `;
 
+export const Line = styled.div`
+  border-bottom: 0.1px solid rgb(105,105,105);
+  width: 100%;
+  margin-top: ${props => (props.second ? "15px;" : "inherit")};
+`;
+
 export const Key = styled.h3`
   color: #508464;
   margin-bottom: 20px !important;
@@ -60,11 +66,11 @@ export const Button = styled.button`
   width: 150px;
   height: 5%;
   padding: 10px 0;
-  color: #f5f6fa;
   margin-right:10px;
   margin-top:15px;
   margin-bottom:15px;
-  background-color: #006266;
+  color: #f5f6fa;
+  background-color: #1C885F;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;

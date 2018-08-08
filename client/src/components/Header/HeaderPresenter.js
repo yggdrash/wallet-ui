@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment }  from "react";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import logo from 'assets/images/ygg-logo-green.png';
@@ -6,7 +6,24 @@ import { Wifi } from 'styled-icons/fa-solid/Wifi';
 import { ExitToApp } from 'styled-icons/material/ExitToApp';
 import { Location } from 'styled-icons/octicons/Location';
 import { UsersCog } from 'styled-icons/fa-solid/UsersCog';
-// import Store from "context/store";
+import Store from "context/store";
+import textLogo from "assets/images/yggdrash-text-logo.png";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownDivider,
+  DropdownMenu,
+} from 'styled-dropdown-component';
+import {
+  Alert,
+  AlertHeading,
+} from 'styled-alert-component';
+import {
+  Tooltip,
+  TooltipArrow,
+  TooltipInner,
+} from 'styled-tooltip-component';
+
 
 const Header = styled.header`
   height: 90px;
@@ -18,7 +35,7 @@ const Header = styled.header`
 `;
 
 const Logo = styled.div`
-  width: 7%;
+  width: 4%;
   margin-top:20px;
 `;
 
@@ -28,12 +45,10 @@ const Title = styled.div`
   font-family: 'Titillium Web', sans-serif
 `;
 
-const Yggdrash = styled.h5`
-  color: #508464;
-  display: flex;
-  font-size: 1.5em;
-  margin-top: 33px;
-  margin-left: 20px;
+const Yggdrash = styled.div`
+  margin-left: 15px;
+  width: 15%;
+  margin-top:35px;
 `;
 
 const Network = styled(Wifi)`
@@ -54,7 +69,7 @@ const Cog = styled(UsersCog)`
 `
 
 const HeaderIcon = styled.button`
-  border: 0;
+  border: none;
   width: 35px;
   height: 40px;
   justify-content: center;
@@ -92,30 +107,80 @@ const HeaderIcon = styled.button`
   }
 `;
 
+const Version = styled.div`
+  margin-top:45px;
+  margin-left:10px;
+`
+
 const HeaderPresenter = () => (
   <Header>
     <Flex full justifyBetween alignCenter>
       <FlexItem>
         <Title>
-          <Logo><img src={logo} alt="logo" /></Logo>
-          <Yggdrash>YGGDRASH</Yggdrash>
+          <Fragment><Logo><img src={logo} alt="logo" /></Logo></Fragment>
+          <Fragment><Yggdrash><img src={textLogo} alt="logo" /></Yggdrash></Fragment>
+          <Version>v 0.0.1</Version>
         </Title>
       </FlexItem>
       <FlexItem>
-        <Flex>
-          <HeaderIcon>
-            <Network/>
-          </HeaderIcon>
-          <HeaderIcon>
-            <Peer/>
-          </HeaderIcon>
-          <HeaderIcon>
-            <Cog/>
-          </HeaderIcon>
-          <HeaderIcon>
-            <Exit/>
-          </HeaderIcon>
-        </Flex>
+        <Store.Consumer>
+        {store => (
+          <Flex>
+            <Dropdown>
+              <HeaderIcon
+                secondary
+                dropdownToggle
+                onClick={() => store.handleOpenCloseDropdown("network")}
+                onMouseEnter={(ev) => store.handleTooltip(ev, false)}
+                onMouseLeave={(ev) => store.handleTooltip(ev, true)}
+              >
+                <Network/>
+                {/* <Tooltip
+                  hidden={store.iconHidden}
+                  style={{
+                    top: `${store.top}px`,
+                    left: `${store.left}px`
+                  }}
+                  bottom={true}
+                >
+                  <TooltipArrow bottom={true} />
+                  <TooltipInner bottom={true}>Network</TooltipInner>
+                </Tooltip> */}
+              </HeaderIcon>
+              <DropdownMenu 
+                hidden={store.netMenuHidden}
+                mt="15px"
+              >
+                <DropdownItem py="10px">MAINNET</DropdownItem>
+                <DropdownDivider />
+                <DropdownItem py="10px">TESTNET</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <HeaderIcon>
+              <Peer/>
+            </HeaderIcon>
+
+            <Dropdown>
+              <HeaderIcon
+                secondary
+                dropdownToggle
+                onClick={() => store.handleOpenCloseDropdown("cog")}
+              >
+                <Cog/>
+              </HeaderIcon>
+              <DropdownMenu 
+                  hidden={store.cogMenuHidden}
+                  mt="15px"
+              >
+                <DropdownItem py="10px">Recovery Account</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <HeaderIcon>
+              <Exit/>
+            </HeaderIcon>
+          </Flex>
+        )}
+        </Store.Consumer>
       </FlexItem>
     </Flex>
   </Header>

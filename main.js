@@ -4,18 +4,7 @@ const electron = require('electron'),
     elemon = require('elemon'),
     openAboutWindow = require('about-window').default,
     windowStateKeeper = require('electron-window-state'),
-    getPort = require("get-port"),
-    yeedServer = require("./yggdrash-chain/src/server");
-
-
-getPort().then(port => {
-    const server = yeedServer.app.listen(port, () =>{
-        console.log(`Running yggdrash node on : http://localhost:${port}`);
-    });
-    
-    yeedServer.startP2PServer(server);
-    global.sharedPort = port;
-});  
+    getPort = require("get-port")
 
 const { app, BrowserWindow, Menu } = electron;
 
@@ -55,7 +44,7 @@ const createWindow = () => {
     })
 //1590, 850
     mainWindow = new BrowserWindow({width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, center: true, icon: iconpath, resizable: true, frame: true, show: false,  title: "Yggdrash Wallet"})
-    mainWindow.setContentProtection(true)
+    mainWindow.setContentProtection(false)
     
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
