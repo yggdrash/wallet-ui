@@ -45,10 +45,3 @@ Then start:
 ```bash
 yarn dev
 ```
-
-### Requirements to build from OS X
-
-```
-brew tap Homebrew/bundle
-brew bundle
-```

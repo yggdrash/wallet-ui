@@ -24,7 +24,7 @@ const Value = styled.div`
   margin-top: ${props => (props.top ? "0px;" : "30px;")};
 `;
 
-const NetworkBoxPresenter = ({ id, text }) => (
+const NetworkBoxPresenter = ({ id, text, network, peer, lastCheck }) => (
   <Notification >
     <Flex alignCenter justifyBetween>
         <FlexItem>
@@ -33,7 +33,7 @@ const NetworkBoxPresenter = ({ id, text }) => (
       <FlexItem>
           <Store.Consumer>
             {store => (
-                <Value top>Network</Value>
+                <Value top>{network}</Value>
             )}
           </Store.Consumer>
       </FlexItem>
@@ -45,7 +45,7 @@ const NetworkBoxPresenter = ({ id, text }) => (
       <FlexItem>
           <Store.Consumer>
             {store => (
-                <Value>Peer</Value>
+                <Value>{peer}</Value>
             )}
           </Store.Consumer>
       </FlexItem>
@@ -57,7 +57,7 @@ const NetworkBoxPresenter = ({ id, text }) => (
       <FlexItem>
           <Store.Consumer>
             {store => (
-                <Value>Last Checked</Value>
+                <Value>{lastCheck}</Value>
             )}
           </Store.Consumer>
       </FlexItem>

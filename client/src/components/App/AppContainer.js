@@ -24,6 +24,7 @@ class AppContainer extends Component {
     this.componentDidMount = () => {
       const { sharedPort } = this.props;
       document.body.addEventListener("keydown", this.closeLastPopup)
+      this._getNetwork();
     };
 
     // this.getPrivateFromWallet = () => {
@@ -558,6 +559,17 @@ class AppContainer extends Component {
       });
     }
 
+    this._getNetwork = () => {
+
+      this.setState(() => {
+        return {
+          network: "TESTNET",
+          peer:"",
+          lastCheck:""
+        };
+      });
+    }
+
 
     this.state = {
       isloading:false,
@@ -599,6 +611,9 @@ class AppContainer extends Component {
           id: 1
         }
       },
+      network:"",
+      peer:"",
+      lastCheck:"",
       handleOpenCloseDropdown: this._handleOpenCloseDropdown,
       handleTooltip: this._handleTooltip,
       createAccount: this._createAccount,
@@ -611,7 +626,8 @@ class AppContainer extends Component {
       handleSubmit:this._handleSubmit,
       AccountModal:this._AccountModal,
       closeModal: this._closeModal,
-      TransferModal: this._TransferModal
+      TransferModal: this._TransferModal,
+      getNetwork: this._getNetwork
     };
   }
   render() {
