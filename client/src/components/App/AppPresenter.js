@@ -32,6 +32,7 @@ const AppPresenter = ({ }) => (
                   <AccountBox
                     key={store.accountBox[key].id}
                     id={store.accountBox[key].id}
+                    isloading={store.isloading}
                     password={store.password}
                     confirmPassword={store.confirmPassword}
                     text={store.text}
@@ -51,6 +52,7 @@ const AppPresenter = ({ }) => (
                     AlertImportAccountName={store.AlertImportAccountName}
                     AlertImportAccountPass={store.AlertImportAccountPass}
                     AlertImportAccountConfirmPass={store.AlertImportAccountConfirmPass}
+                    encrypteStatus={store.encrypteStatus}
                   />
                 ));
               }}

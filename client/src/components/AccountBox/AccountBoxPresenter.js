@@ -13,6 +13,7 @@ import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
 import germinal from 'assets/images/ygg_symbol_shadow.png';
+import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
 const AccountBox = styled.div`
@@ -151,29 +152,50 @@ const Submit = styled.input`
   border: 0;
   margin-right:10px;
   padding: 10px 0;
+  color:${props => {
+    if (props.AlertImportAccount || props.descriptive || props.AlertImportAccountName || props.AlertImportAccountPass || props.AlertImportAccountConfirmPass) {
+      return "rgb(204,000,000);";
+    } else {
+      return "";
+    }
+  }};
   background-color: #FAFAFA;
   border-bottom: 0.2px solid ${props => {
     if (props.AlertImportAccount || props.descriptive || props.AlertImportAccountName || props.AlertImportAccountPass || props.AlertImportAccountConfirmPass) {
       return "rgb(204,000,000);";
-    } else {
+    } else if(props.descriptive===false || props.accountName || props.password || props.confirmPassword|| props.word3 || props.word6 || props.word9) {
       return "rgb(051,153,051);";
+    } else {
+      return "";
     }
   }};
   &:focus,
   &:active {
     outline: none;
   }
-  &:disabled{
-      color:#999;
-      border: 2px solid #999;
-      cursor:not-allowed;
-      transform: none;
-      box-shadow:none;
-      &:focus,
-      &:active,
-      &:hover {
-        transform: none;
+  &:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #000;
+    transition: width .3s;
+  }
+  &:hover {
+    width: ${props => {
+      if (props.confirm) {
+        return "15%;";
+      }else {
+        return "90%;";
       }
+    }};
+    border-bottom: 0.2px solid ${props => {
+      if (props.AlertImportAccount || props.descriptive || props.AlertImportAccountName || props.AlertImportAccountPass || props.AlertImportAccountConfirmPass) {
+        return "rgb(204,000,000);";
+      } else {
+        return "rgb(051,153,051);";
+      }
+    }};
   }
 `;
 const Input = Submit.extend`
@@ -190,8 +212,28 @@ const Input = Submit.extend`
   padding-left: 10px;
 `;
 
+const Loading = styled.div`
+  position: absolute;
+  top: calc(50% - 4em);
+  left: calc(50% - 4em);
+  width: 6em;
+  height: 6em;
+  border: 1.1em solid rgba(0, 0, 0, 0.2);
+  border-left: 1.1em solid #000000;
+  border-radius: 50%;
+  animation: load8 1.1s infinite linear;
+  @keyframes load8 {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
 
-const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImportAccount, word3, word6, word9, recoveryPharse, accountName, password, confirmPassword, AlertImportAccountName, AlertImportAccountPass, AlertImportAccountConfirmPass }) => (
+
+const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImportAccount, word3, word6, word9, recoveryPharse, accountName, password, confirmPassword, AlertImportAccountName, AlertImportAccountPass, AlertImportAccountConfirmPass, isloading, encrypteStatus }) => (
   <AccountBox >
     <Flex alignCenter justifyBetween>
       <Title>
@@ -207,6 +249,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
           <Store.Consumer>
             {store => (
               <Fragment>
+                
                 <Button
                   import
                   onClick={() => store.importAccountModal()}
@@ -231,6 +274,16 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                     }
                   }}
                 >
+                  {/* <LoadingScreen
+                    loading={isloading}
+                    bgColor='#f1f1f1'
+                    spinnerColor='#9ee5f8'
+                    textColor='#676767'
+                    logoSrc={yeed}
+                    text='Here an introduction sentence (Optional)'
+                  > 
+                  </LoadingScreen> */}
+                  { isloading ? <Loading/>: ""}
                   <ModalHeader/>
                   <FlexItem>
                     {
@@ -238,7 +291,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                       ?
                       <Fragment>
                         <Passphrase descriptive>account name</Passphrase>
-                        <Input AlertImportAccountName={ AlertImportAccountName }
+                        <Input AlertImportAccountName={ AlertImportAccountName } accountName={ accountName }
                             placeholder={"a descriptive name for the account"}
                             required
                             maxLength={130}
@@ -248,7 +301,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                             onChange={store.handleInput}
                         />
                         <Passphrase descriptive>password</Passphrase>
-                        <Input AlertImportAccountPass={ AlertImportAccountPass }
+                        <Input AlertImportAccountPass={ AlertImportAccountPass } password={ password }
                             placeholder={"a strong, unique password"}
                             required
                             maxLength={130}
@@ -258,7 +311,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                             onChange={store.handleInput}
                         />
                         <Passphrase descriptive>password(repeat)</Passphrase>
-                        <Input AlertImportAccountConfirmPass={ AlertImportAccountConfirmPass }
+                        <Input AlertImportAccountConfirmPass={ AlertImportAccountConfirmPass } confirmPassword={ confirmPassword }
                             placeholder={"verify your password"}
                             required
                             maxLength={130}
@@ -331,7 +384,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                     { store.statusModal === "confirm" 
                     ? 
                     <FlexItem>
-                      <Input confirm AlertImportAccount={ AlertImportAccount }
+                      <Input confirm AlertImportAccount={ AlertImportAccount } word3={ word3 }
                         placeholder={"Word3"}
                         required
                         maxLength={20}
@@ -340,7 +393,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                         type={"text"}
                         onChange={store.handleInput}
                       />
-                      <Input confirm AlertImportAccount={ AlertImportAccount }
+                      <Input confirm AlertImportAccount={ AlertImportAccount } word6={ word6 }
                         placeholder={"Word6"}
                         required
                         maxLength={20}
@@ -349,7 +402,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                         type={"text"}
                         onChange={store.handleInput}
                       />
-                      <Input confirm AlertImportAccount={ AlertImportAccount }
+                      <Input confirm AlertImportAccount={ AlertImportAccount } word9={ word9 }
                         placeholder={"Word9"}
                         required
                         maxLength={20}
@@ -383,6 +436,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                       { AlertImportAccountName }
                       { AlertImportAccountPass }
                       { AlertImportAccountConfirmPass }
+                      { encrypteStatus }
                     </AlertInfo>
                   </FlexItem>
                   <Flex alignCenter justifyBetween>
@@ -439,6 +493,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
             return store.accounts.map(key => (
               <Account
                 address={key.address}
+                name={key.accountName}
               />
             ));
           }}
@@ -455,7 +510,7 @@ AccountBoxPresenter.propTypes = {
   importAccount: PropTypes.func.isRequired,
   generationMnemonic: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  // password: Proptypes.string,
+  password: PropTypes.string,
   balance: PropTypes.string,
   importMnemonic: PropTypes.string,
   toAddress: PropTypes.string,

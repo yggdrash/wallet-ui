@@ -4,18 +4,7 @@ const electron = require('electron'),
     elemon = require('elemon'),
     openAboutWindow = require('about-window').default,
     windowStateKeeper = require('electron-window-state'),
-    getPort = require("get-port"),
-    yeedServer = require("./yggdrash-chain/src/server");
-
-
-getPort().then(port => {
-    const server = yeedServer.app.listen(port, () =>{
-        console.log(`Running yggdrash node on : http://localhost:${port}`);
-    });
-    
-    yeedServer.startP2PServer(server);
-    global.sharedPort = port;
-});  
+    getPort = require("get-port")
 
 const { app, BrowserWindow, Menu } = electron;
 

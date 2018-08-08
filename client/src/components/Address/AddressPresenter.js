@@ -9,6 +9,7 @@ import ModalHeader from 'components/AddressHeader';
 import { Copy } from "styled-icons/feather/Copy";
 import { Send } from "styled-icons/feather/Send";
 import { Download } from "styled-icons/feather/Download";
+import { Lock } from "styled-icons/feather/Lock";
 import { Edit2 } from "styled-icons/feather/Edit2";
 import { Delete } from "styled-icons/material/Delete";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -124,15 +125,14 @@ const DetailAddress = styled.button`
 
 const AccountIcon = styled.button`
   border: 0;
-  width: 100px;
+  width: 105px;
   height: 40px;
   justify-content: center;
   background-color: #ffffff;
   align-items: center;
   border-radius: 10px;
   margin-top: 10px;
-  margin-right: 50px;
-  margin-left: ${props => (props.first ? "30px;": "inherit")}
+  margin-right: 40px;
   cursor: pointer;
   transition: all 0.2s ease-out;
   position: relative;
@@ -185,6 +185,12 @@ const EditIcon = styled(Edit2)`
   color: black;
 `
 const DeleteIcon = styled(Delete)`
+  width:20px;
+  margin-right:5px;
+  color: black;
+`
+
+const LockIcon = styled(Lock)`
   width:20px;
   margin-right:5px;
   color: black;
@@ -395,7 +401,7 @@ const Input = Submit.extend`
   margin-top:${props => (props.amountInput ? "10px" : "")}
 `;
 
-const AddressPresenter = ({ balance, address }) => (
+const AddressPresenter = ({ balance, address, name }) => (
   <Fragment>
     <Store.Consumer>
       {store => (
@@ -434,7 +440,7 @@ const AddressPresenter = ({ balance, address }) => (
                     </QR>
                   </FlexItem>
                   <FlexItem>
-                    <Label>Address</Label>
+                    <Label>{name}</Label>
                     <CopyToClipboard text={store.selectAddress}
                     >
                       <DetailAddress
@@ -473,6 +479,9 @@ const AddressPresenter = ({ balance, address }) => (
                     <ExportIcon/> EXPORT
                   </AccountIcon>
                   <AccountIcon>
+                    <LockIcon/> PASSWORD
+                  </AccountIcon>
+                  <AccountIcon>
                     <EditIcon/> EDIT
                   </AccountIcon>
                   <AccountIcon>
@@ -488,13 +497,10 @@ const AddressPresenter = ({ balance, address }) => (
                       TRANSACTIONS
                     </Transactions>
                     <Transactions >
-                      STEM STATUS
+                      EXCHANGE
                     </Transactions>
                     <Transactions >
                       CONTRACT
-                    </Transactions>
-                    <Transactions >
-                      OFFCHAIN
                     </Transactions>
                     <Flex>
                     <Table hover width={"1200px"} ml={"15px"}>

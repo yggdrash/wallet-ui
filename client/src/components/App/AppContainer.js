@@ -42,11 +42,13 @@ class AppContainer extends Component {
           word9:"",
           AlertImportAccount:"",
           importMnemonic:"",
+          mnemonic:"",
           confirmRecoveryPharse:true,
           recoveryPharse:"",
           accountName:"",
           password:"",
-          confirmPassword:""
+          confirmPassword:"",
+          isloading:false
         })
       }else if(this.state.showAccountModal === true && this.state.showTransferModal === true){
         this.setState({ 
@@ -55,7 +57,9 @@ class AppContainer extends Component {
           word6:"",
           word9:"",
           AlertImportAccount:"",
-          importMnemonic:""
+          importMnemonic:"",
+          mnemonic:"",
+          isloading:false
         })
       }else if(this.state.showAccountModal === true){
         this.setState({ 
@@ -64,18 +68,19 @@ class AppContainer extends Component {
           word6:"",
           word9:"",
           AlertImportAccount:"",
-          importMnemonic:""
+          importMnemonic:"",
+          mnemonic:"",
+          isloading:false
         })
       }else if(this.state.menuHidden === false){
         this.setState({ 
-          menuHidden: !this.state.menuHidden
+          menuHidden: !this.state.menuHidden,
+          isloading:false
         })
       }
      }
     
     this._createAccountModal = () => {
-      var result = owasp.test('asdf a');
-      console.log(result)
         this.setState(currentState => {
           return {
             ...currentState,
@@ -92,7 +97,29 @@ class AppContainer extends Component {
     };
 
     this._setPassword = () =>{
-      let mnemonic = bip39.generateMnemonic();
+      if(this.state.accountName===""){
+        this.setState(() => {
+          return {
+              AlertImportAccountName:"Please enter your account name.",
+              isloading:false
+          };
+        });
+      } else if(this.state.password===""){
+        this.setState(() => {
+          return {
+              AlertImportAccountPass:"Please enter password.",
+              isloading:false
+          };
+        });
+      } else if(this.state.confirmPassword===""){
+        this.setState(() => {
+          return {
+              AlertImportAccountConfirmPass:"Please enter verity password.",
+              isloading:false
+          };
+        });
+      }else {
+        let mnemonic = bip39.generateMnemonic();
         this.setState(currentState => {
           return {
             ...currentState,
@@ -105,6 +132,17 @@ class AppContainer extends Component {
             statusModal:"create"
           };
         });
+      }
+      setTimeout(() =>{
+        this.setState(() => {
+          return {
+            AlertImportAccount:"",
+            AlertImportAccountName:"",
+            AlertImportAccountPass:"",
+            AlertImportAccountConfirmPass:""
+          };
+        });
+      }, 2000)
     }
 
     this._generationMnemonic = () => {
@@ -188,7 +226,7 @@ class AppContainer extends Component {
 
 
         const fromPrivateKeyBuffer = wallet.getPrivateKey();
-        const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password)
+        const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password )
         // const passwordEncryptedKey = bip38.encrypt(this.state.password, true, this.state.password)
 
         // const params = {
@@ -213,12 +251,6 @@ class AppContainer extends Component {
             accountBox: {
               ...currentState.accountBox,
             },
-            // address: update(
-            //   this.state.address,
-            //   {
-            //       $push: [address]
-            //   }
-            // ),
             accounts: update(
               this.state.accounts,
               {
@@ -290,30 +322,34 @@ class AppContainer extends Component {
             if(this.state.accountName===""){
               this.setState(() => {
                 return {
-                    AlertImportAccountName:"Please enter your account name."
+                    AlertImportAccountName:"Please enter your account name.",
+                    isloading:false
                 };
               });
               throw Break;
             } else if(this.state.password===""){
               this.setState(() => {
                 return {
-                    AlertImportAccountPass:"Please enter password."
+                    AlertImportAccountPass:"Please enter password.",
+                    isloading:false
                 };
               });
               throw Break;
             } else if(this.state.confirmPassword===""){
               this.setState(() => {
                 return {
-                    AlertImportAccountConfirmPass:"Please enter verity password."
+                    AlertImportAccountConfirmPass:"Please enter verity password.",
+                    isloading:false
                 };
               });
               throw Break;
             }
-            let check = this.state.address.map(addr => {
-                if(addr === address){
+            let check = this.state.accounts.map(addr => {
+                if(addr.address === address){
                     this.setState(() => {
                         return {
-                            AlertImportAccount:"This account is already owned by you."
+                            AlertImportAccount:"This account is already owned by you.",
+                            isloading:false
                         };
                     });
                     throw Break;
@@ -326,31 +362,36 @@ class AppContainer extends Component {
       } else if(this.state.accountName===""){
         this.setState(() => {
           return {
-              AlertImportAccountName:"Please enter your account name."
+              AlertImportAccountName:"Please enter your account name.",
+              isloading:false
           };
         });
       } else if(this.state.password===""){
         this.setState(() => {
           return {
-              AlertImportAccountPass:"Please enter password."
+              AlertImportAccountPass:"Please enter password.",
+              isloading:false
           };
         });
       } else if(this.state.confirmPassword===""){
         this.setState(() => {
           return {
-              AlertImportAccountConfirmPass:"Please enter verity password."
+              AlertImportAccountConfirmPass:"Please enter verity password.",
+              isloading:false
           };
         });
       } else if(this.state.importMnemonic === ""){
         this.setState(() => {
           return {
-            AlertImportAccount:"Please enter passphrase!"
+            AlertImportAccount:"Please enter passphrase!",
+            isloading:false
           };
         });
       } else {
         this.setState(() => {
           return {
-            AlertImportAccount:"Not valid BIP39 passphrase! Please check all words and spaces."
+            AlertImportAccount:"Not valid BIP39 passphrase! Please check all words and spaces.",
+            isloading:false
           };
         });
       }
@@ -386,12 +427,6 @@ class AppContainer extends Component {
             accountBox: {
                 ...currentState.accountBox
             },
-            address: update(
-                this.state.address,
-                {
-                    $push: [address]
-                }
-            ),
             accounts: update(
               this.state.accounts,
               {
@@ -403,7 +438,9 @@ class AppContainer extends Component {
             newState,
             accountName:"",
             password:"",
-            confirmPassword:""
+            confirmPassword:"",
+            isloading:false,
+            encrypteStatus:""
         };
       });
     }
@@ -416,7 +453,8 @@ class AppContainer extends Component {
     }
     this._closeModal = (e) =>{
       this.setState(currentState => {
-        const newState = delete currentState.importMnemonic;
+        const newImportMnemonic = delete currentState.importMnemonic;
+        const newMnemonic = delete currentState.mnemonic;
         return {
           ...currentState,
           account: {
@@ -425,7 +463,8 @@ class AppContainer extends Component {
           showModal: e === "main" ? !this.state.showModal : false,
           showTransferModal: e === "transfer" ? !this.state.showTransferModal : false,
           showAccountModal: e === "transfer" ? this.state.showAccountModal : false,
-          newState,
+          newImportMnemonic,
+          newMnemonic,
           AlertImportAccount:"",
           word3:"",
           word6:"",
@@ -449,6 +488,13 @@ class AppContainer extends Component {
         confirmRecoveryPharse:true
       })
     }
+    if(e.target.name === "password"){
+      let result = owasp.test(e.target.value);
+      console.log(result)
+      if((e.target.name === "password") === (e.target.name === "confirmPassword")){
+        console.log("asdf")
+      }
+    }
 
       const { target: { name, value } } = e;
       this.setState({
@@ -471,7 +517,6 @@ class AppContainer extends Component {
     //       window.event.returnValue = false;
     //     }
     //   }
-      
     // } 
     this._AccountModal = address => {
       this.setState(() => {
@@ -515,6 +560,7 @@ class AppContainer extends Component {
 
 
     this.state = {
+      isloading:false,
       uuid:[],
       accountName:[],
       address:[],
@@ -527,6 +573,7 @@ class AppContainer extends Component {
       mnemonic:"",
       password:"",
       confirmPassword:"",
+      encrypteStatus:"",
       showModal: false,
       showAccountModal: false,
       showTransferModal: false,
