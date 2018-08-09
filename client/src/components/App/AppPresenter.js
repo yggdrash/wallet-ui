@@ -65,8 +65,6 @@ const AppPresenter = ({ }) => (
                 return Object.keys(store.accountBox).map(key => (
                   <NetworkBox
                     network={store.network}
-                    peer={store.peer}
-                    lastCheck={store.lastCheck}
                   />
                 ));
               }}

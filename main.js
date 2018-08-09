@@ -43,7 +43,19 @@ const createWindow = () => {
       defaultHeight: height - 100
     })
 //1590, 850
-    mainWindow = new BrowserWindow({width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, center: true, icon: iconpath, resizable: true, frame: true, show: false,  title: "Yggdrash Wallet"})
+    mainWindow = new BrowserWindow({
+      webPreferences: {webSecurity: false}
+      , width: mainWindowState.width
+      , height: mainWindowState.height
+      , x: mainWindowState.x
+      , y: mainWindowState.y
+      , center: true
+      , icon: iconpath
+      , resizable: true
+      , frame: true
+      , show: false
+      , title: "Yggdrash Wallet"
+    })
     mainWindow.setContentProtection(false)
     
     mainWindow.once('ready-to-show', () => {
