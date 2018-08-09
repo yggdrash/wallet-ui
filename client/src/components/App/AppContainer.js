@@ -6,8 +6,6 @@ import Store from "context/store";
 import { toBuffer } from "utils"
 import { fromPrivateKey } from "accounts/wallet"
 
-const httppp = require("http")
-
 const elliptic = require("elliptic"),
   path = require("path"),
   bip38 = require('bip38'),
@@ -26,7 +24,6 @@ class AppContainer extends Component {
     this.componentDidMount = () => {
       const { sharedPort } = this.props;
       document.body.addEventListener("keydown", this.closeLastPopup)
-      this._getNetwork();
     };
 
     // this.getPrivateFromWallet = () => {
@@ -561,23 +558,7 @@ class AppContainer extends Component {
       });
     }
 
-    this._getNetwork = () => {
-      var peerUrl = 'http://localhost:8080';
-      fetch(peerUrl + '/actuator/health')
-        .then(response => response.json())
-        .then(json => {
-          this.setState(() => {
-            return {
-              network: {
-                name: json.details.node.details.network, 
-                peerUrl: peerUrl,
-                lastChecked: JSON.stringify(new Date())
-              }
-            }
-          })
-        })
-        .catch(err => console.log(err)) 
-    }
+    
 
     this.state = {
       isloading:false,
@@ -618,11 +599,6 @@ class AppContainer extends Component {
         "1": {
           id: 1
         }
-      },
-      network: {
-        name:"Not connected",
-        peerConnection:"",
-        lastCheck:""
       },
       handleOpenCloseDropdown: this._handleOpenCloseDropdown,
       handleTooltip: this._handleTooltip,

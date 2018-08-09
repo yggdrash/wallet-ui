@@ -12,18 +12,18 @@ import { Button } from 'components/Shared';
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
-import germinal from 'assets/images/ygg_symbol_shadow.png';
+import yggtree from 'assets/images/yggtree.gif';
 import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
 const AccountBox = styled.div`
   background-color: #ffffff;
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
-  width: 50%;
-  height: 270px;
+  width: 60%;
+  height: 350px;
   padding: 20px;
   border-radius: 10px;
-  margin-bottom: 100px;
+  margin-bottom: 70px;
   box-sizing: border-box;
   border: 2px solid rgba(0,0,0,.0975);
   overflow:scroll;
@@ -47,14 +47,9 @@ const LockIconIcon = styled(UserLock)`
   margin-right:7px;
 `
 const YeedAnimation = styled.div`
-  width: 60px;
+  width: 150px;
   margin 0 auto;
   padding-top: 25px;
-  animation: App-logo-spin infinite 20s linear;
-  @keyframes App-logo-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
 `;
 const Modal = styled(ReactModal)`
   border: 0;
@@ -485,7 +480,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
     <Line second/>
     <Store.Consumer>
         {store => (
-          store.accounts.length === 0 ? <YeedAnimation><img src={germinal} alt="germinal" /></YeedAnimation> : ""
+          store.accounts.length === 0 ? <YeedAnimation><img src={yggtree} alt="germinal" /></YeedAnimation> : ""
         )}
     </Store.Consumer>
     <Store.Consumer>

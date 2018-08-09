@@ -5,21 +5,14 @@ import Flex from "styled-flex-component";
 import AccountBox from "components/AccountBox";
 import NetworkBox from "components/NetworkBox";
 import Header from 'components/Header';
-import germinal from 'assets/images/germinal.png';
-// import grass from 'assets/images/foot.png';
 import Store from "context/store";
 
 const Footer = styled.div`
-  // font-weight: 600;
-  // color: #508464;
-  margin-top: 100px;
-  // margin-bottom: 30px;
-  // width:100px;
+  margin-top: 60px;
 `;
 
 const Germinal = styled.div`
   width:50px;
-  // margin-top:30px;
 `;
 
 const AppPresenter = ({ }) => (
@@ -59,19 +52,16 @@ const AppPresenter = ({ }) => (
             </Store.Consumer>
           </Flex>
           <Flex alignCenter full column>
-          {/* <Germinal><img src={germinal} alt="yggtree" /></Germinal> */}
             <Store.Consumer>
               {store => {
                 return Object.keys(store.accountBox).map(key => (
-                  <NetworkBox
-                    network={store.network}
-                  />
+                  <NetworkBox/>
                 ));
               }}
             </Store.Consumer>
           </Flex>
           <Flex alignCenter full column>
-            <Footer><Germinal><img src={germinal} alt="germinal" /></Germinal></Footer>
+            <Footer>© Akashic foundation</Footer>
           </Flex>
       </Fragment>
 );

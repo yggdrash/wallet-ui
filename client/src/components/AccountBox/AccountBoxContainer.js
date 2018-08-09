@@ -8,10 +8,19 @@ class AccountBoxContainer extends Component {
     super(props);
 
     this.state = {
+
     };
+
+    this.componentDidMount = () => {
+      
+    };
+    
+
   }
   render() {
-    return <AccountBoxPresenter {...this.props} {...this.state} />;
+    return <AccountBoxPresenter {...this.props} {...this.state} 
+
+            />;
   }
 }
 
