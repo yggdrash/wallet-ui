@@ -54,6 +54,7 @@
     "keccak": "^1.4.0",
     "keythereum": "^1.0.4",
     "object-assign": "4.1.1",
+    "password-strength": "^0.0.1",
     "path": "^0.12.7",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",

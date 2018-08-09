@@ -118,10 +118,34 @@ const PasswordStrength = styled.div`
   margin:0 auto;
 `;
 const PasswordStrengthMeter = styled.div`
-  width: 20%;
+  width: ${props => {
+    if (props.red) {
+      return "30%";
+    } else if (props.yellow) {
+      return "50%";
+    } else if (props.blue) {
+      return "70%";
+    } else if (props.green) {
+      return "100%";
+    } else {
+      return "20%";
+    }
+  }};
   height: 5px;
   border: 0;
-  background-color: red
+  background-color: ${props => {
+    if (props.red) {
+      return "#f0932b";
+    } else if (props.yellow) {
+      return "#badc58";
+    } else if (props.blue) {
+      return "#22a6b3";
+    } else if (props.green) {
+      return "#6ab04c";
+    } else {
+      return "red";
+    }
+  }};
   transition: all 0.1s linear;
   text-align: left;
 `;
@@ -228,7 +252,26 @@ const Loading = styled.div`
 `;
 
 
-const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImportAccount, word3, word6, word9, recoveryPharse, accountName, password, confirmPassword, AlertImportAccountName, AlertImportAccountPass, AlertImportAccountConfirmPass, isloading, encrypteStatus }) => (
+const AccountBoxPresenter = ({ 
+  text, 
+  balance, 
+  mnemonic, 
+  importMnemonic, 
+  AlertImportAccount, 
+  word3, 
+  word6, 
+  word9, 
+  recoveryPharse, 
+  accountName, 
+  password, 
+  confirmPassword, 
+  AlertImportAccountName, 
+  AlertImportAccountPass, 
+  AlertImportAccountConfirmPass, 
+  isloading, 
+  encrypteStatus, 
+  passwordValid 
+}) => (
   <AccountBox >
     <Flex alignCenter justifyBetween>
       <Title>
@@ -299,25 +342,31 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                         <Input AlertImportAccountPass={ AlertImportAccountPass } password={ password }
                             placeholder={"a strong, unique password"}
                             required
-                            maxLength={130}
+                            maxLength={30}
                             name="password"
                             value={password}
-                            type={"text"}
+                            type={"password"}
                             onChange={store.handleInput}
                         />
                         <Passphrase descriptive>password(repeat)</Passphrase>
                         <Input AlertImportAccountConfirmPass={ AlertImportAccountConfirmPass } confirmPassword={ confirmPassword }
                             placeholder={"verify your password"}
                             required
-                            maxLength={130}
+                            maxLength={30}
                             name="confirmPassword"
                             value={confirmPassword}
-                            type={"text"}
+                            type={"password"}
                             onChange={store.handleInput}
                         />
                         <Passphrase descriptive>password strength</Passphrase>
                         <PasswordStrength>
-                          <PasswordStrengthMeter></PasswordStrengthMeter>
+                          <PasswordStrengthMeter
+                            defalt = { passwordValid === "defalt" }
+                            red = { passwordValid === "red" }
+                            yellow = { passwordValid === "yellow" }
+                            blue = { passwordValid === "blue" }
+                            green = { passwordValid === "green" }
+                          />
                         </PasswordStrength>
                         <Passphrase descriptive>Use a few words, avoid common phrases No need for symbols, digits, or uppercase letters</Passphrase>
                       </Fragment>
@@ -455,7 +504,7 @@ const AccountBoxPresenter = ({ text, balance, mnemonic, importMnemonic, AlertImp
                         disabled={
                           (store.statusModal === "create" && store.confirmRecoveryPharse === true) 
                           || (store.statusModal === "password" && !password && !confirmPassword && !accountName)
-                          || (store.statusModal === "import" && !password && !confirmPassword && !accountName)
+                          || (store.statusModal === "import" && !password && !confirmPassword && !accountName && !importMnemonic)
                         }
                         >
                           {store.statusModal === "password" ? `NEXT` : ``}

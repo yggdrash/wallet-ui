@@ -5,6 +5,7 @@ import update from 'react-addons-update';
 import Store from "context/store";
 import { toBuffer } from "utils"
 import { fromPrivateKey } from "accounts/wallet"
+import { ExpandLessDimensions } from "styled-icons/material/ExpandLess";
 
 const elliptic = require("elliptic"),
   path = require("path"),
@@ -13,8 +14,8 @@ const elliptic = require("elliptic"),
   wif = require('wif'),
   HDKey = require("accounts/hdkey"),
   bip39 = require("bip39"),
-  owasp = require('owasp-password-strength-test');
-  
+  passValid = require("password-strength");
+
 const HDpath = "m/44'/60'/0'/0/0";
 const privateKeyLocation = path.join(__dirname, "keystore/keystoredata");
 class AppContainer extends Component {
@@ -48,7 +49,8 @@ class AppContainer extends Component {
           accountName:"",
           password:"",
           confirmPassword:"",
-          isloading:false
+          isloading:false,
+          passwordValid:""
         })
       }else if(this.state.showAccountModal === true && this.state.showTransferModal === true){
         this.setState({ 
@@ -108,6 +110,21 @@ class AppContainer extends Component {
         this.setState(() => {
           return {
               AlertImportAccountPass:"Please enter password.",
+              isloading:false
+          };
+        });
+      } else if(this.state.passwordValid === "defalt" || this.state.passwordValid === "red"){
+        this.setState(() => {
+          return {
+              AlertImportAccountPass:"Week, try combining letters & numbers",
+              isloading:false
+          };
+        });
+      } else if(this.state.password !== this.state.confirmPassword){
+        this.setState(() => {
+          return {
+              AlertImportAccountPass:"Passwords do not match.",
+              AlertImportAccountConfirmPass:" ",
               isloading:false
           };
         });
@@ -373,6 +390,21 @@ class AppContainer extends Component {
               isloading:false
           };
         });
+      } else if(this.state.passwordValid === "defalt" || this.state.passwordValid === "red"){
+        this.setState(() => {
+          return {
+              AlertImportAccountPass:"Week, try combining letters & numbers",
+              isloading:false
+          };
+        });
+      } else if(this.state.password !== this.state.confirmPassword){
+        this.setState(() => {
+          return {
+              AlertImportAccountPass:"Passwords do not match.",
+              AlertImportAccountConfirmPass:" ",
+              isloading:false
+          };
+        });
       } else if(this.state.confirmPassword===""){
         this.setState(() => {
           return {
@@ -440,7 +472,8 @@ class AppContainer extends Component {
             password:"",
             confirmPassword:"",
             isloading:false,
-            encrypteStatus:""
+            encrypteStatus:"",
+            passwordValid:""
         };
       });
     }
@@ -473,7 +506,8 @@ class AppContainer extends Component {
           recoveryPharse:"",
           accountName:"",
           password:"",
-          confirmPassword:""
+          confirmPassword:"",
+          passwordValid:""
         };
       });
     }
@@ -489,35 +523,40 @@ class AppContainer extends Component {
       })
     }
     if(e.target.name === "password"){
-      let result = owasp.test(e.target.value);
-      console.log(result)
-      if((e.target.name === "password") === (e.target.name === "confirmPassword")){
-        console.log("asdf")
+      let valid = passValid(e.target.value)
+      if(valid.valid === false && valid.strength === "simple" && valid.hint !== null){
+        this.setState({
+          passwordValid:"red"
+        })
+      } else if(valid.valid === true && valid.strength === "simple"){
+        this.setState({
+          passwordValid:"yellow"
+        })
+      } else if(valid.strength === "medium"){
+        this.setState({
+          passwordValid:"blue"
+        })
+      } else if(valid.strength === "strong"){
+        this.setState({
+          passwordValid:"green"
+        })
       }
+    }
+    if(e.target.name === "password" && e.target.value.length === 0){
+      this.setState({
+        passwordValid:"defalt"
+      })
     }
 
       const { target: { name, value } } = e;
       this.setState({
         [name]: value,
-        AlertImportAccount:""
+        AlertImportAccount:"",
+        AlertImportAccountName:"",
+        AlertImportAccountPass:"",
+        AlertImportAccountConfirmPass:""
       });
     };
-
-    // this.noCTRL = e => {
-    //   var code = (document.all) ? event.keyCode:e.which;
-    //   var ctrl = (document.all) ? event.ctrlKey:e.modifiers & Event.CONTROL_MASK;
-    //   if (document.all)
-    //   {
-    //     if (ctrl && code==86) //CTRL+V
-    //     {
-    //       window.event.returnValue = false;
-    //     }
-    //     else if (ctrl && code==67) //CTRL+C (Copy)
-    //     {
-    //       window.event.returnValue = false;
-    //     }
-    //   }
-    // } 
     this._AccountModal = address => {
       this.setState(() => {
         return {
@@ -562,18 +601,15 @@ class AppContainer extends Component {
 
     this.state = {
       isloading:false,
-      uuid:[],
-      accountName:[],
-      address:[],
-      encryptedKey:[],
       accounts:[],
       balance: "0",
       toAddress: "",
-      amount:0,
+      amount:"",
       selectAddress:"",
       mnemonic:"",
       password:"",
       confirmPassword:"",
+      passwordValid:"",
       encrypteStatus:"",
       showModal: false,
       showAccountModal: false,
@@ -612,8 +648,7 @@ class AppContainer extends Component {
       handleSubmit:this._handleSubmit,
       AccountModal:this._AccountModal,
       closeModal: this._closeModal,
-      TransferModal: this._TransferModal,
-      getNetwork: this._getNetwork
+      TransferModal: this._TransferModal
     };
   }
   render() {

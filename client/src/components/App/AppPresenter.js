@@ -27,6 +27,7 @@ const AppPresenter = ({ }) => (
                     id={store.accountBox[key].id}
                     isloading={store.isloading}
                     password={store.password}
+                    passwordValid={store.passwordValid}
                     confirmPassword={store.confirmPassword}
                     text={store.text}
                     address={store.address}

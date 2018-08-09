@@ -36,7 +36,7 @@ const Menu = styled.header`
   height: 60px;
   color: #508464;
   padding: 0 40px;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 `;
 const Logo = styled.div`
   width: 4%;

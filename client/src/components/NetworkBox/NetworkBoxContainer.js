@@ -22,6 +22,7 @@ class NetworkBoxContainer extends Component {
       fetch(peerUrl + '/actuator/health')
         .then(response => response.json())
         .then(json => {
+          console.log(json)
           this.setState(() => {
             return {
               network: {

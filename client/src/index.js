@@ -6,8 +6,8 @@ import { injectGlobal } from "styled-components";
 import reset from "styled-reset";
 import "./typography";
 
-const { remote } = window.require("electron");
-const sharedPort = remote.getGlobal("sharedPort");
+// const { remote } = window.require("electron");
+// const sharedPort = remote.getGlobal("sharedPort");
 
 injectGlobal`
 ${reset};
@@ -16,6 +16,7 @@ body{
 }`;
 
 ReactDOM.render(
-      <App sharedPort={sharedPort} />,
+    //   <App sharedPort={sharedPort} />,
+      <App />,
   document.getElementById("root")
 );
