@@ -6,7 +6,7 @@ import Store from "context/store";
 
 const Notification = styled.div`
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
-  background-color: #F7FAF9
+  background-color: #0E2030;
   width: 30%;
   padding: 20px;
   border-radius: 5px;
@@ -15,11 +15,13 @@ const Notification = styled.div`
 `;
 
 const Title = styled.div`
+  color: #41916E;
   font-weight: 600;
   margin-top: ${props => (props.top ? "0px;" : "30px;")};
 `;
 
 const Value = styled.div`
+  color: #FCFCFC;
   font-weight: 350;
   margin-top: ${props => (props.top ? "0px;" : "30px;")};
 `;

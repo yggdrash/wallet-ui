@@ -12,13 +12,14 @@ import { Button } from 'components/Shared';
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
-import yggtree from 'assets/images/yggdrasil-hash.png';
+// import yggtree from 'assets/images/yggdrasil-hash.png';
+import yggtree from 'assets/images/main.png';
 // import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
 const AccountBox = styled.div`
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
-  background-color: #F7FAF9
+  background-color: #0E2030
   width: 60%;
   height: 370px;
   border-radius: 10px;
@@ -27,23 +28,15 @@ const AccountBox = styled.div`
   border: 2px solid rgba(0,0,0,.0975);
   overflow:scroll;
 `;
-const Header = styled.header`
-  width: 100%;
-  height: 60px;
-  background-color: #1C885F;
-  padding: 0 40px;
-  border-bottom: 1px solid rgba(0,0,0,.0975);
-  border-top-left-radius:5px;
-  border-top-right-radius:5px;
-  margin-bottom:10px;
-`;
 const Title = styled.span`
-  color:white;
+  color: #41916E;
   margin-top:15px;
   font-weight: 400;
   display: flex;
   font-size: 1.5em;
   font-weight: 500;
+  margin-left:20px;
+  margin-bottom:20px;
 `;
 const ImportAccountIcon = styled(Download)`
   width: 20px;
@@ -58,9 +51,9 @@ const LockIconIcon = styled(UserLock)`
   margin-right:7px;
 `
 const YeedAnimation = styled.div`
-  width: 140px;
+  width: 130px;
   margin 0 auto;
-  padding-top: 15px;
+  padding-top: 30px;
 `;
 const Modal = styled(ReactModal)`
   border: 0;
@@ -285,12 +278,11 @@ const AccountBoxPresenter = ({
 }) => (
   <AccountBox >
     <Flex alignCenter justifyBetween>
-      <Header>
-        <Title>
-          {text}
-        </Title>
-      </Header>
+      <Title>
+        {text}
+      </Title>
     </Flex>
+    <Line/>
     <Flex alignCenter justifyBetween>
       <FlexItem>
         <Fragment>

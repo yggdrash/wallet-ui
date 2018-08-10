@@ -15,6 +15,7 @@ import { Delete } from "styled-icons/material/Delete";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import yeed from 'assets/images/yeed-symbol.png';
 import { Yeed } from "components/Shared";
+import back from "assets/images/background2.png";
 import Store from "context/store";
 import {
   Tooltip,
@@ -44,8 +45,9 @@ const Address = styled.button`
   margin-top: 20px;
   margin-bottom: 10px;
   border-radius: 5px;
-  background-color: #ccae62
-  // background-color: #CAD3C8
+  background-image: url(${back});
+  background-repeat: no-repeat
+  background-size: cover;
   display: flex;
   padding-top: 10px;
   padding-left: 10px;
@@ -59,7 +61,6 @@ const Address = styled.button`
   &:hover {
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
     transform: translateY(-1px);
-    background-color: #cc8e35
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -341,11 +342,13 @@ const Balance = styled.div`
       return "25px"
     }
   }}
+  color:${props => (props.accountBox ? "#fcfcfc;" : "inherit")}
 `;
 const AccountBoxAddress = styled.div`
   // text-align:left;
   // flex: 1 1 100px;
   margin-top:${props => (props.name ? "5px" : "8px")}
+  color: #fcfcfc;
 `;
 const AccountBoxYeed = styled.div`
   width: 15px;
@@ -398,7 +401,7 @@ const AddressPresenter = ({ balance, address, name, copy, copied }) => (
               >
                 <Flex alignCenter full column>
                     <AccountBoxAddress name>{name}</AccountBoxAddress> 
-                    <AccountBoxAddress>{address.slice(0,30)}...{address.slice(39,42)}</AccountBoxAddress>
+                    <AccountBoxAddress>{address.slice(0,28)}...{address.slice(39,42)}</AccountBoxAddress>
                   <Flex>
                     <AccountBoxYeed><img src={yeed} alt="yeed" /></AccountBoxYeed>
                     <Balance accountBox>{store.balance}</Balance>

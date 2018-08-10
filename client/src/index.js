@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import App from "components/App";
 import { injectGlobal } from "styled-components";
 import reset from "styled-reset";
+import back from "assets/images/background.png";
 import "./typography";
 
 // const { remote } = window.require("electron");
@@ -11,7 +12,10 @@ import "./typography";
 injectGlobal`
 ${reset};
 body{
-  background-color: #FAFAFA;
+  background-color: #F8F6F8
+  background-image: url(${back});
+  background-repeat: no-repeat
+  background-size: cover;
 }
 `;
 

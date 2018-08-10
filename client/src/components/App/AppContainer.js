@@ -14,6 +14,7 @@ const elliptic = require("elliptic"),
   wif = require('wif'),
   HDKey = require("accounts/hdkey"),
   bip39 = require("bip39"),
+  initWallet = require("export"),
   passValid = require("password-strength");
 
 const HDpath = "m/44'/60'/0'/0/0";

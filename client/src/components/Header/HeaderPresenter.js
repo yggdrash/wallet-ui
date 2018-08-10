@@ -18,7 +18,8 @@ import {
 
 const Header = styled.header`
   height: 90px;
-  background-color: #062034
+  // background-color: #062034
+  background-color: black
   color: #508464;
   padding: 0 40px;
   border-bottom: 1px solid rgba(0,0,0,.0975);
@@ -45,24 +46,24 @@ const Yggdrash = styled.div`
   margin-top:35px;
 `;
 const Network = styled(Wifi)`
-  color: white;
+  color: #FCFCFC;
 `
 const Exit = styled(ExitToApp)`
-  color: white;
+  color: #FCFCFC;
 `
 const Peer = styled(Location)`
-  color: white;
+  color: #FCFCFC;
   width:17px;
 `
 const Cog = styled(UsersCog)`
-  color: white;
+  color: #FCFCFC;
 `
 const HeaderIcon = styled.button`
   border: none;
   width: 35px;
   height: 40px;
   justify-content: center;
-  background-color: #062034
+  background-color: black
   align-items: center;
   border-radius: 10px;
   margin-right: 50px;

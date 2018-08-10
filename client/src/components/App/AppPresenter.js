@@ -9,6 +9,7 @@ import Store from "context/store";
 
 const Footer = styled.div`
   margin-top: 60px;
+  color: #fcfcfc;
 `;
 
 const AppPresenter = () => (

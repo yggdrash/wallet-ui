@@ -5,7 +5,7 @@ import Store from "context/store";
 
 const Header = styled.header`
   height: 60px;
-  background-color: #1C885F;
+  background-color: #fcfcfc;
   padding: 0 40px;
   border-bottom: 1px solid rgba(0,0,0,.0975);
   border-top-left-radius:5px;
@@ -15,7 +15,7 @@ const Header = styled.header`
 `;
 
 const Title = styled.div`
-  color: white
+  color: #1C885F;
   font-family: 'Titillium Web', sans-serif
 `;
 
