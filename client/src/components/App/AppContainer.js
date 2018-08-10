@@ -34,7 +34,7 @@ class AppContainer extends Component {
     // };
 
     this.closeLastPopup = e => {
-      if (!(e.key == "Escape" || e.keyCode == 27)) return
+      if (!(e.key === "Escape" || e.keyCode === 27)) return
       if(this.state.showModal === true){
         this.setState({ 
           showModal: !this.state.showModal,
@@ -361,7 +361,7 @@ class AppContainer extends Component {
               });
               throw Break;
             }
-            let check = this.state.accounts.map(addr => {
+            this.state.accounts.map(addr => {
                 if(addr.address === address){
                     this.setState(() => {
                         return {
@@ -443,13 +443,13 @@ class AppContainer extends Component {
       const { accountName, password } = this.state
       const uuid = this.guid();
       const fromPrivateKeyBuffer = wallet.getPrivateKey();
-      const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password)
+      // const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password)
 
       let account ={
         uuid,
         accountName,
         address,
-        privatekeyEncryptedKey
+        // privatekeyEncryptedKey
       }
 
       this.setState(currentState => {
@@ -557,11 +557,12 @@ class AppContainer extends Component {
         AlertImportAccountConfirmPass:""
       });
     };
-    this._AccountModal = address => {
+    this._AccountModal = (address, name) => {
       this.setState(() => {
         return {
           showAccountModal: !this.state.showAccountModal,
           selectAddress:address,
+          selectName:name,
           statusModal:"account" 
         };
       });
@@ -606,6 +607,7 @@ class AppContainer extends Component {
       toAddress: "",
       amount:"",
       selectAddress:"",
+      selectName:"",
       mnemonic:"",
       password:"",
       confirmPassword:"",

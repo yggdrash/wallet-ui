@@ -1,18 +1,36 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AddressPresenter from "./AddressPresenter";
-import Store from "context/store";
 
 class AddressContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      copied:false
+    };
 
+    this._copy = () => {
+      this.setState(() => {
+        return {
+          copied:true
+        }
+      })
+      setTimeout(() =>{
+        this.setState(() => {
+          return {
+            copied:false
+          };
+        });
+      }, 1000)
+    }
   }
 
   render() {
-    return <AddressPresenter {...this.props} {...this.state}/>
+    return <AddressPresenter {...this.props} {...this.state}
+            copy={this._copy}
+            copied={this.state.copied}
+            />
   }
 }
 

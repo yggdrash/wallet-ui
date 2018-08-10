@@ -44,8 +44,9 @@ export const Yeed = styled.div`
 
 export const Line = styled.div`
   border-bottom: 0.1px solid rgb(105,105,105);
-  width: 100%;
+  width: 97%;
   margin-top: ${props => (props.second ? "15px;" : "inherit")};
+  margin-left:10px;
 `;
 
 export const Key = styled.h3`
@@ -66,7 +67,8 @@ export const Button = styled.button`
   width: 150px;
   height: 5%;
   padding: 10px 0;
-  margin-right:10px;
+  margin-left: ${props => (props.import ? "20px;" : "inherit")}
+  margin-right:15px;
   margin-top:15px;
   margin-bottom:15px;
   color: #f5f6fa;

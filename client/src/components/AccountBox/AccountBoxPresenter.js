@@ -3,36 +3,47 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import ReactModal from 'react-modal';
-import yeed from 'assets/images/yeed-symbol.png';
+// import yeed from 'assets/images/yeed-symbol.png';
 import ModalHeader from 'components/AccountBoxHeader';
-import { Yeed, Line } from "components/Shared";
+import { Line } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
 import { PersonAdd } from 'styled-icons/material/PersonAdd';
 import { Button } from 'components/Shared';
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
-import yggtree from 'assets/images/yggtree.gif';
-import LoadingScreen from 'react-loading-screen';
+import yggtree from 'assets/images/yggdrasil-hash.png';
+// import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
 const AccountBox = styled.div`
-  background-color: #ffffff;
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
+  background-color: #F7FAF9
   width: 60%;
-  height: 350px;
-  padding: 20px;
+  height: 370px;
   border-radius: 10px;
   margin-bottom: 70px;
   box-sizing: border-box;
   border: 2px solid rgba(0,0,0,.0975);
   overflow:scroll;
 `;
+const Header = styled.header`
+  width: 100%;
+  height: 60px;
+  background-color: #1C885F;
+  padding: 0 40px;
+  border-bottom: 1px solid rgba(0,0,0,.0975);
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+  margin-bottom:10px;
+`;
 const Title = styled.span`
+  color:white;
+  margin-top:15px;
   font-weight: 400;
   display: flex;
-  font-size: 1.3em;
-  margin-left: 10px;
+  font-size: 1.5em;
+  font-weight: 500;
 `;
 const ImportAccountIcon = styled(Download)`
   width: 20px;
@@ -47,9 +58,9 @@ const LockIconIcon = styled(UserLock)`
   margin-right:7px;
 `
 const YeedAnimation = styled.div`
-  width: 150px;
+  width: 140px;
   margin 0 auto;
-  padding-top: 25px;
+  padding-top: 15px;
 `;
 const Modal = styled(ReactModal)`
   border: 0;
@@ -182,7 +193,7 @@ const Submit = styled.input`
   border-bottom: 0.2px solid ${props => {
     if (props.AlertImportAccount || props.descriptive || props.AlertImportAccountName || props.AlertImportAccountPass || props.AlertImportAccountConfirmPass) {
       return "rgb(204,000,000);";
-    } else if(props.descriptive===false || props.accountName || props.password || props.confirmPassword|| props.word3 || props.word6 || props.word9) {
+    } else if(props.descriptive===false || props.accountName || props.password || props.confirmPassword|| props.word3 || props.word6 || props.word9 || props.importMnemonic) {
       return "rgb(051,153,051);";
     } else {
       return "";
@@ -274,13 +285,12 @@ const AccountBoxPresenter = ({
 }) => (
   <AccountBox >
     <Flex alignCenter justifyBetween>
-      <Title>
-        {text}
-        <Yeed><img src={yeed} alt="yeed" /></Yeed>
-        {balance}
-      </Title>
+      <Header>
+        <Title>
+          {text}
+        </Title>
+      </Header>
     </Flex>
-    <Line/>
     <Flex alignCenter justifyBetween>
       <FlexItem>
         <Fragment>
@@ -461,7 +471,7 @@ const AccountBoxPresenter = ({
                     }
                     { store.statusModal === "import" 
                     ? 
-                    <Input AlertImportAccount={ AlertImportAccount }
+                    <Input AlertImportAccount={ AlertImportAccount } importMnemonic={ importMnemonic }
                         placeholder={"PASSPHRASE"}
                         required
                         maxLength={130}
@@ -532,13 +542,17 @@ const AccountBoxPresenter = ({
           store.accounts.length === 0 ? <YeedAnimation><img src={yggtree} alt="germinal" /></YeedAnimation> : ""
         )}
     </Store.Consumer>
-    <Store.Consumer>
+    
+      <Store.Consumer>
           {store => {
             return store.accounts.map(key => (
-              <Account
-                address={key.address}
-                name={key.accountName}
-              />
+              <FlexItem>  
+                <Account
+                  address={key.address}
+                  name={key.accountName}
+                  balance={store.balance}
+                />
+              </FlexItem>
             ));
           }}
       </Store.Consumer>

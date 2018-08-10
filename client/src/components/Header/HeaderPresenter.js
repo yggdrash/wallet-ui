@@ -14,20 +14,11 @@ import {
   DropdownDivider,
   DropdownMenu,
 } from 'styled-dropdown-component';
-import {
-  Alert,
-  AlertHeading,
-} from 'styled-alert-component';
-import {
-  Tooltip,
-  TooltipArrow,
-  TooltipInner,
-} from 'styled-tooltip-component';
 
 
 const Header = styled.header`
   height: 90px;
-  background-color: #ffffff;
+  background-color: #062034
   color: #508464;
   padding: 0 40px;
   border-bottom: 1px solid rgba(0,0,0,.0975);
@@ -54,24 +45,24 @@ const Yggdrash = styled.div`
   margin-top:35px;
 `;
 const Network = styled(Wifi)`
-  color: black;
+  color: white;
 `
 const Exit = styled(ExitToApp)`
-  color: black;
+  color: white;
 `
 const Peer = styled(Location)`
-  color: black;
+  color: white;
   width:17px;
 `
 const Cog = styled(UsersCog)`
-  color: black;
+  color: white;
 `
 const HeaderIcon = styled.button`
   border: none;
   width: 35px;
   height: 40px;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: #062034
   align-items: center;
   border-radius: 10px;
   margin-right: 50px;
@@ -84,7 +75,7 @@ const HeaderIcon = styled.button`
   }
   &:hover {
     transform: translateY(-1px);
-    background-color:  #ecf0f1;
+    background-color:  #b2bec3
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
   }
   &:active {
@@ -108,34 +99,34 @@ const Version = styled.div`
   margin-top:45px;
   margin-left:10px;
 `
-const MunuBtn = styled.button`
-  border: 0;
-  width: 150px;
-  height: 40px;
-  justify-content: center;
-  background-color: #fafafa;
-  align-items: center;
-  margin-top: 10px;
-  margin-right: 30px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  font-size:1.1em;
-  cursor: pointer;
-  transition: all 0.2s ease-out;
-  position: relative;
-  &:focus,
-  &:active {
-    outline: none;
-  }
-  &:hover {
-    transform: translateY(-1px);
-    background-color:  #ecf0f1;
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-  }
-  &:active {
-    transform: translateY(1px);
-  }
-`;
+// const MunuBtn = styled.button`
+//   border: 0;
+//   width: 150px;
+//   height: 40px;
+//   justify-content: center;
+//   background-color: #fafafa;
+//   align-items: center;
+//   margin-top: 10px;
+//   margin-right: 30px;
+//   margin-bottom: 10px;
+//   border-radius: 10px;
+//   font-size:1.1em;
+//   cursor: pointer;
+//   transition: all 0.2s ease-out;
+//   position: relative;
+//   &:focus,
+//   &:active {
+//     outline: none;
+//   }
+//   &:hover {
+//     transform: translateY(-1px);
+//     background-color:  #ecf0f1;
+//     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+//   }
+//   &:active {
+//     transform: translateY(1px);
+//   }
+// `;
 
 const HeaderPresenter = () => (
   <Fragment>
@@ -161,17 +152,6 @@ const HeaderPresenter = () => (
                   onMouseLeave={(ev) => store.handleTooltip(ev, true)}
                 >
                   <Network/>
-                  {/* <Tooltip
-                    hidden={store.iconHidden}
-                    style={{
-                      top: `${store.top}px`,
-                      left: `${store.left}px`
-                    }}
-                    bottom={true}
-                  >
-                    <TooltipArrow bottom={true} />
-                    <TooltipInner bottom={true}>Network</TooltipInner>
-                  </Tooltip> */}
                 </HeaderIcon>
                 <DropdownMenu 
                   hidden={store.netMenuHidden}

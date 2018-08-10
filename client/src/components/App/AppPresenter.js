@@ -11,11 +11,7 @@ const Footer = styled.div`
   margin-top: 60px;
 `;
 
-const Germinal = styled.div`
-  width:50px;
-`;
-
-const AppPresenter = ({ }) => (
+const AppPresenter = () => (
       <Fragment>
         <Header />
           <Flex alignCenter full column>

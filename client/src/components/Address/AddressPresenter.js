@@ -22,8 +22,7 @@ import {
   TooltipInner,
 } from 'styled-tooltip-component';
 import {
-  Table,
-  Tr,
+  Table
 } from 'styled-table-component';
 
 
@@ -36,19 +35,18 @@ const Account = styled.div`
   border: 0;
   margin-bottom: 10px;
 `;
-
 const Address = styled.button`
-  width: 750px;
-  height:40px;
+  width: 300px;
+  height:100px;
   border: 0;
   font-size: 0.9em;
   font-weight: 250;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 10px;
   border-radius: 5px;
-  background-color: #ffffff;
+  background-color: #ccae62
+  // background-color: #CAD3C8
   display: flex;
-
   padding-top: 10px;
   padding-left: 10px;
   box-shadow: 0 2px 3px rgba(50, 50, 93, 0.05), 0 1px 2px rgba(0, 0, 0, 0.08);
@@ -61,7 +59,7 @@ const Address = styled.button`
   &:hover {
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
     transform: translateY(-1px);
-    background-color:  #ecf0f1;
+    background-color: #cc8e35
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -80,7 +78,6 @@ const Address = styled.button`
     }
   }
 `;
-
 const DetailAddress = styled.button`
   border: 0;
   border-radius: 5px;
@@ -122,17 +119,16 @@ const DetailAddress = styled.button`
     }
   }
 `;
-
 const AccountIcon = styled.button`
   border: 0;
-  width: 105px;
-  height: 40px;
+  width: ${props => (props.edit ? "inherit" : "105px;")}
+  height: ${props => (props.edit ? "inherit" : "40px;")}
   justify-content: center;
   background-color: #ffffff;
   align-items: center;
   border-radius: 10px;
-  margin-top: 10px;
-  margin-right: 40px;
+  margin-top: ${props => (props.edit ? "14px" : "10px;")}
+  margin-left:${props => (props.edit ? "5px" : "40px")}
   cursor: pointer;
   transition: all 0.2s ease-out;
   position: relative;
@@ -162,8 +158,6 @@ const AccountIcon = styled.button`
     }
   }
 `;
-
-
 const AddressCopyIcon = styled(Copy)`
   width:20px;
   margin-right:5px;
@@ -181,7 +175,6 @@ const ExportIcon = styled(Download)`
 `
 const EditIcon = styled(Edit2)`
   width:20px;
-  margin-right:5px;
   color: black;
 `
 const DeleteIcon = styled(Delete)`
@@ -189,13 +182,11 @@ const DeleteIcon = styled(Delete)`
   margin-right:5px;
   color: black;
 `
-
 const LockIcon = styled(Lock)`
   width:20px;
   margin-right:5px;
   color: black;
 `
-
 const Info = styled.div`
   width: 90%;
   height: 150px;
@@ -211,7 +202,6 @@ const Info = styled.div`
   font-size: 1em;
   padding-left: 10px;
 `;
-
 const TransactionInfo = styled.div`
   width: 90%;
   height: 450px;
@@ -229,7 +219,6 @@ const TransactionInfo = styled.div`
   padding-left: 10px;
   overflow:scroll;
 `;
-
 const Transactions = styled.button`
   border: 0;
   width: 150px;
@@ -268,19 +257,15 @@ const Transactions = styled.button`
     }
   }
 `;
-
-
 const Label = styled.div`
-  margin-top:20px;
+  margin-top:15px;
   margin-left:20px;
   font-size:1.3em;
   font-weight:400;
 `;
-
 const QR = styled.div`
   margin-top:10px;
 `;
-
 const Modal = styled(ReactModal)`
   border: 0;
   width: 90%;
@@ -312,7 +297,6 @@ const Modal = styled(ReactModal)`
       to {transform:scale(1)}
   }
 `
-
 const TransferModal = styled(ReactModal)`
   border: 0;
   width: 50%;
@@ -344,30 +328,33 @@ const TransferModal = styled(ReactModal)`
       to {top: 200px; }
   }
 `
-
 const Balance = styled.div`
   font-weight: 400;
   font-size: 1em;
-  margin-top: 5px;
-  margin-left: ${props => (props.val ? "inherit" : "25px")}
+  margin-top: ${props => (props.accountBox ? "9px" : "5px")}
+  margin-left: ${props => {
+    if(props.val){
+      return "inherit"
+    } else if(props.accountBox ){
+      return "5px"
+    } else {
+      return "25px"
+    }
+  }}
 `;
-
-
 const AccountBoxAddress = styled.div`
-  text-align:left;
-  flex: 1 1 100px;
+  // text-align:left;
+  // flex: 1 1 100px;
+  margin-top:${props => (props.name ? "5px" : "8px")}
 `;
 const AccountBoxYeed = styled.div`
   width: 15px;
   margin-right:5px;
+  margin-top:10px;
 `;
-const AccountBoxBalance = styled.div`
-`;
-
 const SendTxForm = styled.form`
   margin-top: 25px;
 `;
-
 const Submit = styled.input`
   border: 0;
   margin-right:10px;
@@ -391,7 +378,6 @@ const Submit = styled.input`
       }
   }
 `;
-
 const Input = Submit.extend`
   width: 90%;
   height: 40px;
@@ -401,28 +387,25 @@ const Input = Submit.extend`
   margin-top:${props => (props.amountInput ? "10px" : "")}
 `;
 
-const AddressPresenter = ({ balance, address, name }) => (
-  <Fragment>
+const AddressPresenter = ({ balance, address, name, copy, copied }) => (
+  <Flex>
     <Store.Consumer>
       {store => (
           <Account>
-          <Flex>
-            <FlexItem>
+            <Flex alignCenter column>
               <Address
-                onClick={() => store.AccountModal(address)}
+                onClick={() => store.AccountModal(address, name)}
               >
-                <Fragment>
-                  <AccountBoxAddress>{address}</AccountBoxAddress>
-                </Fragment>
-                <Fragment>
-                  <AccountBoxYeed><img src={yeed} alt="yeed" /></AccountBoxYeed>
-                </Fragment>
-                <Fragment>
-                  <AccountBoxBalance>0</AccountBoxBalance>
-                </Fragment>
+                <Flex alignCenter full column>
+                    <AccountBoxAddress name>{name}</AccountBoxAddress> 
+                    <AccountBoxAddress>{address.slice(0,30)}...{address.slice(39,42)}</AccountBoxAddress>
+                  <Flex>
+                    <AccountBoxYeed><img src={yeed} alt="yeed" /></AccountBoxYeed>
+                    <Balance accountBox>{store.balance}</Balance>
+                  </Flex>
+                </Flex>
               </Address>
-            </FlexItem>
-          </Flex>
+            </Flex>
           <Modal
               isOpen={store.showAccountModal}
               style={{
@@ -440,12 +423,20 @@ const AddressPresenter = ({ balance, address, name }) => (
                     </QR>
                   </FlexItem>
                   <FlexItem>
-                    <Label>{name}</Label>
+                    <Flex>
+                      <Label>
+                        {store.selectName}
+                      </Label>
+                      <AccountIcon edit>
+                        <EditIcon/>
+                      </AccountIcon>
+                    </Flex>
                     <CopyToClipboard text={store.selectAddress}
                     >
                       <DetailAddress
                         onMouseEnter={(ev) => store.handleTooltip(ev, false,"")}
                         onMouseLeave={(ev) => store.handleTooltip(ev, true,"")}
+                        onClick={() => copy()}
                       >
                         <AddressCopyIcon/>
                         {store.selectAddress}
@@ -460,7 +451,7 @@ const AddressPresenter = ({ balance, address, name }) => (
                       left
                     >
                       <TooltipArrow right={true} />
-                      <TooltipInner left>Copy</TooltipInner>
+                      <TooltipInner left>{copied===true ? "Copied" : "Copy"}</TooltipInner>
                     </Tooltip>
                     <Flex>
                       <Balance>Balance </Balance>
@@ -480,9 +471,6 @@ const AddressPresenter = ({ balance, address, name }) => (
                   </AccountIcon>
                   <AccountIcon>
                     <LockIcon/> PASSWORD
-                  </AccountIcon>
-                  <AccountIcon>
-                    <EditIcon/> EDIT
                   </AccountIcon>
                   <AccountIcon>
                     <DeleteIcon/> DELETE
@@ -607,7 +595,7 @@ const AddressPresenter = ({ balance, address, name }) => (
           </Account>
       )}
     </Store.Consumer>
-  </Fragment>
+  </Flex>
 );
 
 AddressPresenter.propTypes = {

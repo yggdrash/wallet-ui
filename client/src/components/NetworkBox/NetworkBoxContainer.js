@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import NetworkBoxPresenter from "./NetworkBoxPresenter";
-const httppp = require("http")
 class NetworkBoxContainer extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +34,7 @@ class NetworkBoxContainer extends Component {
         })
         .catch(err => console.log(err)) 
     }
-}
+  }
 
   render() {
     return <NetworkBoxPresenter {...this.props} {...this.state} 
