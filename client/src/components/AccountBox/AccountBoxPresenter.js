@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
 import ReactModal from 'react-modal';
-// import yeed from 'assets/images/yeed-symbol.png';
 import ModalHeader from 'components/AccountBoxHeader';
 import { Line } from "components/Shared";
 import { Download } from 'styled-icons/feather/Download';
@@ -12,8 +11,7 @@ import { Button } from 'components/Shared';
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
-// import yggtree from 'assets/images/yggdrasil-hash.png';
-import yggtree from 'assets/images/main.png';
+import ygg from 'assets/images/main.png';
 // import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
@@ -22,7 +20,7 @@ const AccountBox = styled.div`
   background-color: #0E2030
   width: 60%;
   height: 370px;
-  border-radius: 10px;
+  border-radius: 15px;
   margin-bottom: 70px;
   box-sizing: border-box;
   border: 2px solid rgba(0,0,0,.0975);
@@ -73,9 +71,9 @@ const Modal = styled(ReactModal)`
     outline: none;
   }
   -webkit-animation-name: zoom;
-    -webkit-animation-duration: 0.3ss;
+    -webkit-animation-duration: 0.5s;
     animation-name: zoom;
-    animation-duration: 0.3s;
+    animation-duration: 0.5s;
   @-webkit-keyframes zoom {
       from {-webkit-transform:scale(0)} 
       to {-webkit-transform:scale(1)}
@@ -531,7 +529,7 @@ const AccountBoxPresenter = ({
     <Line second/>
     <Store.Consumer>
         {store => (
-          store.accounts.length === 0 ? <YeedAnimation><img src={yggtree} alt="germinal" /></YeedAnimation> : ""
+          store.accounts.length === 0 ? <YeedAnimation><img src={ygg} alt="germinal" /></YeedAnimation> : ""
         )}
     </Store.Consumer>
     

@@ -7,9 +7,9 @@ import Store from "context/store";
 const Notification = styled.div`
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   background-color: #0E2030;
-  width: 30%;
+  width: 35%;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 15px;
   box-sizing: border-box;
   border: 2px solid rgba(0,0,0,.0975);
 `;

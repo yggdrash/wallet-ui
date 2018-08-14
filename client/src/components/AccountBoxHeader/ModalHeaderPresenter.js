@@ -16,7 +16,8 @@ const Header = styled.header`
 
 const Title = styled.div`
   color: #1C885F;
-  font-family: 'Titillium Web', sans-serif
+  font-style: italic;
+  font-family: 'Roboto', sans-serif
 `;
 
 

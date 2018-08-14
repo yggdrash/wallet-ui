@@ -3,15 +3,13 @@ import PropTypes from "prop-types";
 import AppPresenter from "./AppPresenter";
 import update from 'react-addons-update';
 import Store from "context/store";
-import { toBuffer } from "utils"
-import { fromPrivateKey } from "accounts/wallet"
-import { ExpandLessDimensions } from "styled-icons/material/ExpandLess";
+import { toBuffer } from "utils";
+import { fromPrivateKey } from "accounts/wallet";
 
 const elliptic = require("elliptic"),
   path = require("path"),
   bip38 = require('bip38'),
   bip38Decrypt = require('bip38-decrypt'),
-  wif = require('wif'),
   HDKey = require("accounts/hdkey"),
   bip39 = require("bip39"),
   initWallet = require("export"),

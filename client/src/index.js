@@ -12,10 +12,10 @@ import "./typography";
 injectGlobal`
 ${reset};
 body{
-  background-color: #F8F6F8
   background-image: url(${back});
   background-repeat: no-repeat
   background-size: cover;
+  font-family:'Roboto', sans-serif
 }
 `;
 

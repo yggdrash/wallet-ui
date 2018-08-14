@@ -298,14 +298,45 @@ const Modal = styled(ReactModal)`
       to {transform:scale(1)}
   }
 `
-const TransferModal = styled(ReactModal)`
+// const Transfer = styled(ReactModal)`
+//   border: 0;
+//   width: 50%;
+//   height: 50%;
+//   position: absolute;
+//   top: 5%
+//   left: 25%;
+//   background-color: #FAFAFA;
+//   border: 2px solid rgba(0,0,0,.0975);
+//   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
+//   border-radius: 10px;
+//   box-sizing: border-box;
+//   border-color: rgba(70, 219, 115, 0);
+//   &:focus,
+//   &:active {
+//     outline: none;
+//   }
+
+//   -webkit-animation: mymove 0.5s;  
+//   -webkit-animation-fill-mode: forwards;
+//   animation: mymove 0.5s;
+//   animation-fill-mode: forwards;
+//   @-webkit-keyframes mymove {
+//     from {top: 100px;}
+//     to {top: 200px; }
+//   }
+//   @keyframes mymove {
+//       from {top: 100px;}
+//       to {top: 200px; }
+//   }
+// `
+const Transfer = styled(ReactModal)`
   border: 0;
   width: 50%;
-  height: 50%;
   position: absolute;
-  top: 5%
+  top: 15%
   left: 25%;
   background-color: #FAFAFA;
+  background-image: url('../assets/images/how-bg-opti.png');
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -315,18 +346,18 @@ const TransferModal = styled(ReactModal)`
   &:active {
     outline: none;
   }
-
-  -webkit-animation: mymove 0.5s;  
-  -webkit-animation-fill-mode: forwards;
-  animation: mymove 0.5s;
-  animation-fill-mode: forwards;
-  @-webkit-keyframes mymove {
-    from {top: 100px;}
-    to {top: 200px; }
+  -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.5s;
+    animation-name: zoom;
+    animation-duration: 0.5s;
+  @-webkit-keyframes zoom {
+      from {-webkit-transform:scale(0)} 
+      to {-webkit-transform:scale(1)}
   }
-  @keyframes mymove {
-      from {top: 100px;}
-      to {top: 200px; }
+  
+  @keyframes zoom {
+      from {transform:scale(0)} 
+      to {transform:scale(1)}
   }
 `
 const Balance = styled.div`
@@ -546,7 +577,7 @@ const AddressPresenter = ({ balance, address, name, copy, copied }) => (
                 </FlexItem>
               </Flex>
             </Modal>
-          <TransferModal
+          <Transfer
               isOpen={store.showTransferModal}
               style={{
                 content: {
@@ -594,7 +625,7 @@ const AddressPresenter = ({ balance, address, name, copy, copied }) => (
                   </Fragment>
                 </FlexItem>
               </Flex>
-            </TransferModal>
+            </Transfer>
           </Account>
       )}
     </Store.Consumer>
