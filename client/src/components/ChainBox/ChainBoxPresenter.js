@@ -11,8 +11,6 @@ import { Button } from 'components/Shared';
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
-import DetailAccount from 'components/DetailAccount';
-import DetailAccountMenu from 'components/DetailAccountMenu';
 import ygg from 'assets/images/main.png';
 // import LoadingScreen from 'react-loading-screen';
 
@@ -234,7 +232,6 @@ const Input = Submit.extend`
   margin-left:40px;
   padding-left: 10px;
 `;
-
 const Loading = styled.div`
   position: absolute;
   top: calc(50% - 4em);
@@ -255,20 +252,11 @@ const Loading = styled.div`
   }
 `;
 const Address = styled.div`
-  display: ${props => (props.first ? "inherit" : "grid")}
-  grid-template-columns: ${props => {
-    if (props.first) {
-      return "inherit";
-    }else if(props.second){
-      return "455px 455px"
-    }else {
-      return "300px 300px 300px";
-    }
-  }};
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
 `;
 
-
-const AccountBoxPresenter = ({ 
+const ChainBoxPresenter = ({ 
   text, 
   balance, 
   mnemonic, 
@@ -290,7 +278,7 @@ const AccountBoxPresenter = ({
   <AccountBox >
     <Flex alignCenter justifyBetween>
       <Title>
-        {text}
+        My Chains
       </Title>
     </Flex>
     <Line/>
@@ -532,10 +520,6 @@ const AccountBoxPresenter = ({
                     </FlexItem>
                   </Flex>
                 </Modal>
-                <DetailAccount
-                  lowdb={store.lowdb}
-                />
-                <DetailAccountMenu/>
               </Fragment>
             )}
           </Store.Consumer>
@@ -545,34 +529,26 @@ const AccountBoxPresenter = ({
     <Line second/>
     <Store.Consumer>
         {store => (
-          store.lowdb.get("accounts").map("account").value().length === 0 ? <YeedAnimation><img src={ygg} alt="germinal" /></YeedAnimation> : ""
+          store.accounts.length === 0 ? <YeedAnimation><img src={ygg} alt="germinal" /></YeedAnimation> : ""
         )}
     </Store.Consumer>
-    <Store.Consumer>
-      {store => (
-        <Address
-        first={store.lowdb.get("accounts").map("account.address").value().length === 1}
-        second={store.lowdb.get("accounts").map("account.address").value().length ===2}
-        >
-          <Store.Consumer>
-              {store => {
-                return store.lowdb.get("accounts").map("account").value().map(key => (
-                  <Account
-                    address={key.address}
-                    name={key.accountName}
-                    balance={store.balance}
-                    lowdb={store.lowdb}
-                  />
-                ));
-              }}
-          </Store.Consumer>
-        </Address>
-      )}
-    </Store.Consumer>
+    <Address>
+      <Store.Consumer>
+          {store => {
+            return store.accounts.map(key => (
+              <Account
+                address={key.address}
+                name={key.accountName}
+                balance={store.balance}
+              />
+            ));
+          }}
+      </Store.Consumer>
+    </Address>
   </AccountBox>
 );
 
-AccountBoxPresenter.propTypes = {
+ChainBoxPresenter.propTypes = {
   id: PropTypes.number,
   text: PropTypes.string,
   createAccount: PropTypes.func.isRequired,
@@ -591,4 +567,4 @@ AccountBoxPresenter.propTypes = {
 
 ReactModal.setAppElement('body');
 
-export default AccountBoxPresenter;
+export default ChainBoxPresenter;

@@ -6,8 +6,10 @@ import reset from "styled-reset";
 import back from "assets/images/background.png";
 import "./typography";
 
-// const { remote } = window.require("electron");
-// const sharedPort = remote.getGlobal("sharedPort");
+const { remote } = window.require("electron");
+const sharedPort = remote.getGlobal("sharedPort");
+const lowdb = remote.getGlobal("lowdb");
+
 
 injectGlobal`
 ${reset};
@@ -20,7 +22,10 @@ body{
 `;
 
 ReactDOM.render(
-    //   <App sharedPort={sharedPort} />,
-      <App />,
+      <App 
+        sharedPort={sharedPort} 
+        lowdb={lowdb}
+        />,
+      // <App />,
   document.getElementById("root")
 );

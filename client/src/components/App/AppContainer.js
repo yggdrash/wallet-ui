@@ -7,30 +7,20 @@ import { toBuffer } from "utils";
 import { fromPrivateKey } from "accounts/wallet";
 
 const elliptic = require("elliptic"),
-  path = require("path"),
   bip38 = require('bip38'),
   bip38Decrypt = require('bip38-decrypt'),
   HDKey = require("accounts/hdkey"),
   bip39 = require("bip39"),
-  initWallet = require("export"),
   passValid = require("password-strength");
 
 const HDpath = "m/44'/60'/0'/0/0";
-const privateKeyLocation = path.join(__dirname, "keystore/keystoredata");
 class AppContainer extends Component {
   constructor(props) {
     super(props);
-
+    const { lowdb } = this.props;
     this.componentDidMount = () => {
-      const { sharedPort } = this.props;
-      document.body.addEventListener("keydown", this.closeLastPopup)
+      document.body.addEventListener("keydown", this.closeLastPopup);
     };
-
-    // this.getPrivateFromWallet = () => {
-    //   console.log("Asdf")
-    //   const buffer = fs.readFileSync(privateKeyLocation, "utf8");
-    //   return buffer.toString();
-    // };
 
     this.closeLastPopup = e => {
       if (!(e.key === "Escape" || e.keyCode === 27)) return
@@ -51,9 +41,9 @@ class AppContainer extends Component {
           isloading:false,
           passwordValid:""
         })
-      }else if(this.state.showAccountModal === true && this.state.showTransferModal === true){
+      }else if(this.state.showAccountModal === true && this.state.showDetailAccountMenuModal === true){
         this.setState({ 
-          showTransferModal: !this.state.showTransferModal,
+          showDetailAccountMenuModal: !this.state.showDetailAccountMenuModal,
           word3:"",
           word6:"",
           word9:"",
@@ -82,19 +72,19 @@ class AppContainer extends Component {
      }
     
     this._createAccountModal = () => {
-        this.setState(currentState => {
-          return {
-            ...currentState,
-            accountBox: {
-              ...currentState.accountBox
-            },
-            accountName:"",
-            password:"",
-            confirmPassword:"",
-            showModal: !this.state.showModal,
-            statusModal:"password"
-          };
-        });
+      this.setState(currentState => {
+        return {
+          ...currentState,
+          accountBox: {
+            ...currentState.accountBox
+          },
+          accountName:"",
+          password:"",
+          confirmPassword:"",
+          showModal: !this.state.showModal,
+          statusModal:"password"
+        };
+      });
     };
 
     this._setPassword = () =>{
@@ -223,15 +213,6 @@ class AppContainer extends Component {
       //   }
       // });
       
-      // if (fs.existsSync(privateKeyLocation)) {
-      //   return;
-      // }
-
-      // const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
-      // const wallet = hdwallet.derivePath(HDpath).getWallet();
-      // let address = wallet.getAddressString();
-      // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
-      // fs.writeFileSync(privateKeyLocation, privateKey);
 
       if(wordSplit[2]=== this.state.word3 && wordSplit[5]=== this.state.word6 && wordSplit[8]=== this.state.word9){
         const { accountName, password } = this.state
@@ -439,6 +420,7 @@ class AppContainer extends Component {
     };
 
     this.setImportAccount = (address, wallet)=> {
+      const { lowdb } = this.props;
       const { accountName, password } = this.state
       const uuid = this.guid();
       const fromPrivateKeyBuffer = wallet.getPrivateKey();
@@ -450,6 +432,19 @@ class AppContainer extends Component {
         address,
         // privatekeyEncryptedKey
       }
+
+      lowdb.get('accounts')
+        .push({account: account})
+        .write()
+        
+      // lowdb.get('accounts').push({
+      //   name:accountName,
+      //   address:address
+      // }).write()
+      // lowdb.get('principal').push({
+      //   address:address,
+      //   EncryptedKey:"asdf"
+      // }).write()
 
       this.setState(currentState => {
         const newState = delete currentState.importMnemonic;
@@ -471,7 +466,6 @@ class AppContainer extends Component {
             password:"",
             confirmPassword:"",
             isloading:false,
-            encrypteStatus:"",
             passwordValid:""
         };
       });
@@ -493,7 +487,7 @@ class AppContainer extends Component {
             ...currentState.account
           },
           showModal: e === "main" ? !this.state.showModal : false,
-          showTransferModal: e === "transfer" ? !this.state.showTransferModal : false,
+          showDetailAccountMenuModal: e === "transfer" ? !this.state.showDetailAccountMenuModal : false,
           showAccountModal: e === "transfer" ? this.state.showAccountModal : false,
           newImportMnemonic,
           newMnemonic,
@@ -568,11 +562,7 @@ class AppContainer extends Component {
     }
 
     this._handleOpenCloseDropdown = e => {
-      if(e==="network"){
-        this.setState({
-          netMenuHidden: !this.state.netMenuHidden
-        });
-      }else if(e==="cog"){
+      if(e==="cog"){
         this.setState({
           cogMenuHidden: !this.state.cogMenuHidden
         });
@@ -580,24 +570,14 @@ class AppContainer extends Component {
       
     };
 
-    this._handleTooltip = (ev, copyHidden) => {
-      this.setState({
-        top: ev.target.offsetTop + 5,
-        left: ev.target.offsetLeft + ev.target.offsetWidth + 5,
-        copyHidden
-      });
-    }
-
-    this._TransferModal = () => {
+    this._DetailAccountMenuModal = () => {
       this.setState(() => {
         return {
-          showTransferModal: !this.state.showTransferModal,
+          showDetailAccountMenuModal: !this.state.showDetailAccountMenuModal,
           statusModal:"transfer" 
         };
       });
     }
-
-    
 
     this.state = {
       isloading:false,
@@ -611,15 +591,10 @@ class AppContainer extends Component {
       password:"",
       confirmPassword:"",
       passwordValid:"",
-      encrypteStatus:"",
       showModal: false,
       showAccountModal: false,
-      showTransferModal: false,
-      netMenuHidden:true,
+      showDetailAccountMenuModal: false,
       cogMenuHidden:true,
-      copyHidden:true,
-      top: 0,
-      left: 0,
       statusModal:"",
       importMnemonic:"",
       recoveryPharse:"",
@@ -638,7 +613,6 @@ class AppContainer extends Component {
         }
       },
       handleOpenCloseDropdown: this._handleOpenCloseDropdown,
-      handleTooltip: this._handleTooltip,
       createAccount: this._createAccount,
       createAccountModal: this._createAccountModal,
       setPassword: this._setPassword,
@@ -649,7 +623,8 @@ class AppContainer extends Component {
       handleSubmit:this._handleSubmit,
       AccountModal:this._AccountModal,
       closeModal: this._closeModal,
-      TransferModal: this._TransferModal
+      DetailAccountMenuModal: this._DetailAccountMenuModal,
+      lowdb:lowdb
     };
   }
   render() {

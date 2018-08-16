@@ -7,6 +7,19 @@ const electron = require('electron'),
     getPort = require("get-port")
 
 const { app, BrowserWindow, Menu } = electron;
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
+const adapter = new FileSync('client/src/accounts/account.json')
+const db = low(adapter)
+
+// Set some defaults (required if your JSON file is empty)
+db.defaults({ accounts: [] })
+  .write()
+
+getPort().then(port => {
+  global.sharedPort = port;
+  global.lowdb = db;
+});
 
 let mainWindow;
 let enableScreenshotProtection = true

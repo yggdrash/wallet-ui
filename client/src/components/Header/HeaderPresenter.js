@@ -56,7 +56,15 @@ const CloseIcon = styled(Close)`
 `
 const HeaderIcon = styled.button`
   border: none;
-  width: ${props => (props.network ? "70px;" : "35px")}
+  width: ${props => {
+    if(props.network){
+      return "70px"
+    }else if(props.close){
+      return "80px"
+    }else {
+      return "35px"
+    }
+  }};
   height: 40px;
   color: #FCFCFC;
   justify-content: center;
@@ -64,7 +72,7 @@ const HeaderIcon = styled.button`
   align-items: center;
   border-radius: 10px;
   margin-top: ${props => (props.close ? "20px" : "inherit")}
-  margin-left: ${props => (props.close ? "70px" : "50px;")}
+  margin-left: ${props => (props.close ? "36px" : "50px;")}
   cursor: pointer;
   transition: all 0.2s ease-out;
   position: relative;
