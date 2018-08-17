@@ -7,7 +7,8 @@ class HeaderContainer extends Component {
     super(props);
 
     this.state = {
-      modalIsOpen:false
+      modalIsOpen:false,
+      cogMenuHidden:true,
     };
 
     this.componentDidMount = () => {
@@ -28,11 +29,22 @@ class HeaderContainer extends Component {
         modalIsOpen: !this.state.modalIsOpen,
       })
     }
+
+    this._handleOpenCloseDropdown = e => {
+      if(e==="cog"){
+        this.setState({
+          cogMenuHidden: !this.state.cogMenuHidden
+        });
+      }
+    };
+
   }
   render() {
     return <HeaderPresenter {...this.props} {...this.state} 
             modalIsOpen={this.state.modalIsOpen}
             menu={this._menu}
+            handleOpenCloseDropdown={this._handleOpenCloseDropdown}
+            cogMenuHidden={this.state.cogMenuHidden}
             />;
   }
 }

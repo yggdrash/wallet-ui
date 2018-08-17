@@ -4,7 +4,8 @@ import styled from "styled-components";
 import Flex from "styled-flex-component";
 import ReactModal from 'react-modal';
 import yeed from 'assets/images/yeed-symbol.png';
-import back from "assets/images/background2.png";
+import DetailAccount from 'components/DetailAccount';
+import DetailAccountMenu from 'components/DetailAccountMenu';
 import Store from "context/store";
 
 const Account = styled.div`
@@ -16,15 +17,27 @@ const Account = styled.div`
 const Address = styled.button`
   width: 250px;
   height:100px;
-  border: 0;
+  border:0
   font-size: 0.9em;
   font-weight: 250;
   margin-top: 20px;
   margin-bottom: 10px;
   border-radius: 15px;
-  background-image: url(${back});
-  background-repeat: no-repeat
-  background-size: cover;
+  // background: #3cbaba
+  // background: -webkit-linear-gradient(left,#21b5b5 , #147a7a);
+  // background: -o-linear-gradient(right, #21b5b5, #147a7a); 
+  // background: -moz-linear-gradient(right, #21b5b5, #147a7a); 
+  // background: linear-gradient(to right, #21b5b5 , #147a7a); 
+
+  // background: -webkit-linear-gradient(left,#174730 , #0c3b24);
+  // background: -o-linear-gradient(right, #174730, #0c3b24); 
+  // background: -moz-linear-gradient(right, #174730, #0c3b24); 
+  // background: linear-gradient(to right, #174730 , #0c3b24); 
+
+  background: -webkit-linear-gradient(left,#246948 , #0e4d2e);
+  background: -o-linear-gradient(right, #246948, #0e4d2e); 
+  background: -moz-linear-gradient(right, #246948, #0e4d2e); 
+  background: linear-gradient(to right, #246948 , #0e4d2e); 
   display: flex;
   padding-top: 10px;
   padding-left: 10px;
@@ -37,12 +50,13 @@ const Address = styled.button`
   }
   &:hover {
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
+    background-color:  #1D8074
+    transform: translateY(-3px);
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     background-color:  #ecf0f1;
-    transform: translateY(1px);
+    transform: translateY(3px);
   }
   &:disabled {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -100,6 +114,12 @@ const AddressPresenter = ({ balace, address, name }) => (
                   </Flex>
                 </Flex>
               </Address>
+              <DetailAccount
+                lowdb={store.lowdb}
+                selectAddress={store.selectAddress}
+                selectName={name}
+              />
+              <DetailAccountMenu/>
             </Flex>
           </Account>
       )}

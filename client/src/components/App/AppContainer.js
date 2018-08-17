@@ -20,8 +20,12 @@ class AppContainer extends Component {
     const { lowdb } = this.props;
     this.componentDidMount = () => {
       document.body.addEventListener("keydown", this.closeLastPopup);
+      // this.test()
     };
 
+    this.test = () => {
+      let a = lowdb.get("accounts").find({address:"0xe517683cc8752c429fafd5396d46f6353eee8ace"}).value().name
+    }
     this.closeLastPopup = e => {
       if (!(e.key === "Escape" || e.keyCode === 27)) return
       if(this.state.showModal === true){
@@ -432,19 +436,16 @@ class AppContainer extends Component {
         address,
         // privatekeyEncryptedKey
       }
-
-      lowdb.get('accounts')
-        .push({account: account})
-        .write()
         
-      // lowdb.get('accounts').push({
-      //   name:accountName,
-      //   address:address
-      // }).write()
-      // lowdb.get('principal').push({
-      //   address:address,
-      //   EncryptedKey:"asdf"
-      // }).write()
+      lowdb.get('accounts').push({
+        uuid:uuid,
+        name:accountName,
+        address:address
+      }).write()
+      lowdb.get('principal').push({
+        address:address,
+        EncryptedKey:"asdf"
+      }).write()
 
       this.setState(currentState => {
         const newState = delete currentState.importMnemonic;
@@ -561,21 +562,24 @@ class AppContainer extends Component {
       });
     }
 
-    this._handleOpenCloseDropdown = e => {
-      if(e==="cog"){
-        this.setState({
-          cogMenuHidden: !this.state.cogMenuHidden
-        });
-      }
-      
-    };
-
     this._DetailAccountMenuModal = () => {
       this.setState(() => {
         return {
           showDetailAccountMenuModal: !this.state.showDetailAccountMenuModal,
           statusModal:"transfer" 
         };
+      });
+    }
+
+    this._edit = address => {
+      if(this.state.editor === true && this.state.selectName === ""){
+        return false
+      }else if(this.state.editor ===true && this.state.selectName !== ""){
+        lowdb.get("accounts").find({address:address}).assign({name:this.state.selectName}).write()
+      }
+      this.setState({
+        editor: !this.state.editor,
+        selectName:lowdb.get("accounts").find({address:address}).value().name
       });
     }
 
@@ -594,7 +598,6 @@ class AppContainer extends Component {
       showModal: false,
       showAccountModal: false,
       showDetailAccountMenuModal: false,
-      cogMenuHidden:true,
       statusModal:"",
       importMnemonic:"",
       recoveryPharse:"",
@@ -606,7 +609,6 @@ class AppContainer extends Component {
       AlertImportAccountName:"",
       AlertImportAccountPass:"",
       AlertImportAccountConfirmPass:"",
-      text: `My Accounts`,
       accountBox: {
         "1": {
           id: 1
@@ -624,6 +626,8 @@ class AppContainer extends Component {
       AccountModal:this._AccountModal,
       closeModal: this._closeModal,
       DetailAccountMenuModal: this._DetailAccountMenuModal,
+      edit:this._edit,
+      editor:false,
       lowdb:lowdb
     };
   }

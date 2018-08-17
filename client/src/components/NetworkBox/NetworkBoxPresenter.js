@@ -8,6 +8,7 @@ const Notification = styled.div`
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   background-color: #0E2030;
   width: 35%;
+  background-color: rgba( 18, 38, 57, 0.6);
   padding: 20px;
   border-radius: 15px;
   box-sizing: border-box;
@@ -15,13 +16,14 @@ const Notification = styled.div`
 `;
 
 const Title = styled.div`
-  color: #41916E;
+  color: #fcfcfc;
   font-weight: 600;
   margin-top: ${props => (props.top ? "0px;" : "30px;")};
 `;
 
 const Value = styled.div`
   color: #FCFCFC;
+  font-style:italic;
   font-weight: 350;
   margin-top: ${props => (props.top ? "0px;" : "30px;")};
 `;

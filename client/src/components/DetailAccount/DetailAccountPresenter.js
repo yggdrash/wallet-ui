@@ -12,7 +12,7 @@ import { Lock } from "styled-icons/feather/Lock";
 import { Edit2 } from "styled-icons/feather/Edit2";
 import { Delete } from "styled-icons/material/Delete";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { CheckCircle } from 'styled-icons/feather/CheckCircle';
+import { Check } from 'styled-icons/material/Check';
 import yeed from 'assets/images/yeed-symbol.png';
 import { Yeed, Button } from "components/Shared";
 import {
@@ -27,12 +27,14 @@ import Store from "context/store";
 const accountProp = "account"
 const Modal = styled(ReactModal)`
   border: 0;
+  // background-color: rgba( 26, 92, 57, 0.5 );
+  background-color: rgba( 22, 48, 72, 0.5 );
+  // background-color: rgba( 30, 65, 98, 0.5 );
   width: 90%;
   height: 90%;
   position: absolute;
   top: 5%
   left: 5%;
-  background-color: #FAFAFA;
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -59,7 +61,7 @@ const Modal = styled(ReactModal)`
 const DetailAddress = styled.button`
   border: 0;
   border-radius: 5px;
-  background-color: #ffffff;
+  background: transparent
   height:40px;
   font-size: 1em;
   font-weight: 400;
@@ -102,12 +104,13 @@ const AccountIcon = styled.button`
   width: ${props => (props.edit ? "inherit" : "105px;")}
   height: ${props => (props.edit ? "inherit" : "40px;")}
   justify-content: center;
-  background-color: #ffffff;
+  background: transparent
   align-items: center;
   border-radius: 10px;
   margin-top: ${props => (props.edit ? "14px" : "10px;")}
   margin-left:${props => (props.edit ? "5px" : "40px")}
   cursor: pointer;
+  color: #fcfcfc
   transition: all 0.2s ease-out;
   position: relative;
   &:focus,
@@ -139,45 +142,46 @@ const AccountIcon = styled.button`
 const AddressCopyIcon = styled(Copy)`
   width:20px;
   margin-right:5px;
-  color: black;
+  color:black
+`
+const EditIcon = styled(Edit2)`
+  width:20px;
+  color:black
+`
+const CheckIcon = styled(Check)`
+  width:20px;
+  margin-right:5px;
+  color: black
 `
 const TransactionIcon = styled(Send)`
   width:20px;
   margin-right:5px;
-  color: black;
+  color: #3B7A8E
 `
 const ExportIcon = styled(Download)`
   width:20px;
   margin-right:5px;
-  color: black;
-`
-const EditIcon = styled(Edit2)`
-  width:20px;
-  color: black;
+  color: #3B7A8E
 `
 const DeleteIcon = styled(Delete)`
   width:20px;
   margin-right:5px;
-  color: black;
+  color: #3B7A8E
 `
 const LockIcon = styled(Lock)`
   width:20px;
   margin-right:5px;
-  color: black;
+  color:#3B7A8E
 `
-const CheckIcon = styled(CheckCircle)`
-  width:20px;
-  margin-right:5px;
-  color: black;
-`
+
 const Info = styled.div`
   width: 90%;
   height: 150px;
   margin-top: 40px;
   margin-left: 65px;
   border: 0;
-  border-radius: 5px;
-  background-color: #ffffff;
+  border-radius: 15px;
+  background-color: rgba( 255, 255, 255, 0.4);
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
   display: flex;
@@ -192,8 +196,8 @@ const TransactionInfo = styled.div`
   margin-left: 65px;
   margin-bottom: 5px;
   border: 0;
-  border-radius: 5px;
-  background-color: #ffffff;
+  border-radius: 15px;
+  background-color: rgba( 255, 255, 255, 0.4);
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
   display: flex;
@@ -207,7 +211,7 @@ const Transactions = styled.button`
   width: 150px;
   height: 40px;
   justify-content: center;
-  background-color: #ffffff;
+  background: transparent
   align-items: center;
   margin-top: 10px;
   margin-right: 50px;
@@ -267,6 +271,7 @@ const Balance = styled.div`
 const Submit = styled.input`
   border: 0;
   padding: 10px 0;
+  background: transparent
   border-bottom: 0.2px solid rgb(051,153,051);
   &:focus,
   &:active {
@@ -294,7 +299,7 @@ const Input = Submit.extend`
   margin-top:${props => (props.amountInput ? "10px" : "")}
 `;
 
-const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, left, edit, handleInput, name, editor}) => (
+const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, left}) => (
   <Flex>
   <Store.Consumer>
     {store => (
@@ -316,15 +321,16 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
             </FlexItem>
             <FlexItem>
               <Flex>
-                {editor 
+                {store.editor 
                 ? 
                 <Input
                   placeholder={store.selectName}
                   required
-                  name="name"
-                  value={name}
+                  name="selectName"
+                  value={store.selectName}
                   type={"text"}
-                  onChange={handleInput}
+                  maxLength={30}
+                  onChange={store.handleInput}
                 />
                 : 
                 <Label>
@@ -332,9 +338,9 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
                 </Label>
                 }           
                 <AccountIcon edit
-                  onClick={() => edit(store.selectAddress)}
+                  onClick={() => store.edit(store.selectAddress)}
                 >
-                  {editor ? <CheckIcon/> : <EditIcon/> }
+                  {store.editor ? <CheckIcon/> : <EditIcon/> }
                 </AccountIcon>
               </Flex>
               <CopyToClipboard text={store.selectAddress}

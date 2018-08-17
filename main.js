@@ -13,7 +13,7 @@ const adapter = new FileSync('client/src/accounts/account.json')
 const db = low(adapter)
 
 // Set some defaults (required if your JSON file is empty)
-db.defaults({ accounts: [] })
+db.defaults({ accounts: [], principal:[] })
   .write()
 
 getPort().then(port => {

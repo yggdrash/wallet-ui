@@ -3,14 +3,29 @@ import DetailAccountPresenter from "./DetailAccountPresenter";
 class DetailAccountContainer extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       copied:false,
       copyHidden:true,
       top: 0,
       left: 0,
-      editor:false
+      editor:false,
+      name:""
     };
+
+    this.componentDidMount = () => {
+      document.body.addEventListener("keydown", this.closeLastPopup);
+    };
+    
+    this.closeLastPopup = e => {
+      const { lowdb, selectAddress, showDetailAccountMenuModal } = this.props;
+      if (!(e.key === "Escape" || e.keyCode === 27)) return
+      if(showDetailAccountMenuModal ===true){
+        this.setState({
+          showDetailAccountMenuModal: !showDetailAccountMenuModal,
+          editor:false
+        });
+      }
+     }
 
     this._copy = () => {
       this.setState(() => {
@@ -34,27 +49,6 @@ class DetailAccountContainer extends Component {
         copyHidden
       });
     }
-
-    this._edit = address => {
-      const { lowdb } = this.props;
-      // let test = lowdb.get("accounts")
-      //                   .find({account.address:address})
-     
-      // if(this.state.editor ===true){
-        
-      // }
-      this.setState({
-        editor: !this.state.editor
-      });
-    }
-
-    this._handleInput = e => {
-        const { target: { name, value } } = e;
-        this.setState({
-          [name]: value,
-        });
-      };
-
   }
 
   render() {
@@ -65,9 +59,6 @@ class DetailAccountContainer extends Component {
             copied={this.state.copied}
             copyHidden={this.state.copyHidden}
             handleTooltip={this._handleTooltip}
-            edit={this._edit}
-            editor={this.state.editor}
-            handleInput={this._handleInput}
           />;
   }
 }

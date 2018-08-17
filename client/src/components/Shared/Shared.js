@@ -63,16 +63,17 @@ export const KeyName = styled.span`
 `;
 
 export const Button = styled.button`
-  border: 0;
+  border: 1px solid #fafafa;
   width: 150px;
   height: 5%;
   padding: 10px 0;
-  margin-left: ${props => (props.import ? "20px;" : "inherit")}
+  margin-left: ${props => (props.importAccount ? "20px;" : "inherit")}
   margin-right:15px;
   margin-top:15px;
   margin-bottom:15px;
-  color: #f5f6fa;
-  background-color: #1C885F;
+  color: #DCB830
+  background: transparent
+  opacity: 1;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.1s linear;
@@ -83,12 +84,13 @@ export const Button = styled.button`
   }
   &:hover {
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
+    transform: translateY(-3px);
+    color: #FFF;
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     background-color: #7f8c8d;
-    transform: translateY(1px);
+    transform: translateY(3px);
   }
   &:disabled {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);

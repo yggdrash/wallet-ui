@@ -9,7 +9,7 @@ import Header from 'components/Header';
 import Store from "context/store";
 
 const Footer = styled.div`
-  margin-top: 60px;
+  margin-top: 70px;
   color: #fcfcfc;
 `;
 
@@ -27,7 +27,6 @@ const AppPresenter = () => (
                     password={store.password}
                     passwordValid={store.passwordValid}
                     confirmPassword={store.confirmPassword}
-                    text={store.text}
                     address={store.address}
                     selectAddress={store.selectAddress}
                     balance={store.balance}
@@ -59,7 +58,7 @@ const AppPresenter = () => (
             </Store.Consumer>
           </Flex>
           <Flex alignCenter full column>
-            <Footer>© Akashic foundation</Footer>
+            <Footer>© AKASHIC FOUNDATION</Footer>
           </Flex>
       </Fragment>
 );

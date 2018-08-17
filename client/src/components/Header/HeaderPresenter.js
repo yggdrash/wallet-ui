@@ -19,7 +19,7 @@ import {
 
 const Header = styled.header`
   height: 80px;
-  background-color: #141414
+  background-color: rgba( 18, 38, 57, 0.6);
   color: #508464;
   padding: 0 40px;
   border-bottom: 1px solid rgba(0,0,0,.0975);
@@ -68,7 +68,7 @@ const HeaderIcon = styled.button`
   height: 40px;
   color: #FCFCFC;
   justify-content: center;
-  background-color: #141414;
+  background: transparent
   align-items: center;
   border-radius: 10px;
   margin-top: ${props => (props.close ? "20px" : "inherit")}
@@ -111,7 +111,7 @@ const SideMenuIcon = styled.button`
   background-color: #141414;
   align-items: center;
   border-radius: 10px;
-  margin-top: 50px;
+  margin-top: 70px;
   cursor: pointer;
   color: #fafafa;
   transition: all 0.2s ease-out;
@@ -189,7 +189,7 @@ const MenuModal = styled(ReactModal)`
   }
 `
 
-const HeaderPresenter = ({ modalIsOpen, menu }) => (
+const HeaderPresenter = ({ modalIsOpen, menu, handleOpenCloseDropdown, cogMenuHidden }) => (
   <Fragment>
     <Header>
       <Flex full justifyBetween alignCenter>
@@ -211,12 +211,12 @@ const HeaderPresenter = ({ modalIsOpen, menu }) => (
                 <HeaderIcon
                   secondary
                   dropdownToggle
-                  onClick={() => store.handleOpenCloseDropdown("cog")}
+                  onClick={() => handleOpenCloseDropdown("cog")}
                 >
                   <Cog/>
                 </HeaderIcon>
                 <DropdownMenu 
-                    hidden={store.cogMenuHidden}
+                    hidden={cogMenuHidden}
                     mt="15px"
                 >
                   <DropdownItem py="10px">Recovery Account</DropdownItem>

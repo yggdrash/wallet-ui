@@ -14,8 +14,7 @@ const Transfer = styled(ReactModal)`
   position: absolute;
   top: 30%
   left: 25%;
-  background-color: #FAFAFA;
-  background-image: url('../assets/images/how-bg-opti.png');
+  background-color: rgba( 22, 48, 72, 0.5 );
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -39,15 +38,15 @@ const Transfer = styled(ReactModal)`
       to {transform:scale(1)}
   }
 `
-const SendTxForm = styled.form`
-  margin-top: 25px;
-`;
 const Submit = styled.input`
   border: 0;
   margin-right:10px;
+  background-color:transparent
   padding: 10px 0;
-  background-color: #FAFAFA;
-  border-bottom: 0.2px solid ${props => (props.AlertImportAccount ?"rgb(204,000,000);" : "rgb(051,153,051);")}
+  border-bottom: 0.2px solid ${props => (props.AlertImportAccount ?"rgb(204,000,000);" : "rgb(255,255,255);")}
+  &::-webkit-input-placeholder {
+    color: #dfe6e9
+  }
   &:focus,
   &:active {
     outline: none;
@@ -64,6 +63,9 @@ const Submit = styled.input`
         transform: none;
       }
   }
+  &:hover {
+    border-bottom: 0.2px solid ${props => (props.AlertImportAccount ?"rgb(204,000,000);" : "rgb(75,203,188);")}
+  }
 `;
 const Input = Submit.extend`
   width: 90%;
@@ -72,6 +74,7 @@ const Input = Submit.extend`
   margin-left:40px;
   padding-left: 10px;
   margin-top:${props => (props.amountInput ? "10px" : "")}
+  color: white;
 `;
 
 const DetailAccountMenuPresenter = ({ balace }) => (
@@ -87,25 +90,23 @@ const DetailAccountMenuPresenter = ({ balace }) => (
         }}
       >
       <ModalHeader/>  
-      <SendTxForm onSubmit={store.handleSubmit}>
-        <Input
-          placeholder={"Address"}
-          required
-          name="toAddress"
-          value={store.toAddress}
-          type={"text"}
-          onChange={store.handleInput}
-        />
-        <Input amountInput
-          placeholder={"Amount"}
-          required
-          name="amount"
-          type={"number"}
-          value={store.amount}
-          onChange={store.handleInput}
-          max={store.balance}
-        />
-      </SendTxForm>
+      <Input addressInput
+        placeholder={"Address"}
+        required
+        name="toAddress"
+        value={store.toAddress}
+        type={"text"}
+        onChange={store.handleInput}
+      />
+      <Input amountInput
+        placeholder={"Amount"}
+        required
+        name="amount"
+        type={"number"}
+        value={store.amount}
+        onChange={store.handleInput}
+        max={store.balance}
+      />
         <Flex alignCenter justifyBetween>
           <FlexItem>
             <Fragment/>
