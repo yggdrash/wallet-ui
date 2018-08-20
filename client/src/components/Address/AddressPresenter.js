@@ -4,8 +4,6 @@ import styled from "styled-components";
 import Flex from "styled-flex-component";
 import ReactModal from 'react-modal';
 import yeed from 'assets/images/yeed-symbol.png';
-import DetailAccount from 'components/DetailAccount';
-import DetailAccountMenu from 'components/DetailAccountMenu';
 import Store from "context/store";
 
 const Account = styled.div`
@@ -114,12 +112,6 @@ const AddressPresenter = ({ balace, address, name }) => (
                   </Flex>
                 </Flex>
               </Address>
-              <DetailAccount
-                lowdb={store.lowdb}
-                selectAddress={store.selectAddress}
-                selectName={name}
-              />
-              <DetailAccountMenu/>
             </Flex>
           </Account>
       )}

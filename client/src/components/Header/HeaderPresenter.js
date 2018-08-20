@@ -45,13 +45,10 @@ const Yggdrash = styled.div`
 `;
 const MenuIcon = styled(Menu)`
   width:17px;
-  color: #FCFCFC;
 `
 const Cog = styled(UsersCog)`
-  color: #FCFCFC;
 `
 const CloseIcon = styled(Close)`
-  color: #FCFCFC;
   width:17px;
 `
 const HeaderIcon = styled.button`
@@ -81,13 +78,11 @@ const HeaderIcon = styled.button`
     outline: none;
   }
   &:hover {
-    transform: translateY(-1px);
-    background-color:  #b2bec3
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+    color: #DCB830
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color:  #ecf0f1;
     transform: translateY(1px);
   }
   &:disabled {

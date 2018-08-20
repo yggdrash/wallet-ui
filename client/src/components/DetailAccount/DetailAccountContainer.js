@@ -8,24 +8,8 @@ class DetailAccountContainer extends Component {
       copyHidden:true,
       top: 0,
       left: 0,
-      editor:false,
       name:""
     };
-
-    this.componentDidMount = () => {
-      document.body.addEventListener("keydown", this.closeLastPopup);
-    };
-    
-    this.closeLastPopup = e => {
-      const { lowdb, selectAddress, showDetailAccountMenuModal } = this.props;
-      if (!(e.key === "Escape" || e.keyCode === 27)) return
-      if(showDetailAccountMenuModal ===true){
-        this.setState({
-          showDetailAccountMenuModal: !showDetailAccountMenuModal,
-          editor:false
-        });
-      }
-     }
 
     this._copy = () => {
       this.setState(() => {

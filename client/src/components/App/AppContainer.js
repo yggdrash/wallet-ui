@@ -20,12 +20,29 @@ class AppContainer extends Component {
     const { lowdb } = this.props;
     this.componentDidMount = () => {
       document.body.addEventListener("keydown", this.closeLastPopup);
-      // this.test()
+      this._transaction()
     };
 
-    this.test = () => {
-      let a = lowdb.get("accounts").find({address:"0xe517683cc8752c429fafd5396d46f6353eee8ace"}).value().name
-    }
+      this._transaction = () => {
+        const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed("picture engage glory library pet such actress nut fit robot butter cute"));
+        const wallet = hdwallet.derivePath(HDpath).getWallet();
+        let fromPrivateKeyBuffer = wallet.getPrivateKey();
+       let privateKey = fromPrivateKeyBuffer.toString('hex');
+       const yeedAccount = fromPrivateKey(fromPrivateKeyBuffer);
+       const fromAddress = yeedAccount.getAddressString();
+ 
+       // const txData = {
+       //   chainId: 0x03,
+       //   gasPrice: web3.utils.toHex(totalGasPrice),
+       //   gasLimit: web3.utils.toHex(21000),
+       //   to: toAddress,
+       //   from: fromAddress,
+       //   value: web3.utils.toHex(web3.utils.toWei(amount, 'ether')),
+       //   nonce: web3.utils.toHex(count)
+       // };
+       // const tx = new ethTx(txData);
+      //  tx.sign(fromPrivateKeyBuffer);
+     }
     this.closeLastPopup = e => {
       if (!(e.key === "Escape" || e.keyCode === 27)) return
       if(this.state.showModal === true){
@@ -54,6 +71,7 @@ class AppContainer extends Component {
           AlertImportAccount:"",
           importMnemonic:"",
           mnemonic:"",
+          editor: false,
           isloading:false
         })
       }else if(this.state.showAccountModal === true){
@@ -65,6 +83,7 @@ class AppContainer extends Component {
           AlertImportAccount:"",
           importMnemonic:"",
           mnemonic:"",
+          editor: false,
           isloading:false
         })
       }else if(this.state.menuHidden === false){
@@ -180,7 +199,7 @@ class AppContainer extends Component {
     */
     this._createAccount = () => {
       let wordSplit = this.state.mnemonic.split(" ");
-
+      this.setState({isloading:true});
       // const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
       // const wallet = hdwallet.derivePath(HDpath).getWallet();
       // let address = wallet.getAddressString();
@@ -223,50 +242,46 @@ class AppContainer extends Component {
         const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
         const wallet = hdwallet.derivePath(HDpath).getWallet();
         let address = wallet.getAddressString();
+        const uuid = this.guid();
         // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
-
-
         const fromPrivateKeyBuffer = wallet.getPrivateKey();
-        const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password )
+        
         // const passwordEncryptedKey = bip38.encrypt(this.state.password, true, this.state.password)
 
         // const params = {
         //   n: 4096
         // };
         // const keystoreData = JSON.stringify(wallet.toV3(this.state.password, params));
-
-        
-        const uuid = this.guid();
   
-        let account ={
-          uuid,
-          accountName,
-          address,
-          privatekeyEncryptedKey
-        }
-
-        this.setState(currentState => {
-          const newState = delete currentState.mnemonic;
-          return {
-            ...currentState,
-            accountBox: {
-              ...currentState.accountBox,
-            },
-            accounts: update(
-              this.state.accounts,
-              {
-                  $push: [account]
-              }
-            ),
-            word3:"",
-            word6:"",
-            word9:"",
-            accountName:"",
-            password:"",
-            showModal: !this.state.showModal,
-            newState
-          };
-        });
+        setTimeout(() =>{
+          const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password )
+          lowdb.get('accounts').push({
+            uuid:uuid,
+            name:accountName,
+            address:address
+          }).write()
+          lowdb.get('principal').push({
+            address:address,
+            EncryptedKey:privatekeyEncryptedKey
+          }).write()
+  
+          this.setState(currentState => {
+            const newState = delete currentState.mnemonic;
+            return {
+              ...currentState,
+              accountBox: {
+                ...currentState.accountBox,
+              },
+              word3:"",
+              word6:"",
+              word9:"",
+              accountName:"",
+              password:"",
+              showModal: !this.state.showModal,
+              newState
+            };
+          });
+          }, 100)
       }else {
         this.setState(() => {
           return {
@@ -281,15 +296,6 @@ class AppContainer extends Component {
           });
         }, 2000)
       }
-
-      // ** transaction sign ** 
-      // let fromPrivateKeyBuffer = wallet.getPrivateKey();
-      // const tx = new yeedTx(txData);
-      // tx.sign(fromPrivateKeyBuffer);
-      
-      // let privateKey = fromPrivateKeyBuffer.toString('hex');
-      // const yeedAccount = fromPrivateKey(toBuffer(`0x${privateKey}`));
-      // const fromAddress = yeedAccount.getAddressString();
     };
 
     this._importAccountModal = () =>{
@@ -315,6 +321,11 @@ class AppContainer extends Component {
      */
     this._importAccount = () =>{
       var Break = new Error('Break')
+      this.setState(() => {
+        return {
+            isloading:true
+        };
+      });
       if(bip39.validateMnemonic(this.state.importMnemonic)){
         let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.importMnemonic));
         let wallet = hdwallet.derivePath(HDpath).getWallet();
@@ -345,8 +356,8 @@ class AppContainer extends Component {
               });
               throw Break;
             }
-            this.state.accounts.map(addr => {
-                if(addr.address === address){
+            lowdb.get("accounts").map("address").value().map(addr => {
+                if(addr === address){
                     this.setState(() => {
                         return {
                             AlertImportAccount:"This account is already owned by you.",
@@ -428,48 +439,49 @@ class AppContainer extends Component {
       const { accountName, password } = this.state
       const uuid = this.guid();
       const fromPrivateKeyBuffer = wallet.getPrivateKey();
-      // const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password)
+      setTimeout(() =>{
+        const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password)
+        let account ={
+          uuid,
+          accountName,
+          address,
+          privatekeyEncryptedKey
+        }
+          
+        lowdb.get('accounts').push({
+          uuid:uuid,
+          name:accountName,
+          address:address
+        }).write()
+        lowdb.get('principal').push({
+          address:address,
+          EncryptedKey:privatekeyEncryptedKey
+        }).write()
 
-      let account ={
-        uuid,
-        accountName,
-        address,
-        // privatekeyEncryptedKey
-      }
-        
-      lowdb.get('accounts').push({
-        uuid:uuid,
-        name:accountName,
-        address:address
-      }).write()
-      lowdb.get('principal').push({
-        address:address,
-        EncryptedKey:"asdf"
-      }).write()
-
-      this.setState(currentState => {
-        const newState = delete currentState.importMnemonic;
-        return {
-            ...currentState,
-            accountBox: {
-                ...currentState.accountBox
-            },
-            accounts: update(
-              this.state.accounts,
-              {
-                  $push: [account]
-              }
-            ),
-            showModal: !this.state.showModal,
-            statusModal:"import",
-            newState,
-            accountName:"",
-            password:"",
-            confirmPassword:"",
-            isloading:false,
-            passwordValid:""
-        };
-      });
+        this.setState(currentState => {
+          const newState = delete currentState.importMnemonic;
+          return {
+              ...currentState,
+              accountBox: {
+                  ...currentState.accountBox
+              },
+              accounts: update(
+                this.state.accounts,
+                {
+                    $push: [account]
+                }
+              ),
+              showModal: !this.state.showModal,
+              statusModal:"import",
+              newState,
+              accountName:"",
+              password:"",
+              confirmPassword:"",
+              isloading:false,
+              passwordValid:""
+          };
+        });
+        }, 100)
     }
 
     this.guid = () => {
@@ -501,7 +513,8 @@ class AppContainer extends Component {
           accountName:"",
           password:"",
           confirmPassword:"",
-          passwordValid:""
+          passwordValid:"",
+          editor: false
         };
       });
     }

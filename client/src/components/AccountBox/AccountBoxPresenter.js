@@ -12,6 +12,8 @@ import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
 import ygg from 'assets/images/main.png';
+import DetailAccount from 'components/DetailAccount';
+import DetailAccountMenu from 'components/DetailAccountMenu';
 // import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
@@ -272,7 +274,6 @@ const Address = styled.div`
 
 
 const AccountBoxPresenter = ({ 
-  text, 
   balance, 
   mnemonic, 
   importMnemonic, 
@@ -531,6 +532,8 @@ const AccountBoxPresenter = ({
                     </FlexItem>
                   </Flex>
                 </Modal>
+                <DetailAccount/>
+                <DetailAccountMenu/>
               </Fragment>
             )}
           </Store.Consumer>
@@ -538,11 +541,11 @@ const AccountBoxPresenter = ({
       </FlexItem>
     </Flex>
     <Line second/>
-    <Store.Consumer>
+    {/* <Store.Consumer>
         {store => (
           store.lowdb.get("accounts").map("address").value().length === 0 ? <YeedAnimation><img src={ygg} alt="germinal" /></YeedAnimation> : ""
         )}
-    </Store.Consumer>
+    </Store.Consumer> */}
     <Store.Consumer>
       {store => (
         <Address

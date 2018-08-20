@@ -71,7 +71,7 @@ export const Button = styled.button`
   margin-right:15px;
   margin-top:15px;
   margin-bottom:15px;
-  color: #DCB830
+  color: #fcfcfc
   background: transparent
   opacity: 1;
   border-radius: 5px;
@@ -85,11 +85,10 @@ export const Button = styled.button`
   &:hover {
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
     transform: translateY(-3px);
-    color: #FFF;
+    color: #DCB830
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #7f8c8d;
     transform: translateY(3px);
   }
   &:disabled {
