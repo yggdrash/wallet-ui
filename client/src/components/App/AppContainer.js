@@ -3,12 +3,11 @@ import PropTypes from "prop-types";
 import AppPresenter from "./AppPresenter";
 import update from 'react-addons-update';
 import Store from "context/store";
-import { toBuffer } from "utils";
+import Tx from "transaction";
 import { fromPrivateKey } from "accounts/wallet";
 
-const elliptic = require("elliptic"),
-  bip38 = require('bip38'),
-  bip38Decrypt = require('bip38-decrypt'),
+const bip38 = require('bip38'),
+ bip38Decrypt = require('bip38-decrypt'),
   HDKey = require("accounts/hdkey"),
   bip39 = require("bip39"),
   passValid = require("password-strength");
@@ -23,25 +22,52 @@ class AppContainer extends Component {
       this._transaction()
     };
 
+    //Convert a hex string to a byte array
+    this.hexToBytes= hex => {
+      for(let bytes=[], c=0; c<hex.length; c+=2){
+        bytes.push(parseInt(hex.substr(c,2),16));
+        return bytes;
+      }
+    }
+
+    //Convert a byte array to a hex string
+    // this.bytesToHex(bytes){
+    //   for(let hex=[], i=0; i<bytes.length; i++){
+    //     hex.push((bytes[i]>>>4).toString(16));
+    //     hex.push((bytes[i] & 0xF).toString(16));
+    //   }
+    //   return hex.join("")
+    // }
+
+    this.toHex = str => {
+      var hex = '';
+      for(var i=0;i<str.length;i++) {
+        hex += ''+str.charCodeAt(i).toString(16);
+      }
+      return hex;
+    }
+
       this._transaction = () => {
         const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed("picture engage glory library pet such actress nut fit robot butter cute"));
         const wallet = hdwallet.derivePath(HDpath).getWallet();
         let fromPrivateKeyBuffer = wallet.getPrivateKey();
-       let privateKey = fromPrivateKeyBuffer.toString('hex');
        const yeedAccount = fromPrivateKey(fromPrivateKeyBuffer);
        const fromAddress = yeedAccount.getAddressString();
- 
-       // const txData = {
-       //   chainId: 0x03,
-       //   gasPrice: web3.utils.toHex(totalGasPrice),
-       //   gasLimit: web3.utils.toHex(21000),
-       //   to: toAddress,
-       //   from: fromAddress,
-       //   value: web3.utils.toHex(web3.utils.toWei(amount, 'ether')),
-       //   nonce: web3.utils.toHex(count)
-       // };
-       // const tx = new ethTx(txData);
-      //  tx.sign(fromPrivateKeyBuffer);
+
+       const getTimestamp = Math.round(new Date().getTime() / 1000);
+       const timeStampHex = this.toHex(getTimestamp.toString())
+        console.log(timeStampHex)
+
+
+       const txData = {
+         to: 0xa4977aa265e7af35c132cefaf7829c4b586d3eed,
+         from: fromAddress,
+         value: 0x0,
+         nonce: 0x0
+       };
+       const tx = new Tx(txData);
+        tx.sign(fromPrivateKeyBuffer);
+        const serializedTx = tx.serialize()
      }
     this.closeLastPopup = e => {
       if (!(e.key === "Escape" || e.keyCode === 27)) return
@@ -358,11 +384,9 @@ class AppContainer extends Component {
             }
             lowdb.get("accounts").map("address").value().map(addr => {
                 if(addr === address){
-                    this.setState(() => {
-                        return {
-                            AlertImportAccount:"This account is already owned by you.",
-                            isloading:false
-                        };
+                    this.setState({
+                        AlertImportAccount:"This account is already owned by you.",
+                        isloading:false
                     });
                     throw Break;
                 }

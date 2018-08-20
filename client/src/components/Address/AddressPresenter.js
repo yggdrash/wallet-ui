@@ -21,21 +21,18 @@ const Address = styled.button`
   margin-top: 20px;
   margin-bottom: 10px;
   border-radius: 15px;
-  // background: #3cbaba
+  // background: #ffffff
+  // backgroud-color: #ffffff
   // background: -webkit-linear-gradient(left,#21b5b5 , #147a7a);
   // background: -o-linear-gradient(right, #21b5b5, #147a7a); 
   // background: -moz-linear-gradient(right, #21b5b5, #147a7a); 
   // background: linear-gradient(to right, #21b5b5 , #147a7a); 
 
-  // background: -webkit-linear-gradient(left,#174730 , #0c3b24);
-  // background: -o-linear-gradient(right, #174730, #0c3b24); 
-  // background: -moz-linear-gradient(right, #174730, #0c3b24); 
-  // background: linear-gradient(to right, #174730 , #0c3b24); 
+  background: -webkit-linear-gradient(left,#174730 , #0c3b24);
+  background: -o-linear-gradient(right, #174730, #0c3b24); 
+  background: -moz-linear-gradient(right, #174730, #0c3b24); 
+  background: linear-gradient(to right, #174730 , #0c3b24); 
 
-  background: -webkit-linear-gradient(left,#246948 , #0e4d2e);
-  background: -o-linear-gradient(right, #246948, #0e4d2e); 
-  background: -moz-linear-gradient(right, #246948, #0e4d2e); 
-  background: linear-gradient(to right, #246948 , #0e4d2e); 
   display: flex;
   padding-top: 10px;
   padding-left: 10px;

@@ -14,7 +14,7 @@ const Transfer = styled(ReactModal)`
   position: absolute;
   top: 30%
   left: 25%;
-  background-color: rgba( 22, 48, 72, 0.5 );
+  background-color: rgba( 22, 48, 72, 0.7 );
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
