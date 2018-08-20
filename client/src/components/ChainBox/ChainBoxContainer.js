@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import AccountBoxPresenter from "./AccountBoxPresenter";
+import ChainBoxPresenter from "./ChainBoxPresenter";
 // import Store from "context/store";
 
-class AccountBoxContainer extends Component {
+class ChainBoxContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -18,19 +18,19 @@ class AccountBoxContainer extends Component {
 
   }
   render() {
-    return <AccountBoxPresenter {...this.props} {...this.state} 
+    return <ChainBoxPresenter {...this.props} {...this.state} 
 
             />;
   }
 }
 
-AccountBoxContainer.propTypes = {
+ChainBoxContainer.propTypes = {
   toAddress: PropTypes.string,
   amount: PropTypes.string,
   selectAddress: PropTypes.string,
 };
 
-AccountBoxContainer.defaultProps = {
+ChainBoxContainer.defaultProps = {
   createAccount: PropTypes.func,
   createAccountModal: PropTypes.func,
   importAccountModal: PropTypes.func,
@@ -39,4 +39,4 @@ AccountBoxContainer.defaultProps = {
   closeModal: PropTypes.func,
 };
 
-export default AccountBoxContainer;
+export default ChainBoxContainer;

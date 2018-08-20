@@ -3,26 +3,17 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex from "styled-flex-component";
 import AccountBox from "components/AccountBox";
+import ChainBox from "components/ChainBox";
 import NetworkBox from "components/NetworkBox";
 import Header from 'components/Header';
-import germinal from 'assets/images/germinal.png';
-// import grass from 'assets/images/foot.png';
 import Store from "context/store";
 
 const Footer = styled.div`
-  // font-weight: 600;
-  // color: #508464;
-  margin-top: 100px;
-  // margin-bottom: 30px;
-  // width:100px;
+  margin-top: 70px;
+  color: #fcfcfc;
 `;
 
-const Germinal = styled.div`
-  width:50px;
-  // margin-top:30px;
-`;
-
-const AppPresenter = ({ }) => (
+const AppPresenter = () => (
       <Fragment>
         <Header />
           <Flex alignCenter full column>
@@ -34,8 +25,8 @@ const AppPresenter = ({ }) => (
                     id={store.accountBox[key].id}
                     isloading={store.isloading}
                     password={store.password}
+                    passwordValid={store.passwordValid}
                     confirmPassword={store.confirmPassword}
-                    text={store.text}
                     address={store.address}
                     selectAddress={store.selectAddress}
                     balance={store.balance}
@@ -52,26 +43,22 @@ const AppPresenter = ({ }) => (
                     AlertImportAccountName={store.AlertImportAccountName}
                     AlertImportAccountPass={store.AlertImportAccountPass}
                     AlertImportAccountConfirmPass={store.AlertImportAccountConfirmPass}
-                    encrypteStatus={store.encrypteStatus}
                   />
                 ));
               }}
             </Store.Consumer>
           </Flex>
           <Flex alignCenter full column>
-          {/* <Germinal><img src={germinal} alt="yggtree" /></Germinal> */}
             <Store.Consumer>
               {store => {
                 return Object.keys(store.accountBox).map(key => (
-                  <NetworkBox
-
-                  />
+                  <NetworkBox/>
                 ));
               }}
             </Store.Consumer>
           </Flex>
           <Flex alignCenter full column>
-            <Footer><Germinal><img src={germinal} alt="germinal" /></Germinal></Footer>
+            <Footer>© AKASHIC FOUNDATION</Footer>
           </Flex>
       </Fragment>
 );

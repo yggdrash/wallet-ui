@@ -12,14 +12,12 @@ import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
 import ygg from 'assets/images/main.png';
-import DetailAccount from 'components/DetailAccount';
-import DetailAccountMenu from 'components/DetailAccountMenu';
 // import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
 const AccountBox = styled.div`
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
-  background-color: rgba( 18, 38, 57, 0.6);
+  background-color: #0E2030
   width: 60%;
   height: 370px;
   border-radius: 15px;
@@ -29,16 +27,14 @@ const AccountBox = styled.div`
   overflow:scroll;
 `;
 const Title = styled.span`
-  color: #fcfcfc
+  color: #41916E;
   margin-top:15px;
   font-weight: 400;
   display: flex;
-  font-size: 1.3em;
+  font-size: 1.5em;
   font-weight: 500;
   margin-left:20px;
   margin-bottom:20px;
-  font-style: italic;
-  font-family: 'Roboto', sans-serif
 `;
 const ImportAccountIcon = styled(Download)`
   width: 20px;
@@ -63,7 +59,8 @@ const Modal = styled(ReactModal)`
   position: absolute;
   top: ${props => (props.import ? "20%" : "25%")}
   left: 25%;
-  background-color: rgba( 22, 48, 72, 0.5 );
+  background-color: #FAFAFA;
+  background-image: url('../assets/images/how-bg-opti.png');
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -92,9 +89,9 @@ const Info = styled.div`
   height: ${props => (props.mnemonic ? "40px;" : "80px;")};
   border: 0;
   border-radius: ${props => (props.mnemonic ? "inherit" : "5px;")}
-  border-bottom: 0.2px solid ${props => (props.mnemonic ? "rgb(75,203,188);" : "inherit")}
-  background-color: ${props => (props.mnemonic ? "inherit" : "rgba( 22, 48, 72, 0.5 );")}
-  color: ${props => (props.mnemonic || props.confirm ?  "white" : "#E35B5B;")};
+  border-bottom: 0.2px solid ${props => (props.mnemonic ? "rgb(051,153,051);" : "inherit")}
+  background-color: ${props => (props.mnemonic ? "#fafafa;" : "#ffffff;")};
+  color: ${props => (props.mnemonic || props.confirm ?  "inherit" : "#EA2027;")};
   box-shadow: ${props => (props.mnemonic ? "inherit" : "0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);")}
   transition: all 0.1s linear;
   text-align: ${props => (props.mnemonic ? "left;" : "center;")};
@@ -160,7 +157,7 @@ const Passphrase = styled.div`
   margin-bottom: ${props => (props.descriptive ? "10px;" : "30px;")};
   font-size: ${props => (props.descriptive ? "0.7em" : "inherit")};
   transition: all 0.1s linear;
-  color: white;
+  color: black;
 `;
 const AlertInfo = styled.div`
   margin-top:20px;
@@ -169,7 +166,7 @@ const AlertInfo = styled.div`
   font-size: 1em;
   font-weight: 400;
   transition: all 0.1s linear;
-  color:#E35B5B;
+  color:#EA2027;
 `;
 
 const Submit = styled.input`
@@ -183,19 +180,16 @@ const Submit = styled.input`
       return "";
     }
   }};
-  background-color:transparent
+  background-color: #FAFAFA;
   border-bottom: 0.2px solid ${props => {
     if (props.AlertImportAccount || props.descriptive || props.AlertImportAccountName || props.AlertImportAccountPass || props.AlertImportAccountConfirmPass) {
       return "rgb(204,000,000);";
     } else if(props.descriptive===false || props.accountName || props.password || props.confirmPassword|| props.word3 || props.word6 || props.word9 || props.importMnemonic) {
-      return "rgb(75,203,188);";
+      return "rgb(051,153,051);";
     } else {
       return "";
     }
   }};
-  &::-webkit-input-placeholder {
-    color: #dfe6e9
-  }
   &:focus,
   &:active {
     outline: none;
@@ -220,7 +214,7 @@ const Submit = styled.input`
       if (props.AlertImportAccount || props.descriptive || props.AlertImportAccountName || props.AlertImportAccountPass || props.AlertImportAccountConfirmPass) {
         return "rgb(204,000,000);";
       } else {
-        return "rgb(75,203,188);";
+        return "rgb(051,153,051);";
       }
     }};
   }
@@ -237,9 +231,7 @@ const Input = Submit.extend`
   font-size: 0.9em;
   margin-left:40px;
   padding-left: 10px;
-  color:white;
 `;
-
 const Loading = styled.div`
   position: absolute;
   top: calc(50% - 4em);
@@ -260,20 +252,12 @@ const Loading = styled.div`
   }
 `;
 const Address = styled.div`
-  display: ${props => (props.first ? "inherit" : "grid")}
-  grid-template-columns: ${props => {
-    if (props.first) {
-      return "inherit";
-    }else if(props.second){
-      return "455px 455px"
-    }else {
-      return "300px 300px 300px";
-    }
-  }};
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
 `;
 
-
-const AccountBoxPresenter = ({ 
+const ChainBoxPresenter = ({ 
+  text, 
   balance, 
   mnemonic, 
   importMnemonic, 
@@ -294,7 +278,7 @@ const AccountBoxPresenter = ({
   <AccountBox >
     <Flex alignCenter justifyBetween>
       <Title>
-        MY ACCOUNTS
+        My Chains
       </Title>
     </Flex>
     <Line/>
@@ -306,14 +290,13 @@ const AccountBoxPresenter = ({
               <Fragment>
                 
                 <Button
-                  importAccount
+                  import
                   onClick={() => store.importAccountModal()}
                 >
                 <ImportAccountIcon/>
                 IMPORT ACCOUNT
                 </Button>
                 <Button
-                  createAccount
                   onClick={() => store.createAccountModal()}
                 >
                 <CreateAccountIcon/>
@@ -518,6 +501,11 @@ const AccountBoxPresenter = ({
                               store.importAccount()
                             }
                           }}
+                        disabled={
+                          (store.statusModal === "create" && store.confirmRecoveryPharse === true) 
+                          || (store.statusModal === "password" && !password && !confirmPassword && !accountName)
+                          || (store.statusModal === "import" && !password && !confirmPassword && !accountName && !importMnemonic)
+                        }
                         >
                           {store.statusModal === "password" ? `NEXT` : ``}
                           {store.statusModal === "create" ? `NEXT` : ``}
@@ -532,8 +520,6 @@ const AccountBoxPresenter = ({
                     </FlexItem>
                   </Flex>
                 </Modal>
-                <DetailAccount/>
-                <DetailAccountMenu/>
               </Fragment>
             )}
           </Store.Consumer>
@@ -541,35 +527,28 @@ const AccountBoxPresenter = ({
       </FlexItem>
     </Flex>
     <Line second/>
-    {/* <Store.Consumer>
-        {store => (
-          store.lowdb.get("accounts").map("address").value().length === 0 ? <YeedAnimation><img src={ygg} alt="germinal" /></YeedAnimation> : ""
-        )}
-    </Store.Consumer> */}
     <Store.Consumer>
-      {store => (
-        <Address
-        first={store.lowdb.get("accounts").map("address").value().length === 1}
-        second={store.lowdb.get("accounts").map("address").value().length ===2}
-        >
-          <Store.Consumer>
-              {store => {
-                return store.lowdb.get("accounts").map("address").value().map(key => (
-                  <Account
-                    address={key}
-                    name={store.lowdb.get("accounts").find({address:key}).value().name}
-                    lowdb={store.lowdb}
-                  />
-                ));
-              }}
-          </Store.Consumer>
-        </Address>
-      )}
+        {store => (
+          store.accounts.length === 0 ? <YeedAnimation><img src={ygg} alt="germinal" /></YeedAnimation> : ""
+        )}
     </Store.Consumer>
+    <Address>
+      <Store.Consumer>
+          {store => {
+            return store.accounts.map(key => (
+              <Account
+                address={key.address}
+                name={key.accountName}
+                balance={store.balance}
+              />
+            ));
+          }}
+      </Store.Consumer>
+    </Address>
   </AccountBox>
 );
 
-AccountBoxPresenter.propTypes = {
+ChainBoxPresenter.propTypes = {
   id: PropTypes.number,
   text: PropTypes.string,
   createAccount: PropTypes.func.isRequired,
@@ -588,4 +567,4 @@ AccountBoxPresenter.propTypes = {
 
 ReactModal.setAppElement('body');
 
-export default AccountBoxPresenter;
+export default ChainBoxPresenter;

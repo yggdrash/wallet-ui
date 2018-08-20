@@ -5,26 +5,30 @@ import Flex, { FlexItem } from "styled-flex-component";
 import Store from "context/store";
 
 const Notification = styled.div`
-  background-color: #ffffff;
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
-  width: 30%;
+  background-color: #0E2030;
+  width: 35%;
+  background-color: rgba( 18, 38, 57, 0.6);
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 15px;
   box-sizing: border-box;
   border: 2px solid rgba(0,0,0,.0975);
 `;
 
 const Title = styled.div`
+  color: #fcfcfc;
   font-weight: 600;
   margin-top: ${props => (props.top ? "0px;" : "30px;")};
 `;
 
 const Value = styled.div`
+  color: #FCFCFC;
+  font-style:italic;
   font-weight: 350;
   margin-top: ${props => (props.top ? "0px;" : "30px;")};
 `;
 
-const NetworkBoxPresenter = ({ id, text }) => (
+const NetworkBoxPresenter = ({ id, text, network }) => (
   <Notification >
     <Flex alignCenter justifyBetween>
         <FlexItem>
@@ -33,7 +37,7 @@ const NetworkBoxPresenter = ({ id, text }) => (
       <FlexItem>
           <Store.Consumer>
             {store => (
-                <Value top>Network</Value>
+                <Value top>{network.name}</Value>
             )}
           </Store.Consumer>
       </FlexItem>
@@ -45,7 +49,7 @@ const NetworkBoxPresenter = ({ id, text }) => (
       <FlexItem>
           <Store.Consumer>
             {store => (
-                <Value>Peer</Value>
+                <Value>{network.peerUrl}</Value>
             )}
           </Store.Consumer>
       </FlexItem>
@@ -57,7 +61,7 @@ const NetworkBoxPresenter = ({ id, text }) => (
       <FlexItem>
           <Store.Consumer>
             {store => (
-                <Value>Last Checked</Value>
+                <Value>{network.lastChecked}</Value>
             )}
           </Store.Consumer>
       </FlexItem>

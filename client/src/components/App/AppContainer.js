@@ -3,37 +3,48 @@ import PropTypes from "prop-types";
 import AppPresenter from "./AppPresenter";
 import update from 'react-addons-update';
 import Store from "context/store";
-import { toBuffer } from "utils"
-import { fromPrivateKey } from "accounts/wallet"
+import { toBuffer } from "utils";
+import { fromPrivateKey } from "accounts/wallet";
 
 const elliptic = require("elliptic"),
-  path = require("path"),
   bip38 = require('bip38'),
   bip38Decrypt = require('bip38-decrypt'),
-  wif = require('wif'),
   HDKey = require("accounts/hdkey"),
   bip39 = require("bip39"),
-  owasp = require('owasp-password-strength-test');
-  
+  passValid = require("password-strength");
+
 const HDpath = "m/44'/60'/0'/0/0";
-const privateKeyLocation = path.join(__dirname, "keystore/keystoredata");
 class AppContainer extends Component {
   constructor(props) {
     super(props);
-
+    const { lowdb } = this.props;
     this.componentDidMount = () => {
-      const { sharedPort } = this.props;
-      document.body.addEventListener("keydown", this.closeLastPopup)
+      document.body.addEventListener("keydown", this.closeLastPopup);
+      this._transaction()
     };
 
-    // this.getPrivateFromWallet = () => {
-    //   console.log("Asdf")
-    //   const buffer = fs.readFileSync(privateKeyLocation, "utf8");
-    //   return buffer.toString();
-    // };
-
+      this._transaction = () => {
+        const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed("picture engage glory library pet such actress nut fit robot butter cute"));
+        const wallet = hdwallet.derivePath(HDpath).getWallet();
+        let fromPrivateKeyBuffer = wallet.getPrivateKey();
+       let privateKey = fromPrivateKeyBuffer.toString('hex');
+       const yeedAccount = fromPrivateKey(fromPrivateKeyBuffer);
+       const fromAddress = yeedAccount.getAddressString();
+ 
+       // const txData = {
+       //   chainId: 0x03,
+       //   gasPrice: web3.utils.toHex(totalGasPrice),
+       //   gasLimit: web3.utils.toHex(21000),
+       //   to: toAddress,
+       //   from: fromAddress,
+       //   value: web3.utils.toHex(web3.utils.toWei(amount, 'ether')),
+       //   nonce: web3.utils.toHex(count)
+       // };
+       // const tx = new ethTx(txData);
+      //  tx.sign(fromPrivateKeyBuffer);
+     }
     this.closeLastPopup = e => {
-      if (!(e.key == "Escape" || e.keyCode == 27)) return
+      if (!(e.key === "Escape" || e.keyCode === 27)) return
       if(this.state.showModal === true){
         this.setState({ 
           showModal: !this.state.showModal,
@@ -48,17 +59,19 @@ class AppContainer extends Component {
           accountName:"",
           password:"",
           confirmPassword:"",
-          isloading:false
+          isloading:false,
+          passwordValid:""
         })
-      }else if(this.state.showAccountModal === true && this.state.showTransferModal === true){
+      }else if(this.state.showAccountModal === true && this.state.showDetailAccountMenuModal === true){
         this.setState({ 
-          showTransferModal: !this.state.showTransferModal,
+          showDetailAccountMenuModal: !this.state.showDetailAccountMenuModal,
           word3:"",
           word6:"",
           word9:"",
           AlertImportAccount:"",
           importMnemonic:"",
           mnemonic:"",
+          editor: false,
           isloading:false
         })
       }else if(this.state.showAccountModal === true){
@@ -70,6 +83,7 @@ class AppContainer extends Component {
           AlertImportAccount:"",
           importMnemonic:"",
           mnemonic:"",
+          editor: false,
           isloading:false
         })
       }else if(this.state.menuHidden === false){
@@ -81,19 +95,19 @@ class AppContainer extends Component {
      }
     
     this._createAccountModal = () => {
-        this.setState(currentState => {
-          return {
-            ...currentState,
-            accountBox: {
-              ...currentState.accountBox
-            },
-            accountName:"",
-            password:"",
-            confirmPassword:"",
-            showModal: !this.state.showModal,
-            statusModal:"password"
-          };
-        });
+      this.setState(currentState => {
+        return {
+          ...currentState,
+          accountBox: {
+            ...currentState.accountBox
+          },
+          accountName:"",
+          password:"",
+          confirmPassword:"",
+          showModal: !this.state.showModal,
+          statusModal:"password"
+        };
+      });
     };
 
     this._setPassword = () =>{
@@ -108,6 +122,21 @@ class AppContainer extends Component {
         this.setState(() => {
           return {
               AlertImportAccountPass:"Please enter password.",
+              isloading:false
+          };
+        });
+      } else if(this.state.passwordValid === "defalt" || this.state.passwordValid === "red"){
+        this.setState(() => {
+          return {
+              AlertImportAccountPass:"Week, try combining letters & numbers",
+              isloading:false
+          };
+        });
+      } else if(this.state.password !== this.state.confirmPassword){
+        this.setState(() => {
+          return {
+              AlertImportAccountPass:"Passwords do not match.",
+              AlertImportAccountConfirmPass:" ",
               isloading:false
           };
         });
@@ -170,7 +199,7 @@ class AppContainer extends Component {
     */
     this._createAccount = () => {
       let wordSplit = this.state.mnemonic.split(" ");
-
+      this.setState({isloading:true});
       // const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
       // const wallet = hdwallet.derivePath(HDpath).getWallet();
       // let address = wallet.getAddressString();
@@ -207,65 +236,52 @@ class AppContainer extends Component {
       //   }
       // });
       
-      // if (fs.existsSync(privateKeyLocation)) {
-      //   return;
-      // }
-
-      // const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
-      // const wallet = hdwallet.derivePath(HDpath).getWallet();
-      // let address = wallet.getAddressString();
-      // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
-      // fs.writeFileSync(privateKeyLocation, privateKey);
 
       if(wordSplit[2]=== this.state.word3 && wordSplit[5]=== this.state.word6 && wordSplit[8]=== this.state.word9){
         const { accountName, password } = this.state
         const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
         const wallet = hdwallet.derivePath(HDpath).getWallet();
         let address = wallet.getAddressString();
+        const uuid = this.guid();
         // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
-
-
         const fromPrivateKeyBuffer = wallet.getPrivateKey();
-        const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password )
+        
         // const passwordEncryptedKey = bip38.encrypt(this.state.password, true, this.state.password)
 
         // const params = {
         //   n: 4096
         // };
         // const keystoreData = JSON.stringify(wallet.toV3(this.state.password, params));
-
-        
-        const uuid = this.guid();
   
-        let account ={
-          uuid,
-          accountName,
-          address,
-          privatekeyEncryptedKey
-        }
-
-        this.setState(currentState => {
-          const newState = delete currentState.mnemonic;
-          return {
-            ...currentState,
-            accountBox: {
-              ...currentState.accountBox,
-            },
-            accounts: update(
-              this.state.accounts,
-              {
-                  $push: [account]
-              }
-            ),
-            word3:"",
-            word6:"",
-            word9:"",
-            accountName:"",
-            password:"",
-            showModal: !this.state.showModal,
-            newState
-          };
-        });
+        setTimeout(() =>{
+          const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password )
+          lowdb.get('accounts').push({
+            uuid:uuid,
+            name:accountName,
+            address:address
+          }).write()
+          lowdb.get('principal').push({
+            address:address,
+            EncryptedKey:privatekeyEncryptedKey
+          }).write()
+  
+          this.setState(currentState => {
+            const newState = delete currentState.mnemonic;
+            return {
+              ...currentState,
+              accountBox: {
+                ...currentState.accountBox,
+              },
+              word3:"",
+              word6:"",
+              word9:"",
+              accountName:"",
+              password:"",
+              showModal: !this.state.showModal,
+              newState
+            };
+          });
+          }, 100)
       }else {
         this.setState(() => {
           return {
@@ -280,15 +296,6 @@ class AppContainer extends Component {
           });
         }, 2000)
       }
-
-      // ** transaction sign ** 
-      // let fromPrivateKeyBuffer = wallet.getPrivateKey();
-      // const tx = new yeedTx(txData);
-      // tx.sign(fromPrivateKeyBuffer);
-      
-      // let privateKey = fromPrivateKeyBuffer.toString('hex');
-      // const yeedAccount = fromPrivateKey(toBuffer(`0x${privateKey}`));
-      // const fromAddress = yeedAccount.getAddressString();
     };
 
     this._importAccountModal = () =>{
@@ -314,6 +321,11 @@ class AppContainer extends Component {
      */
     this._importAccount = () =>{
       var Break = new Error('Break')
+      this.setState(() => {
+        return {
+            isloading:true
+        };
+      });
       if(bip39.validateMnemonic(this.state.importMnemonic)){
         let hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.importMnemonic));
         let wallet = hdwallet.derivePath(HDpath).getWallet();
@@ -344,8 +356,8 @@ class AppContainer extends Component {
               });
               throw Break;
             }
-            let check = this.state.accounts.map(addr => {
-                if(addr.address === address){
+            lowdb.get("accounts").map("address").value().map(addr => {
+                if(addr === address){
                     this.setState(() => {
                         return {
                             AlertImportAccount:"This account is already owned by you.",
@@ -370,6 +382,21 @@ class AppContainer extends Component {
         this.setState(() => {
           return {
               AlertImportAccountPass:"Please enter password.",
+              isloading:false
+          };
+        });
+      } else if(this.state.passwordValid === "defalt" || this.state.passwordValid === "red"){
+        this.setState(() => {
+          return {
+              AlertImportAccountPass:"Week, try combining letters & numbers",
+              isloading:false
+          };
+        });
+      } else if(this.state.password !== this.state.confirmPassword){
+        this.setState(() => {
+          return {
+              AlertImportAccountPass:"Passwords do not match.",
+              AlertImportAccountConfirmPass:" ",
               isloading:false
           };
         });
@@ -408,41 +435,53 @@ class AppContainer extends Component {
     };
 
     this.setImportAccount = (address, wallet)=> {
+      const { lowdb } = this.props;
       const { accountName, password } = this.state
       const uuid = this.guid();
       const fromPrivateKeyBuffer = wallet.getPrivateKey();
-      const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password)
+      setTimeout(() =>{
+        const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password)
+        let account ={
+          uuid,
+          accountName,
+          address,
+          privatekeyEncryptedKey
+        }
+          
+        lowdb.get('accounts').push({
+          uuid:uuid,
+          name:accountName,
+          address:address
+        }).write()
+        lowdb.get('principal').push({
+          address:address,
+          EncryptedKey:privatekeyEncryptedKey
+        }).write()
 
-      let account ={
-        uuid,
-        accountName,
-        address,
-        privatekeyEncryptedKey
-      }
-
-      this.setState(currentState => {
-        const newState = delete currentState.importMnemonic;
-        return {
-            ...currentState,
-            accountBox: {
-                ...currentState.accountBox
-            },
-            accounts: update(
-              this.state.accounts,
-              {
-                  $push: [account]
-              }
-            ),
-            showModal: !this.state.showModal,
-            statusModal:"import",
-            newState,
-            accountName:"",
-            password:"",
-            confirmPassword:"",
-            isloading:false,
-            encrypteStatus:""
-        };
-      });
+        this.setState(currentState => {
+          const newState = delete currentState.importMnemonic;
+          return {
+              ...currentState,
+              accountBox: {
+                  ...currentState.accountBox
+              },
+              accounts: update(
+                this.state.accounts,
+                {
+                    $push: [account]
+                }
+              ),
+              showModal: !this.state.showModal,
+              statusModal:"import",
+              newState,
+              accountName:"",
+              password:"",
+              confirmPassword:"",
+              isloading:false,
+              passwordValid:""
+          };
+        });
+        }, 100)
     }
 
     this.guid = () => {
@@ -461,7 +500,7 @@ class AppContainer extends Component {
             ...currentState.account
           },
           showModal: e === "main" ? !this.state.showModal : false,
-          showTransferModal: e === "transfer" ? !this.state.showTransferModal : false,
+          showDetailAccountMenuModal: e === "transfer" ? !this.state.showDetailAccountMenuModal : false,
           showAccountModal: e === "transfer" ? this.state.showAccountModal : false,
           newImportMnemonic,
           newMnemonic,
@@ -473,7 +512,9 @@ class AppContainer extends Component {
           recoveryPharse:"",
           accountName:"",
           password:"",
-          confirmPassword:""
+          confirmPassword:"",
+          passwordValid:"",
+          editor: false
         };
       });
     }
@@ -489,99 +530,87 @@ class AppContainer extends Component {
       })
     }
     if(e.target.name === "password"){
-      let result = owasp.test(e.target.value);
-      console.log(result)
-      if((e.target.name === "password") === (e.target.name === "confirmPassword")){
-        console.log("asdf")
+      let valid = passValid(e.target.value)
+      if(valid.valid === false && valid.strength === "simple" && valid.hint !== null){
+        this.setState({
+          passwordValid:"red"
+        })
+      } else if(valid.valid === true && valid.strength === "simple"){
+        this.setState({
+          passwordValid:"yellow"
+        })
+      } else if(valid.strength === "medium"){
+        this.setState({
+          passwordValid:"blue"
+        })
+      } else if(valid.strength === "strong"){
+        this.setState({
+          passwordValid:"green"
+        })
       }
+    }
+    if(e.target.name === "password" && e.target.value.length === 0){
+      this.setState({
+        passwordValid:"defalt"
+      })
     }
 
       const { target: { name, value } } = e;
       this.setState({
         [name]: value,
-        AlertImportAccount:""
+        AlertImportAccount:"",
+        AlertImportAccountName:"",
+        AlertImportAccountPass:"",
+        AlertImportAccountConfirmPass:""
       });
     };
-
-    // this.noCTRL = e => {
-    //   var code = (document.all) ? event.keyCode:e.which;
-    //   var ctrl = (document.all) ? event.ctrlKey:e.modifiers & Event.CONTROL_MASK;
-    //   if (document.all)
-    //   {
-    //     if (ctrl && code==86) //CTRL+V
-    //     {
-    //       window.event.returnValue = false;
-    //     }
-    //     else if (ctrl && code==67) //CTRL+C (Copy)
-    //     {
-    //       window.event.returnValue = false;
-    //     }
-    //   }
-    // } 
-    this._AccountModal = address => {
+    this._AccountModal = (address, name) => {
       this.setState(() => {
         return {
           showAccountModal: !this.state.showAccountModal,
           selectAddress:address,
+          selectName:name,
           statusModal:"account" 
         };
       });
     }
 
-    this._handleOpenCloseDropdown = e => {
-      if(e==="network"){
-        this.setState({
-          netMenuHidden: !this.state.netMenuHidden
-        });
-      }else if(e==="cog"){
-        this.setState({
-          cogMenuHidden: !this.state.cogMenuHidden
-        });
-      }
-      
-    };
-
-    this._handleTooltip = (ev, copyHidden) => {
-      this.setState({
-        top: ev.target.offsetTop + 5,
-        left: ev.target.offsetLeft + ev.target.offsetWidth + 5,
-        copyHidden
-      });
-    }
-
-    this._TransferModal = () => {
+    this._DetailAccountMenuModal = () => {
       this.setState(() => {
         return {
-          showTransferModal: !this.state.showTransferModal,
+          showDetailAccountMenuModal: !this.state.showDetailAccountMenuModal,
           statusModal:"transfer" 
         };
       });
     }
 
+    this._edit = address => {
+      if(this.state.editor === true && this.state.selectName === ""){
+        return false
+      }else if(this.state.editor ===true && this.state.selectName !== ""){
+        lowdb.get("accounts").find({address:address}).assign({name:this.state.selectName}).write()
+      }
+      this.setState({
+        editor: !this.state.editor,
+        selectName:lowdb.get("accounts").find({address:address}).value().name
+      });
+    }
 
     this.state = {
       isloading:false,
-      uuid:[],
-      accountName:[],
-      address:[],
-      encryptedKey:[],
       accounts:[],
       balance: "0",
       toAddress: "",
-      amount:0,
+      amount:"",
       selectAddress:"",
+      selectName:"",
       mnemonic:"",
       password:"",
       confirmPassword:"",
-      encrypteStatus:"",
+      passwordValid:"",
       showModal: false,
       showAccountModal: false,
-      showTransferModal: false,
-      netMenuHidden:true,
-      cogMenuHidden:true,
-      copyHidden:true,
-      top: 0,
-      left: 0,
+      showDetailAccountMenuModal: false,
       statusModal:"",
       importMnemonic:"",
       recoveryPharse:"",
@@ -593,14 +622,12 @@ class AppContainer extends Component {
       AlertImportAccountName:"",
       AlertImportAccountPass:"",
       AlertImportAccountConfirmPass:"",
-      text: `My Accounts`,
       accountBox: {
         "1": {
           id: 1
         }
       },
       handleOpenCloseDropdown: this._handleOpenCloseDropdown,
-      handleTooltip: this._handleTooltip,
       createAccount: this._createAccount,
       createAccountModal: this._createAccountModal,
       setPassword: this._setPassword,
@@ -611,7 +638,10 @@ class AppContainer extends Component {
       handleSubmit:this._handleSubmit,
       AccountModal:this._AccountModal,
       closeModal: this._closeModal,
-      TransferModal: this._TransferModal
+      DetailAccountMenuModal: this._DetailAccountMenuModal,
+      edit:this._edit,
+      editor:false,
+      lowdb:lowdb
     };
   }
   render() {

@@ -5,18 +5,19 @@ import Store from "context/store";
 
 const Header = styled.header`
   height: 60px;
-  background-color: #1C885F;
+  background-color:transparent
   padding: 0 40px;
-  border-bottom: 1px solid rgba(0,0,0,.0975);
-  border-top-left-radius:5px;
-  border-top-right-radius:5px;
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+  border-top-left-radius:10px;
+  border-top-right-radius:10px;
   margin-bottom:40px;
   font-weight: 700;
 `;
 
 const Title = styled.div`
-  color: white
-  font-family: 'Titillium Web', sans-serif
+  color: #fcfcfc
+  font-style: italic;
+  font-family: 'Roboto', sans-serif
 `;
 
 

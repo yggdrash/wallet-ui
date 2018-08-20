@@ -5,9 +5,9 @@ import Store from "context/store";
 
 const Header = styled.header`
   height: 60px;
-  background-color: #1C885F;
+  background-color:transparent
   padding: 0 40px;
-  border-bottom: 1px solid rgba(0,0,0,.0975);
+  border-bottom: 1px solid rgba(255,255,255,0.5);
   border-top-left-radius:10px;
   border-top-right-radius:10px;
   margin-bottom:30px;
@@ -16,7 +16,8 @@ const Header = styled.header`
 `;
 
 const Title = styled.div`
-  color:white;
+  color: #fcfcfc
+  font-style:italic;
   font-family: 'Titillium Web', sans-serif
 `;
 
@@ -28,7 +29,7 @@ const ModalHeaderPresenter = (status) => (
         <Store.Consumer>
             {store => (
               <Title>
-                {status.myAccount ? "My Account" : "Transfer"}
+                {status.myAccount ? "MY ACCOUNT" : "TRANSFER"}
               </Title>
             )}
         </Store.Consumer>
