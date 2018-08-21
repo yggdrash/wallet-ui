@@ -6,10 +6,10 @@ import reset from "styled-reset";
 import back from "assets/images/background1.jpg";
 import "./typography";
 
+
 const { remote } = window.require("electron");
 const sharedPort = remote.getGlobal("sharedPort");
 const lowdb = remote.getGlobal("lowdb");
-
 
 injectGlobal`
 ${reset};

@@ -14,6 +14,7 @@ import { Delete } from "styled-icons/material/Delete";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Check } from 'styled-icons/material/Check';
 import { Button } from "components/Shared";
+import DetailAccountMenu from 'components/DetailAccountMenu';
 import {
   Tooltip,
   TooltipArrow,
@@ -24,9 +25,10 @@ import {
 } from 'styled-table-component';
 import Store from "context/store";
 const accountProp = "account"
+const Container = styled.div`
+`;
 const Modal = styled(ReactModal)`
   border: 0;
-  // background-color: rgba( 49, 49, 49, 0.9 );
   background-color: rgba( 22, 48, 72, 0.95 );
   width: 90%;
   height: 90%;
@@ -296,7 +298,7 @@ const Input = Submit.extend`
 `;
 
 const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, left}) => (
-  <Flex>
+  <Container>
   <Store.Consumer>
     {store => (
       <Modal
@@ -404,10 +406,7 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
               <Table hover width={"1200px"} ml={"15px"}>
                   <thead>
                     <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Confirmations</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">From</th>
+                      <th scope="col">TxID</th>
                       <th scope="col">To</th>
                     </tr>
                   </thead>
@@ -415,22 +414,13 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
                     <tr>
                       <th scope="row">1</th>
                       <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
                     </tr>
                     <tr>
                       <th scope="row">2</th>
                       <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
                     </tr>
                     <tr>
                       <th scope="row">3</th>
-                      <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
                       <td>...</td>
                     </tr>
                   </tbody>
@@ -455,7 +445,16 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
       </Modal>
     )}
     </Store.Consumer>
-  </Flex>
+    <Store.Consumer>
+    {store => (
+      <Flex>
+        <DetailAccountMenu
+          lowdb={store.lowdb}
+        />
+      </Flex>
+    )}
+   </Store.Consumer>
+  </Container>
 );
 
 DetailAccountPresenter.propTypes = {

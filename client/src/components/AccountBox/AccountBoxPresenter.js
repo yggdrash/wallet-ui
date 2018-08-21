@@ -13,13 +13,12 @@ import Store from "context/store";
 import Account from "components/Address";
 import ygg from 'assets/images/YGG_logo.png';
 import DetailAccount from 'components/DetailAccount';
-import DetailAccountMenu from 'components/DetailAccountMenu';
 // import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
 const AccountBox = styled.div`
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
-  background-color: rgba( 18, 38, 57, 0.3);
+  background-color: rgba( 18, 38, 57, 0.35);
   width: 65%;
   height: 400px;
   border-radius: 15px;
@@ -535,7 +534,6 @@ const AccountBoxPresenter = ({
                   </Flex>
                 </Modal>
                 <DetailAccount/>
-                <DetailAccountMenu/>
               </Fragment>
             )}
           </Store.Consumer>

@@ -43,7 +43,7 @@ export const Yeed = styled.div`
 `;
 
 export const Line = styled.div`
-  border-bottom: 0.1px solid rgb(105,105,105);
+  border-bottom: 0.1px solid rgba(255,255,255,0.7);
   width: 97%;
   margin-left:10px;
 `;

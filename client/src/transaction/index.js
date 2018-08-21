@@ -43,24 +43,24 @@ class Transaction {
     data = data || {}
     // Define Properties
     const fields = [{
-      name: 'nonce',
-      length: 32,
-      allowLess: true,
-      default: new Buffer([])
-    },{
-      name: 'to',
+      name: 'type',
       allowZero: true,
-      length: 20,
+      length: 4,
       default: new Buffer([])
     }, {
-      name: 'value',
-      length: 32,
+      name: 'version',
+      length: 4,
       allowLess: true,
       default: new Buffer([])
     }, {
-      name: 'data',
-      alias: 'input',
-      allowZero: true,
+      name: 'dataHash',
+      length: 32,
+      allowLess: true,
+      default: new Buffer([])
+    }, {
+      name: 'timeStamp',
+      length: 8,
+      allowLess: true,
       default: new Buffer([])
     }, {
       name: 'v',
@@ -206,13 +206,12 @@ class Transaction {
   sign (privateKey) {
     const msgHash = this.hash(false)
     const sig = yeedUtil.ecsign(msgHash, privateKey)
-    console.log(sig)
     if (this._chainId > 0) {
       sig.v += this._chainId * 2 + 8
     }
     Object.assign(this, sig)
+    return sig
   }
-
   /**
    * the up front amount that an account must have for this transaction to be valid
    * @return {BN}
@@ -241,3 +240,10 @@ class Transaction {
 }
 
 module.exports = Transaction
+
+
+
+
+
+
+
