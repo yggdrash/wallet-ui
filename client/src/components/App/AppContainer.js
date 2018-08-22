@@ -27,7 +27,9 @@ class AppContainer extends Component {
     };
 
     this.getBalanceData = () => {
-      let address = "0x2d2c2bf8cbb6f883850409b752f2d57d8dc46c59"
+
+      let address = lowdb.get("accounts").map("address").value()
+      console.log(address[0])
       var address40 = address.substring(2)
       const balanceParamsdata = {
         "address":address40,
