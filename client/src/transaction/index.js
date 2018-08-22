@@ -1,6 +1,7 @@
 // 'use strict'
 const yeedUtil = require('utils')
 const BN = yeedUtil.BN
+const { sha3 } = require('utils')
 
 // secp256k1n/2
 const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16)
@@ -136,8 +137,8 @@ class Transaction {
     // when computing the hash of a transaction for purposes of signing or recovering,
     // instead of hashing only the first six elements (ie. nonce, gasprice, startgas, to, value, data),
     // hash nine elements, with v replaced by CHAIN_ID, r = 0 and s = 0
-    console.log(this.raw)
     let items
+    let item=""
     if (includeSignature) {
       items = this.raw
     } else {
@@ -152,8 +153,12 @@ class Transaction {
         items = this.raw.slice(0, 5)
       }
     }
+    for(let i=0; i<items.length; i++){
+      item += items[i].toString("hex")
+    }
     // create hash
-    return yeedUtil.rlphash(items)
+    // return yeedUtil.rlphash(items)
+    return sha3(item)
   }
 
   /**
@@ -210,7 +215,6 @@ class Transaction {
    */
   sign (privateKey) {
     const msgHash = this.hash(false)
-    console.log(msgHash.toString("hex"))
     const sig = yeedUtil.ecsign(msgHash, privateKey)
     if (this._chainId > 0) {
       sig.v += this._chainId * 2 + 8
