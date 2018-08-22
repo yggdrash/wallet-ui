@@ -43,9 +43,9 @@ const Modal = styled(ReactModal)`
     outline: none;
   }
   -webkit-animation-name: zoom;
-    -webkit-animation-duration: 0.5s;
+    -webkit-animation-duration: 0.4s;
     animation-name: zoom;
-    animation-duration: 0.5s;
+    animation-duration: 0.4s;
   @-webkit-keyframes zoom {
       from {-webkit-transform:scale(0)} 
       to {-webkit-transform:scale(1)}
@@ -305,8 +305,8 @@ const Input = Submit.extend`
 const TransactionData = styled.button`
   width: 95%;
   height:50px;
-  border:0
-  background-color: rgba(255,255,255, 0.9 );
+  border: 1px solid #fafafa;
+  background-color:transparent
   font-size: 0.9em;
   font-weight: 250;
   margin-top: 20px;
@@ -325,7 +325,7 @@ const TransactionData = styled.button`
   &:hover {
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
     transform: translateY(-3px);
-    color:#174730
+    border: 1px solid rgb(255,204,0)
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -343,7 +343,7 @@ const TransactionData = styled.button`
     }
   }
 `;
-const txData = styled.div`
+const TxID = styled.div`
   color:$fcfcfc
 `;
 const TxReceipt = styled(ReactModal)`
@@ -504,9 +504,9 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
               <TransactionData
                 onClick={() => getTransactionReceipt(txResult)}
               >
-                <txData>
+                <TxID>
                   TX ID : {txResult}
-                </txData>
+                </TxID>
               </TransactionData>
             </FlexItem>
           </Flex>

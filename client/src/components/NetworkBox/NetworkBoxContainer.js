@@ -32,7 +32,17 @@ class NetworkBoxContainer extends Component {
             }
           })
         })
-        .catch(err => console.log(err)) 
+        .catch(err => 
+          this.setState(() => {
+            return {
+              network: {
+                name: "Not connected",
+                peerUrl: "",
+                lastChecked: ""
+              }
+            }
+          })
+        ) 
     }
   }
 

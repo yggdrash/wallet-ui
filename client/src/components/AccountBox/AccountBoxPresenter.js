@@ -12,7 +12,7 @@ import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
 import ygg from 'assets/images/YGG_logo.png';
-import DetailAccount from 'components/DetailAccount';
+// import DetailAccount from 'components/DetailAccount';
 // import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
@@ -533,9 +533,9 @@ const AccountBoxPresenter = ({
                     </FlexItem>
                   </Flex>
                 </Modal>
-                <DetailAccount
+                {/* <DetailAccount
                 
-                />
+                /> */}
               </Fragment>
             )}
           </Store.Consumer>

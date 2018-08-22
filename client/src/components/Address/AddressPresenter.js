@@ -5,6 +5,7 @@ import Flex from "styled-flex-component";
 import ReactModal from 'react-modal';
 import yeed from 'assets/images/yeed-symbol.png';
 import Store from "context/store";
+import DetailAccount from 'components/DetailAccount';
 
 const Account = styled.div`
   width: 100%;
@@ -109,6 +110,11 @@ const AddressPresenter = ({ balace, address, name }) => (
                   </Flex>
                 </Flex>
               </Address>
+            </Flex>
+            <Flex>
+              <DetailAccount
+                address={store.selectAddress}
+              />
             </Flex>
           </Account>
       )}

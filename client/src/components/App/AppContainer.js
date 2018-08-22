@@ -53,7 +53,6 @@ class AppContainer extends Component {
       let client  = await jayson.client.http(`${MASTER_NODE}/api/account`)
       client.request('balanceOf', {data: params}, (err, res) => {
         if(err) {
-          console.log(err)
           throw err
         } else {
           this.setState({
