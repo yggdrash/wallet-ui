@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DetailAccountPresenter from "./DetailAccountPresenter";
+import update from 'react-addons-update';
 import { MASTER_NODE } from "../../constants";
 
 const { remote } = window.require("electron"),
@@ -82,7 +83,14 @@ class DetailAccountContainer extends Component {
         } else {
           console.log(res.result)
           for(let tx in res.result){
-            this.setState({txResult : tx})
+            this.setState({
+              txResult: update(
+                this.state.txResult,
+                {
+                    $push: [tx]
+                }
+              ),
+            })
           }
         }
       })
@@ -95,8 +103,14 @@ class DetailAccountContainer extends Component {
           console.log(err)
           throw err
         } else {
+          console.log(res.result)
           this.setState({
-            txReceipt:res.result,
+            txReceipt: update(
+              this.state.txReceipt,
+              {
+                  $push: [res.result]
+              }
+            ),
             txReceiptOpen:true
           })
         }

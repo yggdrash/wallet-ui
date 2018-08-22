@@ -59,12 +59,12 @@ class Transaction {
       allowLess: true,
       default: new Buffer([])
     }, {
-      name: 'dataSize',
+      name: 'timeStamp',
       length: 8,
       allowZero: true,
       default: new Buffer([])
     }, {
-      name: 'timeStamp',
+      name: 'dataSize',
       length: 8,
       allowZero: true,
       default: new Buffer([])
@@ -156,6 +156,8 @@ class Transaction {
     for(let i=0; i<items.length; i++){
       item += items[i].toString("hex")
     }
+    console.log(item)
+    console.log(items)
     // create hash
     // return yeedUtil.rlphash(items)
     return sha3(item)
@@ -215,6 +217,7 @@ class Transaction {
    */
   sign (privateKey) {
     const msgHash = this.hash(false)
+    console.log(msgHash.toString("hex"))
     const sig = yeedUtil.ecsign(msgHash, privateKey)
     if (this._chainId > 0) {
       sig.v += this._chainId * 2 + 8

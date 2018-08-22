@@ -305,42 +305,27 @@ const Input = Submit.extend`
 const TransactionData = styled.button`
   width: 95%;
   height:50px;
-  border: 1px solid #fafafa;
+  border:0;
+  border-bottom: 1px solid rgb(255,255,255);
   background-color:transparent
   font-size: 0.9em;
   font-weight: 250;
   margin-top: 20px;
   margin-left: 20px;
   margin-bottom: 10px;
-  border-radius: 10px;
   padding-left:20px;
   display: flex;
-  box-shadow: 0 2px 3px rgba(50, 50, 93, 0.05), 0 1px 2px rgba(0, 0, 0, 0.08);
-  transition: all 0.1s linear;
   cursor: pointer;
   &:focus,
   &:active {
     outline: none;
   }
   &:hover {
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
     transform: translateY(-3px);
-    border: 1px solid rgb(255,204,0)
+    border-bottom: 1px solid rgb(255,204,0)
   }
   &:active {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     transform: translateY(3px);
-  }
-  &:disabled {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color: #009432;
-    transform: none;
-    cursor: progress;
-    &:focus,
-    &:active,
-    &:hover {
-      transform: none;
-    }
   }
 `;
 const TxID = styled.div`
@@ -504,9 +489,15 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
               <TransactionData
                 onClick={() => getTransactionReceipt(txResult)}
               >
+              {
+                txResult 
+                ?
                 <TxID>
                   TX ID : {txResult}
                 </TxID>
+                :
+                ""
+              }
               </TransactionData>
             </FlexItem>
           </Flex>

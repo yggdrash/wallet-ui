@@ -48,6 +48,7 @@ class DetailAccountMenuContainer extends Component {
             const decoded = wif.decode(decryptedPrivateWif)
             let privateKey = decoded.privateKey.toString("hex");
             const yeedAccount = fromPrivateKey(toBuffer(`0x${privateKey}`));
+            console.log(privateKey)
             const fromPrivateKeyBuffer = yeedAccount.getPrivateKey();
             const getTimestamp = Math.round(new Date().getTime() / 1000);
             const data = {
@@ -65,11 +66,12 @@ class DetailAccountMenuContainer extends Component {
             let type = Buffer.from("00000000", 'hex').toString('hex')
             let version = Buffer.from("00000000", 'hex').toString('hex')
             let dataSize = Buffer.from("0000000000000020", 'hex').toString('hex')
-            let timestamp = Buffer.from(`000000${getTimestamp}`, 'hex').toString('hex')
+            let timestamp = Buffer.from(`0000000000000020`, 'hex').toString('hex')
             const dataHashHex = sha3(DataJson).toString("hex")
 
             const tx = new Tx(this.txHeaderData(type, version, dataHashHex, dataSize, timestamp));
             const signature = tx.sign(fromPrivateKeyBuffer);
+            console.log(signature.v)
             const txDataObject = this.txData(signature, dataHashHex, type, version, dataSize, timestamp, DataJson)
             this.trasferTransaction(txDataObject, selectAddress)
             this.setState(() => {
@@ -91,8 +93,8 @@ class DetailAccountMenuContainer extends Component {
           "type":`0x${type}`,
           "version":`0x${version}`,
           "dataHash":`0x${dataHashHex}`,
-          "dataSize":`0x${dataSize}`,
-          "timeStamp":`0x${timestamp}`
+          "timeStamp":`0x${timestamp}`,
+          "dataSize":`0x${dataSize}`
         };
         return txHeaderData
      }
@@ -103,8 +105,8 @@ class DetailAccountMenuContainer extends Component {
         const base64Vrs = Buffer.from(vrs, 'hex').toString('base64')
         let base64Type = Buffer.from(type, 'hex').toString('base64')
         let base64Version = Buffer.from(version, 'hex').toString('base64')
-        const dataLengthNumber= hexToNumber(dataSize)
-        const timestampNumber = hexToNumber(timestamp)
+        const dataLengthNumber= 32//hexToNumber(dataSize)
+        const timestampNumber = 32//hexToNumber(timestamp)
         let txData = {
           "type":base64Type,
           "version":base64Version,
