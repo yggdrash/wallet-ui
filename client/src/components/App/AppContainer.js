@@ -5,12 +5,8 @@ import update from 'react-addons-update';
 import Store from "context/store";
 
 const bip38 = require('bip38'),
- bip38Decrypt = require('bip38-decrypt'),
   HDKey = require("accounts/hdkey"),
   bip39 = require("bip39"),
-  wif = require('wif'),
-  { sha3, dataToJson } = require('utils'),
-  { toHex, hexToBytes } = require('utils/txUtil'),
   passValid = require("password-strength");
 
 const HDpath = "m/44'/60'/0'/0/0";

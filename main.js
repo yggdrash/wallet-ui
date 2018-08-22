@@ -14,7 +14,7 @@ const db = low(adapter)
 const jayson = require('jayson')
 
 // Set some defaults (required if your JSON file is empty)
-db.defaults({ accounts: [], principal:[] })
+db.defaults({ accounts: [], principal:[], transaction:[] })
   .write()
 
 getPort().then(port => {

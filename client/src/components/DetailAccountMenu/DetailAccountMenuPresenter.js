@@ -83,7 +83,7 @@ const Input = Submit.extend`
   margin-left:40px;
   padding-left: 10px;
   margin-top:${props => (props.addressInput ? "10px" : "30px")}
-  margin-bottom:${props => (props.passwordInput ? "10px" : "")}
+  margin-bottom:${props => (props.passwordInput ? "20px" : "")}
 `;
 const Loading = styled.div`
   position: absolute;
@@ -151,7 +151,9 @@ const DetailAccountMenuPresenter = ({ balace, transaction, toAddress, amount, pa
           <FlexItem>
             <Fragment>
               <Button 
-                onClick={() => transaction(store.selectAddress)}
+                onClick={() => {
+                  transaction(store.selectAddress)
+                }}
               >
                 SEND
               </Button>

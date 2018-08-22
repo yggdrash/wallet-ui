@@ -20,9 +20,6 @@ import {
   TooltipArrow,
   TooltipInner,
 } from 'styled-tooltip-component';
-import {
-  Table
-} from 'styled-table-component';
 import Store from "context/store";
 const accountProp = "account"
 const Container = styled.div`
@@ -261,7 +258,15 @@ const Balance = styled.div`
       return "25px"
     }
   }}
-  color:${props => (props.accountBox ? "#fcfcfc;" : "white")}
+  color: ${props => {
+    if(props.accountBox){
+      return "#fcfcfc;"
+    } else if(props.val){
+      return "#e67e22"
+    } else {
+      return "white"
+    }
+  }}
 `;
 const Submit = styled.input`
   border: 0;
@@ -295,6 +300,50 @@ const Input = Submit.extend`
   margin-left:20px;
   padding-left: 10px;
   margin-top:${props => (props.amountInput ? "10px" : "")}
+`;
+const TransactionData = styled.button`
+  width: 95%;
+  height:50px;
+  border:0
+  background-color: rgba(255,255,255, 0.9 );
+  font-size: 0.9em;
+  font-weight: 250;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  padding-left:20px;
+  display: flex;
+  box-shadow: 0 2px 3px rgba(50, 50, 93, 0.05), 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition: all 0.1s linear;
+  cursor: pointer;
+  &:focus,
+  &:active {
+    outline: none;
+  }
+  &:hover {
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+    color:#174730
+  }
+  &:active {
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transform: translateY(3px);
+  }
+  &:disabled {
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: #009432;
+    transform: none;
+    cursor: progress;
+    &:focus,
+    &:active,
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+const txData = styled.div`
+  color:$fcfcfc
 `;
 
 const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, left}) => (
@@ -391,7 +440,7 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
         </Info>
 
         <TransactionInfo>
-          <Flex full >
+          <Flex full column>
             <FlexItem>
               <Transactions first>
                 TRANSACTIONS
@@ -402,30 +451,17 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
               <Transactions >
                 CONTRACT
               </Transactions> */}
-              <Flex>
-              <Table hover width={"1200px"} ml={"15px"}>
-                  <thead>
-                    <tr>
-                      <th scope="col">TxID</th>
-                      <th scope="col">To</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>...</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>...</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>...</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Flex>
+            </FlexItem>
+            <FlexItem>
+              <TransactionData>
+              {/* {store.selectAddress 
+                  ? 
+                  <txData>Tx ID :
+                    {store.lowdb.get("transaction").find({address:store.selectAddress}).value().txId}
+                  </txData>
+                  : "" 
+              } */}
+              </TransactionData>
             </FlexItem>
           </Flex>
         </TransactionInfo>
