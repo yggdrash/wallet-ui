@@ -11,8 +11,6 @@ const bip38Decrypt = require('bip38-decrypt'),
       { remote } = window.require("electron"),
       jayson = remote.getGlobal("jayson"),
       lowdb = remote.getGlobal("lowdb"),
-      crypto = require('crypto'),
-      secp256k1 = require('secp256k1'),
       { numberToHex, hexToNumber, hexToBytes } = require('utils/txUtil');
 
 class DetailAccountMenuContainer extends Component {
@@ -33,7 +31,7 @@ class DetailAccountMenuContainer extends Component {
       let privatekeyEncryptedKey = lowdb.get("principal").find({address:selectAddress}).value().EncryptedKey
 
       setTimeout(() =>{
-        bip38Decrypt(privatekeyEncryptedKey, "asdfasdf" , (err, decryptedPrivateWif) => {
+        bip38Decrypt(privatekeyEncryptedKey, password , (err, decryptedPrivateWif) => {
           if (err){
             console.log(err.msg);
             this.setState(() => {
@@ -67,13 +65,12 @@ class DetailAccountMenuContainer extends Component {
             let type = Buffer.from("00000000", 'hex').toString('hex')
             let version = Buffer.from("00000000", 'hex').toString('hex')
             let dataSize = Buffer.from("0000000000000020", 'hex').toString('hex')
-            let timestamp = Buffer.from("0001020304050607", 'hex').toString('hex')
+            let timestamp = Buffer.from(`000000${getTimestamp}`, 'hex').toString('hex')
             const dataHashHex = sha3(DataJson).toString("hex")
 
             const tx = new Tx(this.txHeaderData(type, version, dataHashHex, dataSize, timestamp));
             const signature = tx.sign(fromPrivateKeyBuffer);
             const txDataObject = this.txData(signature, dataHashHex, type, version, dataSize, timestamp, DataJson)
-            console.log(txDataObject)
             this.trasferTransaction(txDataObject, selectAddress)
             this.setState(() => {
               return {

@@ -21,8 +21,10 @@ class DetailAccountContainer extends Component {
     };
 
     this.componentDidMount = () => {
-      this.balanceOf();
+      this.balanceOf()
+      setInterval(this.balanceOf, 10000);
       this.getAllTransactionReceipt()
+      setInterval(this.getAllTransactionReceipt, 10000);
 
     };
 
@@ -79,6 +81,7 @@ class DetailAccountContainer extends Component {
           console.log(err)
           throw err
         } else {
+          console.log(res.result)
           for(let tx in res.result){
             this.setState({txResult : tx})
           }

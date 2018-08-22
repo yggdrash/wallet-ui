@@ -20,7 +20,9 @@ class AppContainer extends Component {
     const { lowdb } = this.props;
     this.componentDidMount = () => {
       document.body.addEventListener("keydown", this.closeLastPopup);
-      this.balanceOf();
+      this.balanceOf()
+      setInterval(this.balanceOf, 10000);
+      
       // lowdb.get("accounts").map("address").value().map(addr => {
       //   console.log(addr)
       // });
