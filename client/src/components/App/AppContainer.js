@@ -3,10 +3,14 @@ import PropTypes from "prop-types";
 import AppPresenter from "./AppPresenter";
 import update from 'react-addons-update';
 import Store from "context/store";
+import { MASTER_NODE } from "../../constants";
 
 const bip38 = require('bip38'),
   HDKey = require("accounts/hdkey"),
   bip39 = require("bip39"),
+  { remote } = window.require("electron"),
+  jayson = remote.getGlobal("jayson"),
+  { dataToJson } = require('utils'),
   passValid = require("password-strength");
 
 const HDpath = "m/44'/60'/0'/0/0";
@@ -16,7 +20,44 @@ class AppContainer extends Component {
     const { lowdb } = this.props;
     this.componentDidMount = () => {
       document.body.addEventListener("keydown", this.closeLastPopup);
+      this.balanceOf();
+      // lowdb.get("accounts").map("address").value().map(addr => {
+      //   console.log(addr)
+      // });
     };
+
+    this.getBalanceData = () => {
+      let address = "0x2d2c2bf8cbb6f883850409b752f2d57d8dc46c59"
+      var address40 = address.substring(2)
+      const balanceParamsdata = {
+        "address":address40,
+        "method":"balanceOf",
+        "params":[
+          { 
+            address :address40
+          }
+        ]
+      }
+      let balanceParamsdataJson = dataToJson(balanceParamsdata)
+      return balanceParamsdataJson
+    }
+
+    this.balanceOf = async () => {
+      let params = this.getBalanceData();
+      let client  = await jayson.client.http(`${MASTER_NODE}/api/account`)
+      client.request('balanceOf', {data: params}, (err, res) => {
+        if(err) {
+          console.log(err)
+          throw err
+        } else {
+          this.setState({
+            balance:JSON.parse(res.result).result
+          })
+        }
+      })
+    };
+    
+
     this.closeLastPopup = e => {
       if (!(e.key === "Escape" || e.keyCode === 27)) return
       if(this.state.showModal === true){
@@ -174,35 +215,12 @@ class AppContainer extends Component {
     this._createAccount = () => {
       let wordSplit = this.state.mnemonic.split(" ");
       this.setState({isloading:true});
-      // const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
-      // const wallet = hdwallet.derivePath(HDpath).getWallet();
-      // let address = wallet.getAddressString();
-
-      // const fromPrivateKeyBuffer = wallet.getPrivateKey();
-      // const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, 'TestingOneTwoThree')
-
-      // bip38Decrypt(privatekeyEncryptedKey,'TestingOneTwoThree', (err, decryptedPrivateWif) => {
-      //   if (err){
-      //     console.log(err.msg);
-      //     return err;
-      //   }
-      //   else {
-      //     console.log(decryptedPrivateWif);
-      //     const decoded = wif.decode(decryptedPrivateWif)
-      //     console.log(decoded.privateKey.toString("hex"));
-      //     return decryptedPrivateWif;
-      //   }
-      // });
-      
-      
-
       if(wordSplit[2]=== this.state.word3 && wordSplit[5]=== this.state.word6 && wordSplit[8]=== this.state.word9){
         const { accountName, password } = this.state
         const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
         const wallet = hdwallet.derivePath(HDpath).getWallet();
         let address = wallet.getAddressString();
         const uuid = this.guid();
-        // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
         const fromPrivateKeyBuffer = wallet.getPrivateKey();
         
         // const passwordEncryptedKey = bip38.encrypt(this.state.password, true, this.state.password)
@@ -556,7 +574,7 @@ class AppContainer extends Component {
     this.state = {
       isloading:false,
       accounts:[],
-      balance: "0",
+      balance: [],
       toAddress: "",
       amount:"",
       selectAddress:"",

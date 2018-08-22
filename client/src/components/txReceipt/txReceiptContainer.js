@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import DetailAccountMenuPresenter from "./DetailAccountMenuPresenter";
+import txReceiptPresenter from "./txReceiptPresenter";
 import { toBuffer } from "utils";
 import { fromPrivateKey } from "accounts/wallet";
 import { MASTER_NODE } from "../../constants";
@@ -15,7 +15,7 @@ const bip38Decrypt = require('bip38-decrypt'),
       secp256k1 = require('secp256k1'),
       { numberToHex, hexToNumber, hexToBytes } = require('utils/txUtil');
 
-class DetailAccountMenuContainer extends Component {
+class txReceiptContainer extends Component {
   constructor(props) {
     super(props);
     const { lowdb } = this.props;
@@ -147,7 +147,7 @@ class DetailAccountMenuContainer extends Component {
   }
 
   render() {
-    return <DetailAccountMenuPresenter {...this.props} {...this.state} 
+    return <txReceiptPresenter {...this.props} {...this.state} 
             transaction={this._transaction}
             handleInput={this._handleInput}
             isloading={this.state.isloading}
@@ -156,4 +156,4 @@ class DetailAccountMenuContainer extends Component {
   }
 }
 
-export default DetailAccountMenuContainer;
+export default txReceiptContainer;

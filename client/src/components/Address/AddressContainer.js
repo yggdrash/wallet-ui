@@ -8,6 +8,9 @@ class AddressContainer extends Component {
 
     this.state = {
     };
+    this.componentDidMount = () => {
+      
+    };
   }
 
   render() {
