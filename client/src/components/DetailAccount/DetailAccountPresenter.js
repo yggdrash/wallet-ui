@@ -344,7 +344,7 @@ const TransactionData = styled.button`
   }
 `;
 const TxID = styled.div`
-  color:$fcfcfc
+    color:#fcfcfc
 `;
 const TxReceipt = styled(ReactModal)`
   border: 0;
