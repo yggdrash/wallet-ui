@@ -27,20 +27,23 @@ class AppContainer extends Component {
     };
 
     this.getBalanceData = () => {
-
       let address = lowdb.get("accounts").map("address").value()
-      var address40 = address[0].substring(2)
-      const balanceParamsdata = {
-        "address":address40,
-        "method":"balanceOf",
-        "params":[
-          { 
-            address :address40
-          }
-        ]
+      try {
+        let address40 = address[0].substring(2)
+        const balanceParamsdata = {
+          "address":address40,
+          "method":"balanceOf",
+          "params":[
+            { 
+              address :address40
+            }
+          ]
+        }
+        let balanceParamsdataJson = dataToJson(balanceParamsdata)
+        return balanceParamsdataJson
+      }catch (e) {
+        console.log(e)
       }
-      let balanceParamsdataJson = dataToJson(balanceParamsdata)
-      return balanceParamsdataJson
     }
 
     this.balanceOf = async () => {
