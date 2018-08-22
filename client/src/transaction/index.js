@@ -157,10 +157,12 @@ class Transaction {
       item += items[i].toString("hex")
     }
     console.log(item)
-    console.log(items)
+    let itemResult = Buffer.from(item, 'hex')
+    console.log(itemResult)
+    console.log(sha3(itemResult))
     // create hash
     // return yeedUtil.rlphash(items)
-    return sha3(item)
+    return sha3(itemResult)
   }
 
   /**

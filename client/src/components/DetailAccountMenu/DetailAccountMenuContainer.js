@@ -51,6 +51,12 @@ class DetailAccountMenuContainer extends Component {
             console.log(privateKey)
             const fromPrivateKeyBuffer = yeedAccount.getPrivateKey();
             const getTimestamp = Math.round(new Date().getTime() / 1000);
+            console.log("timestamp.type=", typeof getTimestamp)
+            console.log("timestamp=", getTimestamp)
+
+            var hexTimestamp = this.decimalToHex(getTimestamp);
+            console.log("hexTimestamp.type=", typeof hexTimestamp)
+            console.log("hexTimestamp=", hexTimestamp)
             const data = {
               "method":"transfer",
               "params":[
@@ -63,16 +69,15 @@ class DetailAccountMenuContainer extends Component {
               ]
             }
             let DataJson = dataToJson(data)
+            let dataLength = DataJson.length
             let type = Buffer.from("00000000", 'hex').toString('hex')
             let version = Buffer.from("00000000", 'hex').toString('hex')
-            let dataSize = Buffer.from("0000000000000020", 'hex').toString('hex')
-            let timestamp = Buffer.from(`0000000000000020`, 'hex').toString('hex')
+            let dataSize = this.decimalToHex(DataJson.length)
+            let timestamp = this.decimalToHex(getTimestamp);
             const dataHashHex = sha3(DataJson).toString("hex")
-
             const tx = new Tx(this.txHeaderData(type, version, dataHashHex, dataSize, timestamp));
             const signature = tx.sign(fromPrivateKeyBuffer);
-            console.log(signature.v)
-            const txDataObject = this.txData(signature, dataHashHex, type, version, dataSize, timestamp, DataJson)
+            const txDataObject = this.txData(signature, dataHashHex, type, version, dataLength, getTimestamp, DataJson)
             this.trasferTransaction(txDataObject, selectAddress)
             this.setState(() => {
               return {
@@ -87,6 +92,12 @@ class DetailAccountMenuContainer extends Component {
         });
         }, 100)
      };
+
+     this.decimalToHex = (d) => {
+        var hex = Number(d).toString(16);
+        hex = "0000000000000000".substr(0, 16 - hex.length) + hex; 
+        return hex;
+      }
 
      this.txHeaderData = (type, version, dataHashHex, dataSize, timestamp) =>{
         const txHeaderData = {
@@ -105,8 +116,8 @@ class DetailAccountMenuContainer extends Component {
         const base64Vrs = Buffer.from(vrs, 'hex').toString('base64')
         let base64Type = Buffer.from(type, 'hex').toString('base64')
         let base64Version = Buffer.from(version, 'hex').toString('base64')
-        const dataLengthNumber= 32//hexToNumber(dataSize)
-        const timestampNumber = 32//hexToNumber(timestamp)
+        const dataLengthNumber= hexToNumber(dataSize)
+        const timestampNumber = hexToNumber(timestamp)
         let txData = {
           "type":base64Type,
           "version":base64Version,
