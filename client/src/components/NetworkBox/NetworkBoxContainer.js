@@ -14,6 +14,7 @@ class NetworkBoxContainer extends Component {
 
     this.componentDidMount = () => {
       this._getNetwork()
+      setInterval(this._getNetwork, 5000);
     };
 
     this._getNetwork = () => {
@@ -31,7 +32,17 @@ class NetworkBoxContainer extends Component {
             }
           })
         })
-        .catch(err => console.log(err)) 
+        .catch(err => 
+          this.setState(() => {
+            return {
+              network: {
+                name: "Not connected",
+                peerUrl: "",
+                lastChecked: ""
+              }
+            }
+          })
+        ) 
     }
   }
 

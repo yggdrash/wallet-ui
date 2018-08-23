@@ -3,14 +3,14 @@ import PropTypes from "prop-types";
 import AppPresenter from "./AppPresenter";
 import update from 'react-addons-update';
 import Store from "context/store";
-import { toBuffer } from "utils";
-import { fromPrivateKey } from "accounts/wallet";
+import { MASTER_NODE } from "../../constants";
 
-const elliptic = require("elliptic"),
-  bip38 = require('bip38'),
-  bip38Decrypt = require('bip38-decrypt'),
+const bip38 = require('bip38'),
   HDKey = require("accounts/hdkey"),
   bip39 = require("bip39"),
+  { remote } = window.require("electron"),
+  jayson = remote.getGlobal("jayson"),
+  { dataToJson } = require('utils'),
   passValid = require("password-strength");
 
 const HDpath = "m/44'/60'/0'/0/0";
@@ -20,29 +20,49 @@ class AppContainer extends Component {
     const { lowdb } = this.props;
     this.componentDidMount = () => {
       document.body.addEventListener("keydown", this.closeLastPopup);
-      this._transaction()
+      this.balanceOf()
+      setInterval(this.balanceOf, 10000);
+      
+      // lowdb.get("accounts").map("address").value().map(addr => {
+      //   console.log(addr)
+      // });
     };
 
-      this._transaction = () => {
-        const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed("picture engage glory library pet such actress nut fit robot butter cute"));
-        const wallet = hdwallet.derivePath(HDpath).getWallet();
-        let fromPrivateKeyBuffer = wallet.getPrivateKey();
-       let privateKey = fromPrivateKeyBuffer.toString('hex');
-       const yeedAccount = fromPrivateKey(fromPrivateKeyBuffer);
-       const fromAddress = yeedAccount.getAddressString();
- 
-       // const txData = {
-       //   chainId: 0x03,
-       //   gasPrice: web3.utils.toHex(totalGasPrice),
-       //   gasLimit: web3.utils.toHex(21000),
-       //   to: toAddress,
-       //   from: fromAddress,
-       //   value: web3.utils.toHex(web3.utils.toWei(amount, 'ether')),
-       //   nonce: web3.utils.toHex(count)
-       // };
-       // const tx = new ethTx(txData);
-      //  tx.sign(fromPrivateKeyBuffer);
-     }
+    this.getBalanceData = () => {
+      let address = lowdb.get("accounts").map("address").value()
+      try {
+        let address40 = address[0].substring(2)
+        const balanceParamsdata = {
+          "address":address40,
+          "method":"balanceOf",
+          "params":[
+            { 
+              address :address40
+            }
+          ]
+        }
+        let balanceParamsdataJson = dataToJson(balanceParamsdata)
+        return balanceParamsdataJson
+      }catch (e) {
+        console.log(e)
+      }
+    }
+
+    this.balanceOf = async () => {
+      let params = this.getBalanceData();
+      let client  = await jayson.client.http(`${MASTER_NODE}/api/account`)
+      client.request('balanceOf', {data: params}, (err, res) => {
+        if(err) {
+          throw err
+        } else {
+          this.setState({
+            balance:JSON.parse(res.result).result
+          })
+        }
+      })
+    };
+    
+
     this.closeLastPopup = e => {
       if (!(e.key === "Escape" || e.keyCode === 27)) return
       if(this.state.showModal === true){
@@ -200,50 +220,12 @@ class AppContainer extends Component {
     this._createAccount = () => {
       let wordSplit = this.state.mnemonic.split(" ");
       this.setState({isloading:true});
-      // const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
-      // const wallet = hdwallet.derivePath(HDpath).getWallet();
-      // let address = wallet.getAddressString();
-
-      // const fromPrivateKeyBuffer = wallet.getPrivateKey();
-      // const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, 'TestingOneTwoThree')
-      // const passwordEncryptedKey = bip38.encrypt(this.state.password, true, 'TestingOneTwoThree')
-
-
-
-      // bip38Decrypt(privatekeyEncryptedKey,'TestingOneTwoThree', (err, decryptedPrivateWif) => {
-      //   if (err){
-      //     console.log(err.msg);
-      //     return err;
-      //   }
-      //   else {
-      //     console.log(decryptedPrivateWif);
-      //     const decoded = wif.decode(decryptedPrivateWif)
-      //     console.log(decoded.privateKey.toString("hex"));
-      //     return decryptedPrivateWif;
-      //   }
-      // });
-      
-      // bip38Decrypt(passwordEncryptedKey,'TestingOneTwoThree', (err, decryptedPrivateWif) => {
-      //   if (err){
-      //     console.log(err.msg);
-      //     return err;
-      //   }
-      //   else {
-      //     console.log(decryptedPrivateWif);
-      //     const decoded = wif.decode(decryptedPrivateWif)
-      //     console.log(decoded.privateKey.toString("hex"));
-      //     return decryptedPrivateWif;
-      //   }
-      // });
-      
-
       if(wordSplit[2]=== this.state.word3 && wordSplit[5]=== this.state.word6 && wordSplit[8]=== this.state.word9){
         const { accountName, password } = this.state
         const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
         const wallet = hdwallet.derivePath(HDpath).getWallet();
         let address = wallet.getAddressString();
         const uuid = this.guid();
-        // let privateKey = "0x" + wallet.getPrivateKey().toString("hex");
         const fromPrivateKeyBuffer = wallet.getPrivateKey();
         
         // const passwordEncryptedKey = bip38.encrypt(this.state.password, true, this.state.password)
@@ -358,11 +340,9 @@ class AppContainer extends Component {
             }
             lowdb.get("accounts").map("address").value().map(addr => {
                 if(addr === address){
-                    this.setState(() => {
-                        return {
-                            AlertImportAccount:"This account is already owned by you.",
-                            isloading:false
-                        };
+                    this.setState({
+                        AlertImportAccount:"This account is already owned by you.",
+                        isloading:false
                     });
                     throw Break;
                 }
@@ -599,7 +579,7 @@ class AppContainer extends Component {
     this.state = {
       isloading:false,
       accounts:[],
-      balance: "0",
+      balance: [],
       toAddress: "",
       amount:"",
       selectAddress:"",

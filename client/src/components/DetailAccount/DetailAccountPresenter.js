@@ -13,23 +13,21 @@ import { Edit2 } from "styled-icons/feather/Edit2";
 import { Delete } from "styled-icons/material/Delete";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Check } from 'styled-icons/material/Check';
-import yeed from 'assets/images/yeed-symbol.png';
-import { Yeed, Button } from "components/Shared";
+import { Button } from "components/Shared";
+import DetailAccountMenu from 'components/DetailAccountMenu';
+import txReceipt from 'components/txReceipt';
 import {
   Tooltip,
   TooltipArrow,
   TooltipInner,
 } from 'styled-tooltip-component';
-import {
-  Table
-} from 'styled-table-component';
 import Store from "context/store";
 const accountProp = "account"
+const Container = styled.div`
+`;
 const Modal = styled(ReactModal)`
   border: 0;
-  // background-color: rgba( 26, 92, 57, 0.5 );
-  background-color: rgba( 22, 48, 72, 0.5 );
-  // background-color: rgba( 30, 65, 98, 0.5 );
+  background-color: rgba( 22, 48, 72, 0.95 );
   width: 90%;
   height: 90%;
   position: absolute;
@@ -45,9 +43,9 @@ const Modal = styled(ReactModal)`
     outline: none;
   }
   -webkit-animation-name: zoom;
-    -webkit-animation-duration: 0.5s;
+    -webkit-animation-duration: 0.4s;
     animation-name: zoom;
-    animation-duration: 0.5s;
+    animation-duration: 0.4s;
   @-webkit-keyframes zoom {
       from {-webkit-transform:scale(0)} 
       to {-webkit-transform:scale(1)}
@@ -73,19 +71,17 @@ const DetailAddress = styled.button`
   transition: all 0.1s linear;
   text-align: left;
   cursor: pointer;
+  color:white
   &:focus,
   &:active {
     outline: none;
   }
   &:hover {
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
-    background-color:  #ecf0f1;
+    transform: translateY(-3px);
+    color: #DCB830
   }
   &:active {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color:  #ecf0f1;
-    transform: translateY(1px);
+    transform: translateY(3px);
   }
   &:disabled {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -118,13 +114,12 @@ const AccountIcon = styled.button`
     outline: none;
   }
   &:hover {
+    // box-shadow: ${props => (props.edit ? "0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);" : "inherit")}
     transform: translateY(-3px);
     color: #DCB830
   }
   &:active {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    background-color:  #ecf0f1;
-    transform: translateY(1px);
+    transform: translateY(3px);
   }
   &:disabled {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -141,36 +136,33 @@ const AccountIcon = styled.button`
 const AddressCopyIcon = styled(Copy)`
   width:20px;
   margin-right:5px;
-  color:black
 `
 const EditIcon = styled(Edit2)`
   width:20px;
-  color:black
 `
 const CheckIcon = styled(Check)`
   width:20px;
   margin-right:5px;
-  color: black
 `
 const TransactionIcon = styled(Send)`
   width:20px;
   margin-right:5px;
-  color: #3B7A8E
+  color: white;
 `
 const ExportIcon = styled(Download)`
   width:20px;
   margin-right:5px;
-  color: #3B7A8E
+  color: white;
 `
 const DeleteIcon = styled(Delete)`
   width:20px;
   margin-right:5px;
-  color: #3B7A8E
+  color: white;
 `
 const LockIcon = styled(Lock)`
   width:20px;
   margin-right:5px;
-  color:#3B7A8E
+  color:white;
 `
 
 const Info = styled.div`
@@ -215,18 +207,19 @@ const Transactions = styled.button`
   margin-top: 10px;
   margin-right: 50px;
   margin-bottom: 10px;
-  margin-left: ${props => (props.first ? "30px;": "inherit")}
+  margin-left: ${props => (props.first ? "15px;": "inherit")}
   font-size:1.1em;
   cursor: pointer;
   transition: all 0.2s ease-out;
   position: relative;
+  color:white;
   &:focus,
   &:active {
     outline: none;
   }
   &:hover {
     transform: translateY(-1px);
-    border-bottom: 0.1px solid rgb(051,153,051);
+    border-bottom: 0.1px solid rgb(0,0,0);
   }
   &:active {
     transform: translateY(1px);
@@ -248,6 +241,7 @@ const Label = styled.div`
   margin-left:20px;
   font-size:1.3em;
   font-weight:400;
+  color:white
 `;
 const QR = styled.div`
   margin-top:10px;
@@ -258,20 +252,31 @@ const Balance = styled.div`
   margin-top: ${props => (props.accountBox ? "9px" : "5px")}
   margin-left: ${props => {
     if(props.val){
-      return "inherit"
+      return "7px"
     } else if(props.accountBox ){
       return "5px"
     } else {
       return "25px"
     }
   }}
-  color:${props => (props.accountBox ? "#fcfcfc;" : "inherit")}
+  color: ${props => {
+    if(props.accountBox){
+      return "#fcfcfc;"
+    } else if(props.val){
+      return "white"
+    } else {
+      return "white"
+    }
+  }}
 `;
 const Submit = styled.input`
   border: 0;
   padding: 10px 0;
   background: transparent
-  border-bottom: 0.2px solid rgb(051,153,051);
+  border-bottom: 0.2px solid rgb(0,0,0);
+  &::-webkit-input-value {
+    color: #dfe6e9
+  }
   &:focus,
   &:active {
     outline: none;
@@ -297,9 +302,85 @@ const Input = Submit.extend`
   padding-left: 10px;
   margin-top:${props => (props.amountInput ? "10px" : "")}
 `;
+const TransactionData = styled.button`
+  width: 95%;
+  height:50px;
+  border:0;
+  border-bottom: 1px solid rgb(255,255,255);
+  background-color:transparent
+  font-size: 0.9em;
+  font-weight: 250;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  padding-left:20px;
+  display: flex;
+  cursor: pointer;
+  &:focus,
+  &:active {
+    outline: none;
+  }
+  &:hover {
+    transform: translateY(-3px);
+    border-bottom: 1px solid rgb(255,204,0)
+  }
+  &:active {
+    transform: translateY(3px);
+  }
+`;
+const TxID = styled.div`
+    color:#fcfcfc
+`;
+const TxReceipt = styled(ReactModal)`
+  border: 0;
+  width: 50%;
+  position: absolute;
+  top: 30%
+  left: 25%;
+  background-color: rgba( 22, 48, 72, 0.7 );
+  border: 2px solid rgba(0,0,0,.0975);
+  box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  box-sizing: border-box;
+  border-color: rgba(70, 219, 115, 0);
+  &:focus,
+  &:active {
+    outline: none;
+  }
+  -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.3s;
+    animation-name: zoom;
+    animation-duration: 0.3s;
+  @-webkit-keyframes zoom {
+      from {-webkit-transform:scale(0)} 
+      to {-webkit-transform:scale(1)}
+  }
+  
+  @keyframes zoom {
+      from {transform:scale(0)} 
+      to {transform:scale(1)}
+  }
+`
+const Header = styled.header`
+  height: 60px;
+  background-color:transparent
+  padding: 0 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.7);
+  border-top-left-radius:10px;
+  border-top-right-radius:10px;
+  margin-bottom:30px;
+  font-size: 1.5em;
+  font-weight: 700;
+`;
 
-const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, left}) => (
-  <Flex>
+const HeaderTitle = styled.div`
+  color: #fcfcfc
+  font-style:italic;
+  font-family: 'Titillium Web', sans-serif
+`;
+
+const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, left, balance, txResult, getTransactionReceipt, txReceipt, txReceiptOpen, close}) => (
+  <Container>
   <Store.Consumer>
     {store => (
       <Modal
@@ -365,9 +446,9 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
                 <TooltipInner left>{copied===true ? "Copied" : "Copy"}</TooltipInner>
               </Tooltip>
               <Flex>
-                <Balance>Balance </Balance>
-                <Yeed><img src={yeed} alt="yeed" /></Yeed>
-                <Balance val>0</Balance>
+                <Balance>Balance :</Balance>
+                {/* <Yeed><img src={yeed} alt="yeed" /></Yeed> */}
+                <Balance val>{balance} YEED</Balance>
               </Flex>
             </FlexItem>
           </Flex>
@@ -392,9 +473,9 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
         </Info>
 
         <TransactionInfo>
-          <Flex full >
+          <Flex full column>
             <FlexItem>
-              <Transactions >
+              <Transactions first>
                 TRANSACTIONS
               </Transactions>
               {/* <Transactions >
@@ -403,42 +484,21 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
               <Transactions >
                 CONTRACT
               </Transactions> */}
-              <Flex>
-              <Table hover width={"1200px"} ml={"15px"}>
-                  <thead>
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Confirmations</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">From</th>
-                      <th scope="col">To</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
-                      <td>...</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Flex>
+            </FlexItem>
+            <FlexItem>
+              <TransactionData
+                onClick={() => getTransactionReceipt(txResult)}
+              >
+              {
+                txResult 
+                ?
+                <TxID>
+                  TX ID : {txResult}
+                </TxID>
+                :
+                ""
+              }
+              </TransactionData>
             </FlexItem>
           </Flex>
         </TransactionInfo>
@@ -458,7 +518,21 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
       </Modal>
     )}
     </Store.Consumer>
-  </Flex>
+    <Store.Consumer>
+    {store => (
+      <Flex>
+        <DetailAccountMenu
+          lowdb={store.lowdb}
+        />
+      </Flex>
+    )}
+   </Store.Consumer>
+  
+      <Flex>
+        <txReceipt/>
+      </Flex>
+
+  </Container>
 );
 
 DetailAccountPresenter.propTypes = {

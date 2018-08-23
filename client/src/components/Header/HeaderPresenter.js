@@ -1,13 +1,12 @@
 import React, { Fragment }  from "react";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
-import logo from 'assets/images/ygg-logo-green.png';
 import { Menu } from 'styled-icons/feather/Menu';
 import { UsersCog } from 'styled-icons/fa-solid/UsersCog';
 import ReactModal from 'react-modal';
 import Store from "context/store";
-import textLogo from "assets/images/yggdrash-text-logo.png";
 import chains from "assets/images/blockchain2.png";
+import textLogo from "assets/images/YGG_logo_main.png";
 import accounts from "assets/images/account.png";
 import { Close } from "styled-icons/material/Close"
 import {
@@ -28,20 +27,13 @@ const Header = styled.header`
 const Side = styled.div`
 
 `;
-const Logo = styled.div`
-  width: 45px;
-  margin-top:24px;
-`;
-
 const Title = styled.div`
-  color: #508464;
+  color: white
   display: flex;
-  font-family: 'Roboto', sans-serif
 `;
 const Yggdrash = styled.div`
-  margin-left: 15px;
-  width: 160px;
-  margin-top:40px;
+  width: 200px;
+  margin-top:25px;
 `;
 const MenuIcon = styled(Menu)`
   width:17px;
@@ -83,7 +75,7 @@ const HeaderIcon = styled.button`
   }
   &:active {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    transform: translateY(1px);
+    transform: translateY(3px);
   }
   &:disabled {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -138,8 +130,9 @@ const SideMenuIcon = styled.button`
   }
 `;
 const Version = styled.div`
-  margin-top:49px;
-  margin-left:10px;
+  margin-top:45px;
+  margin-left:5px;
+  color: #d8d8d8
 `
 const MenuModal = styled(ReactModal)`
   border: 0;
@@ -190,7 +183,6 @@ const HeaderPresenter = ({ modalIsOpen, menu, handleOpenCloseDropdown, cogMenuHi
       <Flex full justifyBetween alignCenter>
         <FlexItem>
           <Title>
-            <Fragment><Logo><img src={logo} alt="logo" /></Logo></Fragment>
             <Fragment><Yggdrash><img src={textLogo} alt="logo" /></Yggdrash></Fragment>
             <Version>v 0.0.1</Version>
           </Title>

@@ -608,6 +608,21 @@ exports.baToJSON = function (ba) {
   }
 }
 
+exports.dataToJson = function (data) {
+  data.toJSON = function(key) {
+      var replacement = new Object();
+      for (var val in this){
+          if (typeof (this[val]) === 'string')
+              replacement[val] = this[val].toUpperCase();
+          else
+              replacement[val] = this[val]
+      }
+      return replacement;
+  };
+  return JSON.stringify(data);
+ }
+ 
+ 
 /**
  * Defines properties on a `Object`. It make the assumption that underlying data is binary.
  * @param {Object} self the `Object` to define properties on

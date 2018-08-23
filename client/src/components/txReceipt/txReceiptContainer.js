@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import DetailAccountMenuPresenter from "./DetailAccountMenuPresenter";
+import txReceiptPresenter from "./txReceiptPresenter";
 import { toBuffer } from "utils";
 import { fromPrivateKey } from "accounts/wallet";
 import { MASTER_NODE } from "../../constants";
@@ -11,9 +11,11 @@ const bip38Decrypt = require('bip38-decrypt'),
       { remote } = window.require("electron"),
       jayson = remote.getGlobal("jayson"),
       lowdb = remote.getGlobal("lowdb"),
+      crypto = require('crypto'),
+      secp256k1 = require('secp256k1'),
       { numberToHex, hexToNumber, hexToBytes } = require('utils/txUtil');
 
-class DetailAccountMenuContainer extends Component {
+class txReceiptContainer extends Component {
   constructor(props) {
     super(props);
     const { lowdb } = this.props;
@@ -31,7 +33,7 @@ class DetailAccountMenuContainer extends Component {
       let privatekeyEncryptedKey = lowdb.get("principal").find({address:selectAddress}).value().EncryptedKey
 
       setTimeout(() =>{
-        bip38Decrypt(privatekeyEncryptedKey, password , (err, decryptedPrivateWif) => {
+        bip38Decrypt(privatekeyEncryptedKey, "asdfasdf" , (err, decryptedPrivateWif) => {
           if (err){
             console.log(err.msg);
             this.setState(() => {
@@ -48,15 +50,8 @@ class DetailAccountMenuContainer extends Component {
             const decoded = wif.decode(decryptedPrivateWif)
             let privateKey = decoded.privateKey.toString("hex");
             const yeedAccount = fromPrivateKey(toBuffer(`0x${privateKey}`));
-            console.log(privateKey)
             const fromPrivateKeyBuffer = yeedAccount.getPrivateKey();
             const getTimestamp = Math.round(new Date().getTime() / 1000);
-            console.log("timestamp.type=", typeof getTimestamp)
-            console.log("timestamp=", getTimestamp)
-
-            var hexTimestamp = this.decimalToHex(getTimestamp);
-            console.log("hexTimestamp.type=", typeof hexTimestamp)
-            console.log("hexTimestamp=", hexTimestamp)
             const data = {
               "method":"transfer",
               "params":[
@@ -69,15 +64,16 @@ class DetailAccountMenuContainer extends Component {
               ]
             }
             let DataJson = dataToJson(data)
-            let dataLength = DataJson.length
             let type = Buffer.from("00000000", 'hex').toString('hex')
             let version = Buffer.from("00000000", 'hex').toString('hex')
-            let dataSize = this.decimalToHex(DataJson.length)
-            let timestamp = this.decimalToHex(getTimestamp);
+            let dataSize = Buffer.from("0000000000000020", 'hex').toString('hex')
+            let timestamp = Buffer.from("0001020304050607", 'hex').toString('hex')
             const dataHashHex = sha3(DataJson).toString("hex")
+
             const tx = new Tx(this.txHeaderData(type, version, dataHashHex, dataSize, timestamp));
             const signature = tx.sign(fromPrivateKeyBuffer);
-            const txDataObject = this.txData(signature, dataHashHex, type, version, dataLength, getTimestamp, DataJson)
+            const txDataObject = this.txData(signature, dataHashHex, type, version, dataSize, timestamp, DataJson)
+            console.log(txDataObject)
             this.trasferTransaction(txDataObject, selectAddress)
             this.setState(() => {
               return {
@@ -93,19 +89,13 @@ class DetailAccountMenuContainer extends Component {
         }, 100)
      };
 
-     this.decimalToHex = (d) => {
-        var hex = Number(d).toString(16);
-        hex = "0000000000000000".substr(0, 16 - hex.length) + hex; 
-        return hex;
-      }
-
      this.txHeaderData = (type, version, dataHashHex, dataSize, timestamp) =>{
         const txHeaderData = {
           "type":`0x${type}`,
           "version":`0x${version}`,
           "dataHash":`0x${dataHashHex}`,
-          "timeStamp":`0x${timestamp}`,
-          "dataSize":`0x${dataSize}`
+          "dataSize":`0x${dataSize}`,
+          "timeStamp":`0x${timestamp}`
         };
         return txHeaderData
      }
@@ -157,7 +147,7 @@ class DetailAccountMenuContainer extends Component {
   }
 
   render() {
-    return <DetailAccountMenuPresenter {...this.props} {...this.state} 
+    return <txReceiptPresenter {...this.props} {...this.state} 
             transaction={this._transaction}
             handleInput={this._handleInput}
             isloading={this.state.isloading}
@@ -166,4 +156,4 @@ class DetailAccountMenuContainer extends Component {
   }
 }
 
-export default DetailAccountMenuContainer;
+export default txReceiptContainer;

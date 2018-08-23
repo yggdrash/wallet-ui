@@ -7,7 +7,7 @@ const Header = styled.header`
   height: 60px;
   background-color:transparent
   padding: 0 40px;
-  border-bottom: 1px solid rgba(255,255,255,0.5);
+  border-bottom: 1px solid rgba(255,255,255,0.7);
   border-top-left-radius:10px;
   border-top-right-radius:10px;
   margin-bottom:30px;

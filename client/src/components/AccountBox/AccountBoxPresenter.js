@@ -11,17 +11,16 @@ import { Button } from 'components/Shared';
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
-import ygg from 'assets/images/main.png';
-import DetailAccount from 'components/DetailAccount';
-import DetailAccountMenu from 'components/DetailAccountMenu';
+import ygg from 'assets/images/YGG_logo.png';
+// import DetailAccount from 'components/DetailAccount';
 // import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
 const AccountBox = styled.div`
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
-  background-color: rgba( 18, 38, 57, 0.6);
-  width: 60%;
-  height: 370px;
+  background-color: rgba( 18, 38, 57, 0.35);
+  width: 65%;
+  height: 400px;
   border-radius: 15px;
   margin-bottom: 70px;
   box-sizing: border-box;
@@ -53,9 +52,10 @@ const LockIconIcon = styled(UserLock)`
   margin-right:7px;
 `
 const YeedAnimation = styled.div`
-  width: 130px;
+  width: 300px;
+  opacity:0.3;
   margin 0 auto;
-  padding-top: 30px;
+  padding-top: 90px;
 `;
 const Modal = styled(ReactModal)`
   border: 0;
@@ -63,7 +63,8 @@ const Modal = styled(ReactModal)`
   position: absolute;
   top: ${props => (props.import ? "20%" : "25%")}
   left: 25%;
-  background-color: rgba( 22, 48, 72, 0.5 );
+  background-color: rgba( 22, 48, 72, 0.95 );
+  // background-color: rgba( 49, 49, 49, 0.9 );
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -93,7 +94,7 @@ const Info = styled.div`
   border: 0;
   border-radius: ${props => (props.mnemonic ? "inherit" : "5px;")}
   border-bottom: 0.2px solid ${props => (props.mnemonic ? "rgb(75,203,188);" : "inherit")}
-  background-color: ${props => (props.mnemonic ? "inherit" : "rgba( 22, 48, 72, 0.5 );")}
+  background-color: ${props => (props.mnemonic ? "inherit" : "rgba( 22, 48, 72, 0.95 );")}
   color: ${props => (props.mnemonic || props.confirm ?  "white" : "#E35B5B;")};
   box-shadow: ${props => (props.mnemonic ? "inherit" : "0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);")}
   transition: all 0.1s linear;
@@ -265,9 +266,9 @@ const Address = styled.div`
     if (props.first) {
       return "inherit";
     }else if(props.second){
-      return "455px 455px"
+      return "490px 490px"
     }else {
-      return "300px 300px 300px";
+      return "330px 330px 330px";
     }
   }};
 `;
@@ -310,14 +311,14 @@ const AccountBoxPresenter = ({
                   onClick={() => store.importAccountModal()}
                 >
                 <ImportAccountIcon/>
-                IMPORT ACCOUNT
+                IMPORT
                 </Button>
                 <Button
                   createAccount
                   onClick={() => store.createAccountModal()}
                 >
                 <CreateAccountIcon/>
-                CREATE ACCOUNT
+                CREATE
                 </Button>
 
                 <Modal
@@ -532,8 +533,9 @@ const AccountBoxPresenter = ({
                     </FlexItem>
                   </Flex>
                 </Modal>
-                <DetailAccount/>
-                <DetailAccountMenu/>
+                {/* <DetailAccount
+                
+                /> */}
               </Fragment>
             )}
           </Store.Consumer>
@@ -541,11 +543,11 @@ const AccountBoxPresenter = ({
       </FlexItem>
     </Flex>
     <Line second/>
-    {/* <Store.Consumer>
+    <Store.Consumer>
         {store => (
           store.lowdb.get("accounts").map("address").value().length === 0 ? <YeedAnimation><img src={ygg} alt="germinal" /></YeedAnimation> : ""
         )}
-    </Store.Consumer> */}
+    </Store.Consumer>
     <Store.Consumer>
       {store => (
         <Address
@@ -554,10 +556,10 @@ const AccountBoxPresenter = ({
         >
           <Store.Consumer>
               {store => {
-                return store.lowdb.get("accounts").map("address").value().map(key => (
+                return store.lowdb.get("accounts").map("address").value().map(addr => (
                   <Account
-                    address={key}
-                    name={store.lowdb.get("accounts").find({address:key}).value().name}
+                    address={addr}
+                    name={store.lowdb.get("accounts").find({address:addr}).value().name}
                     lowdb={store.lowdb}
                   />
                 ));

@@ -1,7 +1,7 @@
-'use strict'
+// 'use strict'
 const yeedUtil = require('utils')
-const fees = require('./common/params.json')
 const BN = yeedUtil.BN
+const { sha3 } = require('utils')
 
 // secp256k1n/2
 const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16)
@@ -12,8 +12,6 @@ const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46
  * @example
  * var rawTx = {
  *   nonce: '00',
- *   gasPrice: '09184e72a000',
- *   gasLimit: '2710',
  *   to: '0000000000000000000000000000000000000000',
  *   value: '00',
  *   data: '7f7465737432000000000000000000000000000000000000000000000000000000600057',
@@ -32,8 +30,6 @@ const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46
  *
  * @property {Buffer} raw The raw rlp encoded transaction
  * @param {Buffer} data.nonce nonce number
- * @param {Buffer} data.gasLimit transaction gas limit
- * @param {Buffer} data.gasPrice transaction gas price
  * @param {Buffer} data.to to the to address
  * @param {Buffer} data.value the amount of ether sent
  * @param {Buffer} data.data this will contain the data of the message or the init of a contract
@@ -48,34 +44,28 @@ class Transaction {
     data = data || {}
     // Define Properties
     const fields = [{
-      name: 'nonce',
-      length: 32,
-      allowLess: true,
-      default: new Buffer([])
-    }, {
-      name: 'gasPrice',
-      length: 32,
-      allowLess: true,
-      default: new Buffer([])
-    }, {
-      name: 'gasLimit',
-      alias: 'gas',
-      length: 32,
-      allowLess: true,
-      default: new Buffer([])
-    }, {
-      name: 'to',
+      name: 'type',
       allowZero: true,
-      length: 20,
+      length: 4,
       default: new Buffer([])
     }, {
-      name: 'value',
+      name: 'version',
+      length: 4,
+      allowZero: true,
+      default: new Buffer([])
+    }, {
+      name: 'dataHash',
       length: 32,
       allowLess: true,
       default: new Buffer([])
     }, {
-      name: 'data',
-      alias: 'input',
+      name: 'timeStamp',
+      length: 8,
+      allowZero: true,
+      default: new Buffer([])
+    }, {
+      name: 'dataSize',
+      length: 8,
       allowZero: true,
       default: new Buffer([])
     }, {
@@ -147,33 +137,32 @@ class Transaction {
     // when computing the hash of a transaction for purposes of signing or recovering,
     // instead of hashing only the first six elements (ie. nonce, gasprice, startgas, to, value, data),
     // hash nine elements, with v replaced by CHAIN_ID, r = 0 and s = 0
-
     let items
+    let item=""
     if (includeSignature) {
       items = this.raw
     } else {
       if (this._chainId > 0) {
         const raw = this.raw.slice()
-        this.v = this._chainId
+        this.v = 27
         this.r = 0
         this.s = 0
         items = this.raw
         this.raw = raw
       } else {
-        items = this.raw.slice(0, 6)
+        items = this.raw.slice(0, 5)
       }
     }
-
+    for(let i=0; i<items.length; i++){
+      item += items[i].toString("hex")
+    }
+    console.log(item)
+    let itemResult = Buffer.from(item, 'hex')
+    console.log(itemResult)
+    console.log(sha3(itemResult))
     // create hash
-    return yeedUtil.rlphash(items)
-  }
-
-  /**
-   * returns the public key of the sender
-   * @return {Buffer}
-   */
-  getChainId () {
-    return this._chainId
+    // return yeedUtil.rlphash(items)
+    return sha3(itemResult)
   }
 
   /**
@@ -230,46 +219,20 @@ class Transaction {
    */
   sign (privateKey) {
     const msgHash = this.hash(false)
+    console.log(msgHash.toString("hex"))
     const sig = yeedUtil.ecsign(msgHash, privateKey)
     if (this._chainId > 0) {
       sig.v += this._chainId * 2 + 8
     }
     Object.assign(this, sig)
+    return sig
   }
-
-  /**
-   * The amount of gas paid for the data in this tx
-   * @return {BN}
-   */
-  getDataFee () {
-    const data = this.raw[5]
-    const cost = new BN(0)
-    for (let i = 0; i < data.length; i++) {
-      data[i] === 0 ? cost.iaddn(fees.txDataZeroGas.v) : cost.iaddn(fees.txDataNonZeroGas.v)
-    }
-    return cost
-  }
-
-  /**
-   * the minimum amount of gas the tx must have (DataFee + TxFee + Creation Fee)
-   * @return {BN}
-   */
-  getBaseFee () {
-    const fee = this.getDataFee().iaddn(fees.txGas.v)
-    if (this._homestead && this.toCreationAddress()) {
-      fee.iaddn(fees.txCreation.v)
-    }
-    return fee
-  }
-
   /**
    * the up front amount that an account must have for this transaction to be valid
    * @return {BN}
    */
   getUpfrontCost () {
-    return new BN(this.gasLimit)
-      .imul(new BN(this.gasPrice))
-      .iadd(new BN(this.value))
+    return new BN(this.value)
   }
 
   /**
@@ -283,10 +246,6 @@ class Transaction {
       errors.push('Invalid Signature')
     }
 
-    if (this.getBaseFee().cmp(new BN(this.gasLimit)) > 0) {
-      errors.push([`gas limit is too low. Need at least ${this.getBaseFee()}`])
-    }
-
     if (stringError === undefined || stringError === false) {
       return errors.length === 0
     } else {
@@ -296,3 +255,10 @@ class Transaction {
 }
 
 module.exports = Transaction
+
+
+
+
+
+
+

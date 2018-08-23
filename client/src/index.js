@@ -3,13 +3,13 @@ import ReactDOM from "react-dom";
 import App from "components/App";
 import { injectGlobal } from "styled-components";
 import reset from "styled-reset";
-import back from "assets/images/background.png";
+import back from "assets/images/background1.jpg";
 import "./typography";
+
 
 const { remote } = window.require("electron");
 const sharedPort = remote.getGlobal("sharedPort");
 const lowdb = remote.getGlobal("lowdb");
-
 
 injectGlobal`
 ${reset};

@@ -11,8 +11,6 @@ import { Button } from 'components/Shared';
 import { UserLock } from "styled-icons/fa-solid/UserLock";
 import Store from "context/store";
 import Account from "components/Address";
-import ygg from 'assets/images/main.png';
-// import LoadingScreen from 'react-loading-screen';
 
 const mainModalProp = "main"
 const AccountBox = styled.div`
@@ -313,15 +311,6 @@ const ChainBoxPresenter = ({
                     }
                   }}
                 >
-                  {/* <LoadingScreen
-                    loading={isloading}
-                    bgColor='#f1f1f1'
-                    spinnerColor='#9ee5f8'
-                    textColor='#676767'
-                    logoSrc={yeed}
-                    text='Here an introduction sentence (Optional)'
-                  > 
-                  </LoadingScreen> */}
                   { isloading ? <Loading/>: ""}
                   <ModalHeader/>
                   <FlexItem>
@@ -527,11 +516,7 @@ const ChainBoxPresenter = ({
       </FlexItem>
     </Flex>
     <Line second/>
-    <Store.Consumer>
-        {store => (
-          store.accounts.length === 0 ? <YeedAnimation><img src={ygg} alt="germinal" /></YeedAnimation> : ""
-        )}
-    </Store.Consumer>
+  
     <Address>
       <Store.Consumer>
           {store => {

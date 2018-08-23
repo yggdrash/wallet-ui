@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex from "styled-flex-component";
 import AccountBox from "components/AccountBox";
-import ChainBox from "components/ChainBox";
+// import ChainBox from "components/ChainBox";
 import NetworkBox from "components/NetworkBox";
 import Header from 'components/Header';
 import Store from "context/store";
