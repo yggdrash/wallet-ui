@@ -18,7 +18,8 @@ class DetailAccountContainer extends Component {
       balance:"",
       txResult:[],
       txReceipt:{},
-      txReceiptOpen:false
+      txReceiptOpen:false,
+      closeTransfer:false
     };
 
     this.componentDidMount = () => {
@@ -116,7 +117,7 @@ class DetailAccountContainer extends Component {
 
     this._close = () =>{
       this.setState({
-        txReceiptOpen:false
+        closeTransfer:false
       })
     }
 
