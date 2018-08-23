@@ -25,7 +25,7 @@ class DetailAccountContainer extends Component {
 
     this.componentDidMount = () => {
       this.balanceOf()
-      setInterval(this.balanceOf, 3000);
+      setInterval(this.balanceOf, 500);
       this.getAllTransactionReceipt()
       setInterval(this.getAllTransactionReceipt, 5000);
     };

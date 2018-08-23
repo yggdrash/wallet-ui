@@ -458,7 +458,7 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
             >
               <TransactionIcon/> TRANSFER
             </AccountIcon>
-            {/* <AccountIcon>
+            <AccountIcon>
               <ExportIcon/> EXPORT
             </AccountIcon>
             <AccountIcon>
@@ -468,7 +468,7 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
               onClick={() => store.DetailAccountMenuModal()}
             >
               <DeleteIcon/> DELETE
-            </AccountIcon> */}
+            </AccountIcon>
           </Flex>
         </Info>
 
