@@ -22,44 +22,41 @@ class AppContainer extends Component {
       document.body.addEventListener("keydown", this.closeLastPopup);
       this.balanceOf()
       setInterval(this.balanceOf, 10000);
-      
-      // lowdb.get("accounts").map("address").value().map(addr => {
-      //   console.log(addr)
-      // });
     };
 
-    this.getBalanceData = () => {
-      let address = lowdb.get("accounts").map("address").value()
-      try {
-        let address40 = address[0].substring(2)
-        const balanceParamsdata = {
-          "address":address40,
-          "method":"balanceOf",
-          "params":[
-            { 
-              address :address40
-            }
-          ]
-        }
-        let balanceParamsdataJson = dataToJson(balanceParamsdata)
-        return balanceParamsdataJson
-      }catch (e) {
-        console.log(e)
-      }
-    }
-
     this.balanceOf = async () => {
-      let params = this.getBalanceData();
       let client  = await jayson.client.http(`${MASTER_NODE}/api/account`)
-      client.request('balanceOf', {data: params}, (err, res) => {
-        if(err) {
-          throw err
-        } else {
-          this.setState({
-            balance:JSON.parse(res.result).result
-          })
+      lowdb.get("accounts").map("address").value().map(addr => {
+        try {
+          let address40 = addr.substring(2)
+          const balanceParamsdata = {
+            "address":address40,
+            "method":"balanceOf",
+            "params":[
+              { 
+                address :address40
+              }
+            ]
+          }
+          let balanceParamsdataJson = dataToJson(balanceParamsdata)
+          client.request('balanceOf', {data: balanceParamsdataJson}, (err, res) => {
+            if(err) {
+              throw err
+            } else {
+              this.setState({
+                balance: update(
+                  this.state.balance,
+                  {
+                      $push: [JSON.parse(res.result).result]
+                  }
+                ),
+              })
+            }
+          });
+        }catch (e) {
+          console.log(e)
         }
-      })
+      });
     };
     
 

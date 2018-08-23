@@ -558,6 +558,7 @@ const AccountBoxPresenter = ({
                     address={addr}
                     name={store.lowdb.get("accounts").find({address:addr}).value().name}
                     lowdb={store.lowdb}
+                    balance={store.balance[store.lowdb.get("accounts").map("address").value().length]}
                   />
                 ));
               }}

@@ -93,7 +93,7 @@ const AccountBoxYeed = styled.div`
   margin-top:10px;
 `;
 
-const AddressPresenter = ({ balace, address, name }) => (
+const AddressPresenter = ({ balance, address, name }) => (
     <Store.Consumer>
       {store => (
           <Account>
@@ -106,7 +106,7 @@ const AddressPresenter = ({ balace, address, name }) => (
                     <AccountBoxAddress>{address.slice(0,23)}...{address.slice(39,42)}</AccountBoxAddress>
                   <Flex>
                     <AccountBoxYeed><img src={yeed} alt="yeed" /></AccountBoxYeed>
-                    <Balance accountBox>{store.balance}</Balance>
+                    <Balance accountBox>{balance}</Balance>
                   </Flex>
                 </Flex>
               </Address>

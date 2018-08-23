@@ -10,13 +10,12 @@ const bip38Decrypt = require('bip38-decrypt'),
       { sha3, dataToJson } = require('utils'),
       { remote } = window.require("electron"),
       jayson = remote.getGlobal("jayson"),
-      lowdb = remote.getGlobal("lowdb"),
       { numberToHex, hexToNumber, isAddress } = require('utils/txUtil');
 
 class DetailAccountMenuContainer extends Component {
   constructor(props) {
     super(props);
-    const { lowdb } = this.props;
+    const { lowdb, close } = this.props;
     this.state = {
       password:"",
       toAddress:"",
@@ -198,7 +197,7 @@ class DetailAccountMenuContainer extends Component {
             transaction={this._transaction}
             handleInput={this._handleInput}
             isloading={this.state.isloading}
-            close={this.state.close}
+            close={this.props.close}
             alertInput={this.state.alertInput}
           />;
   }
