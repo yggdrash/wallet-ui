@@ -2,13 +2,12 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Flex, { FlexItem } from "styled-flex-component";
-import ModalHeader from 'components/AddressHeader';
 import ReactModal from 'react-modal';
 import { Button } from "components/Shared";
 import Store from "context/store";
 
 const txProp = "transfer"
-const Transfer = styled(ReactModal)`
+const TxReceipt = styled(ReactModal)`
   border: 0;
   width: 50%;
   position: absolute;
@@ -110,64 +109,29 @@ const DetailAccountMenuPresenter = ({ balace, transaction, toAddress, amount, pa
   <Flex>
   <Store.Consumer>
     {store => (
-        <Transfer
+        <TxReceipt
         isOpen={store.showDetailAccountMenuModal}
         style={{
           content: {
             color: 'black'
           }
         }}
-      >
-      <ModalHeader/>  
-      <Input addressInput toAddress={ toAddress }
-        placeholder={"Address"}
-        required
-        name="toAddress"
-        value={toAddress}
-        type={"text"}
-        onChange={handleInput}
-      />
-      <Input amountInput amount={ amount }
-        placeholder={"Amount"}
-        required
-        name="amount"
-        type={"number"}
-        value={amount}
-        onChange={handleInput}
-        max={store.balance}
-      />
-       <Input passwordInput password={ password }
-        placeholder={"Password"}
-        required
-        name="password"
-        type={"password"}
-        value={password}
-        onChange={handleInput}
-      />
-        <Flex alignCenter justifyBetween>
-          <FlexItem>
-            <Fragment/>
-          </FlexItem>
-          <FlexItem>
-            <Fragment>
-              <Button 
-                onClick={() => {
-                  transaction(store.selectAddress)
-                }}
-              >
-                SEND
-              </Button>
-            </Fragment>
-            <Fragment>
-              <Button 
-                onClick={() => store.closeModal(txProp)}>
-                CLOSE
-              </Button>
-            </Fragment>
-          </FlexItem>
-        </Flex>
-        { isloading ? <Loading/>: ""}
-      </Transfer>
+        >
+          <Flex alignCenter justifyBetween>
+            <FlexItem>
+              <Fragment/>
+            </FlexItem>
+            <FlexItem>
+              <Fragment>
+                <Button 
+                  onClick={() => store.closeModal(txProp)}>
+                  CLOSE
+                </Button>
+              </Fragment>
+            </FlexItem>
+          </Flex>
+          { isloading ? <Loading/>: ""}
+        </TxReceipt>
     )}
     </Store.Consumer>
   </Flex>

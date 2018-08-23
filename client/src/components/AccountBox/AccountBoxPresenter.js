@@ -533,9 +533,6 @@ const AccountBoxPresenter = ({
                     </FlexItem>
                   </Flex>
                 </Modal>
-                {/* <DetailAccount
-                
-                /> */}
               </Fragment>
             )}
           </Store.Consumer>

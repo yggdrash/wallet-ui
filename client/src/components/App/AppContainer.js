@@ -576,6 +576,21 @@ class AppContainer extends Component {
       });
     }
 
+    this._getTransactionReceipt = async (txId) => {
+      let client  = await jayson.client.http(`${MASTER_NODE}/api/transaction`)
+      client.request('getTransactionReceipt', {hashOfTx:txId}, (err, res) => {
+        if(err) {
+          console.log(err)
+          throw err
+        } else {
+          console.log(res.result)
+          this.setState({
+            txReceiptOpen:true
+          })
+        }
+      })
+    }
+
     this.state = {
       isloading:false,
       accounts:[],
@@ -602,6 +617,7 @@ class AppContainer extends Component {
       AlertImportAccountName:"",
       AlertImportAccountPass:"",
       AlertImportAccountConfirmPass:"",
+      txReceipt:{},
       accountBox: {
         "1": {
           id: 1
@@ -619,6 +635,7 @@ class AppContainer extends Component {
       AccountModal:this._AccountModal,
       closeModal: this._closeModal,
       DetailAccountMenuModal: this._DetailAccountMenuModal,
+      getTransactionReceipt:this._getTransactionReceipt,
       edit:this._edit,
       editor:false,
       lowdb:lowdb

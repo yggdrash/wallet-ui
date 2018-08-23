@@ -105,12 +105,6 @@ class DetailAccountContainer extends Component {
         } else {
           console.log(res.result)
           this.setState({
-            txReceipt: update(
-              this.state.txReceipt,
-              {
-                  $push: [res.result]
-              }
-            ),
             txReceiptOpen:true
           })
         }
@@ -140,7 +134,7 @@ class DetailAccountContainer extends Component {
             copied={this.state.copied}
             copyHidden={this.state.copyHidden}
             handleTooltip={this._handleTooltip}
-            getTransactionReceipt={this._getTransactionReceipt}
+            // getTransactionReceipt={this._getTransactionReceipt}
             balance={this.state.balance}
             txResult={this.state.txResult}
             txReceipt={this.state.txReceipt}

@@ -104,9 +104,17 @@ const Loading = styled.div`
     }
   }
 `;
+const AlertInfo = styled.div`
+  margin-top:20px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1em;
+  font-weight: 400;
+  transition: all 0.1s linear;
+  color:#E35B5B;
+`;
 
-
-const DetailAccountMenuPresenter = ({ balace, transaction, toAddress, amount, password, isloading, handleInput }) => (
+const DetailAccountMenuPresenter = ({ balace, transaction, toAddress, amount, password, isloading, handleInput, alertInput }) => (
   <Flex>
   <Store.Consumer>
     {store => (
@@ -118,32 +126,37 @@ const DetailAccountMenuPresenter = ({ balace, transaction, toAddress, amount, pa
           }
         }}
       >
-      <ModalHeader/>  
-      <Input addressInput toAddress={ toAddress }
-        placeholder={"Address"}
-        required
-        name="toAddress"
-        value={toAddress}
-        type={"text"}
-        onChange={handleInput}
-      />
-      <Input amountInput amount={ amount }
-        placeholder={"Amount"}
-        required
-        name="amount"
-        type={"number"}
-        value={amount}
-        onChange={handleInput}
-        max={store.balance}
-      />
-       <Input passwordInput password={ password }
-        placeholder={"Password"}
-        required
-        name="password"
-        type={"password"}
-        value={password}
-        onChange={handleInput}
-      />
+        <ModalHeader/>  
+        <Input addressInput toAddress={ toAddress }
+          placeholder={"Address"}
+          required
+          name="toAddress"
+          value={toAddress}
+          type={"text"}
+          onChange={handleInput}
+        />
+        <Input amountInput amount={ amount }
+          placeholder={"Amount"}
+          required
+          name="amount"
+          type={"number"}
+          value={amount}
+          onChange={handleInput}
+          max={store.balance}
+        />
+        <Input passwordInput password={ password }
+          placeholder={"Password"}
+          required
+          name="password"
+          type={"password"}
+          value={password}
+          onChange={handleInput}
+        />
+
+        <AlertInfo>
+          { alertInput }
+        </AlertInfo>
+          
         <Flex alignCenter justifyBetween>
           <FlexItem>
             <Fragment/>

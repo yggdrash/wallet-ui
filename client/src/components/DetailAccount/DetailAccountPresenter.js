@@ -379,7 +379,7 @@ const HeaderTitle = styled.div`
   font-family: 'Titillium Web', sans-serif
 `;
 
-const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, left, balance, txResult, getTransactionReceipt, txReceipt, txReceiptOpen, close}) => (
+const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, left, balance, txResult, txReceipt, txReceiptOpen, close}) => (
   <Container>
   <Store.Consumer>
     {store => (
@@ -487,7 +487,7 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
             </FlexItem>
             <FlexItem>
               <TransactionData
-                onClick={() => getTransactionReceipt(txResult)}
+                onClick={() => store.getTransactionReceipt(txResult)}
               >
               {
                 txResult 
