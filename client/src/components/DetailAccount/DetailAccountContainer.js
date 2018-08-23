@@ -83,13 +83,16 @@ class DetailAccountContainer extends Component {
         } else {
           console.log(res.result)
           for(let tx in res.result){
+            // this.setState({
+            //   txResult: update(
+            //     this.state.txResult,
+            //     {
+            //         $push: [tx]
+            //     }
+            //   ),
+            // })
             this.setState({
-              txResult: update(
-                this.state.txResult,
-                {
-                    $push: [tx]
-                }
-              ),
+              txResult: tx
             })
           }
         }
