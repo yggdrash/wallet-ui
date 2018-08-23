@@ -15,6 +15,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Check } from 'styled-icons/material/Check';
 import { Button } from "components/Shared";
 import DetailAccountMenu from 'components/DetailAccountMenu';
+import back from "assets/images/back5.jpg";
 import txReceipt from 'components/txReceipt';
 import {
   Tooltip,
@@ -27,7 +28,10 @@ const Container = styled.div`
 `;
 const Modal = styled(ReactModal)`
   border: 0;
-  background-color: rgba( 22, 48, 72, 0.95 );
+  // background-color: rgba( 22, 48, 72, 0.95 );
+  background-image: url(${back});
+  background-repeat: no-repeat
+  background-size: cover;
   width: 90%;
   height: 90%;
   position: absolute;
@@ -35,7 +39,7 @@ const Modal = styled(ReactModal)`
   left: 5%;
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
-  border-radius: 10px;
+  border-radius: 15px;
   box-sizing: border-box;
   border-color: rgba(70, 219, 115, 0);
   &:focus,
