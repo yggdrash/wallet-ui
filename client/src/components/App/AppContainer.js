@@ -44,6 +44,9 @@ class AppContainer extends Component {
               throw err
             } else {
               lowdb.get("accounts").find({address:addr}).assign({balance:[JSON.parse(res.result).result]}).write()
+              this.setState({
+                balance:lowdb.get("accounts").find({address:addr}).value().balance
+              })
             }
           });
         }catch (e) {
@@ -623,10 +626,7 @@ class AppContainer extends Component {
     this.state = {
       isloading:false,
       accounts:[],
-      balance: [],
-      // balance1:"",
-      // balance2:"",
-      // balance3:"",
+      balance: "",
       toAddress: "",
       amount:"",
       selectAddress:"",
