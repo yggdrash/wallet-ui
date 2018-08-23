@@ -19,7 +19,8 @@ class DetailAccountContainer extends Component {
       txResult:[],
       txReceipt:{},
       txReceiptOpen:false,
-      closeTransfer:false
+      closeTransfer:false,
+      showAccountModal:false
     };
 
     this.componentDidMount = () => {
@@ -46,7 +47,7 @@ class DetailAccountContainer extends Component {
 
     this.getBalanceData = () => {
       let { address } = this.props
-      var address40 = address.substring(2)
+      let address40 = address.substring(2)
       const balanceParamsdata = {
         "address":address40,
         "method":"balanceOf",
@@ -115,9 +116,10 @@ class DetailAccountContainer extends Component {
       })
     }
 
-    this._close = () =>{
+    this._closeModal = () =>{
       this.setState({
-        closeTransfer:false
+        closeTransfer:false,
+        showAccountModal:false
       })
     }
 
@@ -143,7 +145,7 @@ class DetailAccountContainer extends Component {
             txResult={this.state.txResult}
             txReceipt={this.state.txReceipt}
             txReceiptOpen={this.state.txReceiptOpen}
-            close={this._close}
+            closeModal={this._closeModal}
           />;
   }
 }

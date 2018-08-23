@@ -86,11 +86,12 @@ class DetailAccountMenuContainer extends Component {
             const yeedAccount = fromPrivateKey(toBuffer(`0x${privateKey}`));
             const fromPrivateKeyBuffer = yeedAccount.getPrivateKey();
             const getTimestamp = Math.round(new Date().getTime() / 1000);
+            let address40 = toAddress.substring(2)
             const data = {
               "method":"transfer",
               "params":[
                 { 
-                  address :toAddress
+                  address :address40
                 },
                 { 
                   amount :amount
