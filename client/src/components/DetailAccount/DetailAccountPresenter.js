@@ -15,7 +15,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Check } from 'styled-icons/material/Check';
 import { Button } from "components/Shared";
 import DetailAccountMenu from 'components/DetailAccountMenu';
-import back from "assets/images/back5.jpg";
+import back from "assets/images/back4.jpg";
 import txReceipt from 'components/txReceipt';
 import {
   Tooltip,
