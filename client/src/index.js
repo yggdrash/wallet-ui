@@ -16,7 +16,7 @@ ${reset};
 body{
   background-image: url(${back});
   background-repeat: no-repeat
-  background-size: cover;
+  background-size: auto;
   font-family:'Roboto', sans-serif
 }
 `;

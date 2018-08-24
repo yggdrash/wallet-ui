@@ -31,7 +31,7 @@ const Modal = styled(ReactModal)`
   // background-color: rgba( 22, 48, 72, 0.95 );
   background-image: url(${back});
   background-repeat: no-repeat
-  background-size: cover;
+  background-size: auto;
   width: 90%;
   height: 90%;
   position: absolute;
@@ -469,7 +469,7 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
               <LockIcon/> PASSWORD
             </AccountIcon>
             <AccountIcon
-              onClick={() => store.DetailAccountMenuModal()}
+              onClick={() => store.DeleteAccountMenuModal()}
             >
               <DeleteIcon/> DELETE
             </AccountIcon>

@@ -477,12 +477,6 @@ class AppContainer extends Component {
               accountBox: {
                   ...currentState.accountBox
               },
-              accounts: update(
-                this.state.accounts,
-                {
-                    $push: [account]
-                }
-              ),
               showModal: !this.state.showModal,
               statusModal:"import",
               newState,
@@ -596,6 +590,15 @@ class AppContainer extends Component {
       });
     }
 
+    this._DeleteAccountMenuModal = () => {
+      this.setState(() => {
+        return {
+          showDetailAccountMenuModal: !this.state.showDetailAccountMenuModal,
+          statusModal:"delete" 
+        };
+      });
+    }
+
     this._edit = address => {
       if(this.state.editor === true && this.state.selectName === ""){
         return false
@@ -625,7 +628,6 @@ class AppContainer extends Component {
 
     this.state = {
       isloading:false,
-      accounts:[],
       balance: "",
       toAddress: "",
       amount:"",
@@ -667,6 +669,7 @@ class AppContainer extends Component {
       AccountModal:this._AccountModal,
       closeModal: this._closeModal,
       DetailAccountMenuModal: this._DetailAccountMenuModal,
+      DeleteAccountMenuModal:this._DeleteAccountMenuModal,
       getTransactionReceipt:this._getTransactionReceipt,
       edit:this._edit,
       editor:false,

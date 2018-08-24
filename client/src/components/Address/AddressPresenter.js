@@ -22,13 +22,7 @@ const Address = styled.button`
   margin-top: 20px;
   margin-bottom: 10px;
   border-radius: 15px;
-  // background: #ffffff
-  // backgroud-color: #ffffff
-  // background: -webkit-linear-gradient(left,#21b5b5 , #147a7a);
-  // background: -o-linear-gradient(right, #21b5b5, #147a7a); 
-  // background: -moz-linear-gradient(right, #21b5b5, #147a7a); 
-  // background: linear-gradient(to right, #21b5b5 , #147a7a); 
-
+  // backgroud-color: white
   background: -webkit-linear-gradient(left,#174730 , #0c3b24);
   background: -o-linear-gradient(right, #174730, #0c3b24); 
   background: -moz-linear-gradient(right, #174730, #0c3b24); 
@@ -46,7 +40,6 @@ const Address = styled.button`
   }
   &:hover {
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    background-color:  #1D8074
     transform: translateY(-3px);
   }
   &:active {

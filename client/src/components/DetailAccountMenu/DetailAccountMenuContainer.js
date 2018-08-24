@@ -183,6 +183,40 @@ class DetailAccountMenuContainer extends Component {
         })
       };
 
+      this._delete = selectAddress => {
+        this.setState({isloading:true});
+        let privatekeyEncryptedKey = lowdb.get("principal").find({address:selectAddress}).value().EncryptedKey
+        setTimeout(() =>{
+          bip38Decrypt(privatekeyEncryptedKey, this.state.password , (err, decryptedPrivateWif) => {
+            if (err){
+              this.setState(() => {
+                return {
+                  isloading:false,
+                  password:"",
+                  alertInput:"Passwords do not match."
+                };
+              });
+              return err;
+            }
+            else {
+              const decoded = wif.decode(decryptedPrivateWif)
+              let privateKey = decoded.privateKey.toString("hex");
+              const yeedAccount = fromPrivateKey(toBuffer(`0x${privateKey}`));
+              const address = yeedAccount.getAddressString();
+              lowdb.get("accounts")
+                  .remove({address:address})
+                  .write();
+              this.setState({isloading:false});
+            }
+          });
+        }, 100)
+        setTimeout(() =>{
+          this.setState({
+              alertInput:"",
+          });
+        }, 2000)
+      }
+
      this._handleInput = e => {
         const { target: { name, value } } = e;
         this.setState({
@@ -195,6 +229,7 @@ class DetailAccountMenuContainer extends Component {
   render() {
     return <DetailAccountMenuPresenter {...this.props} {...this.state} 
             transaction={this._transaction}
+            deleteAccount={this._delete}
             handleInput={this._handleInput}
             isloading={this.state.isloading}
             close={this.props.close}

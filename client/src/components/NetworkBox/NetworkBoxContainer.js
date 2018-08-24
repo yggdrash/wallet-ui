@@ -14,7 +14,7 @@ class NetworkBoxContainer extends Component {
 
     this.componentDidMount = () => {
       this._getNetwork()
-      setInterval(this._getNetwork, 5000);
+      setInterval(this._getNetwork, 1000);
     };
 
     this._getNetwork = () => {

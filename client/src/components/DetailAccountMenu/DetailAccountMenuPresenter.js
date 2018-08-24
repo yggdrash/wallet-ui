@@ -14,7 +14,7 @@ const Transfer = styled(ReactModal)`
   position: absolute;
   top: 30%
   left: 25%;
-  background-color: rgba( 22, 48, 72, 0.7 );
+  background-color: rgba( 22, 48, 72, 0.9 );
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -114,7 +114,7 @@ const AlertInfo = styled.div`
   color:#E35B5B;
 `;
 
-const DetailAccountMenuPresenter = ({ balace, transaction, toAddress, amount, password, isloading, handleInput, alertInput }) => (
+const DetailAccountMenuPresenter = ({ balace, transaction, toAddress, amount, password, isloading, handleInput, alertInput, deleteAccount }) => (
   <Flex>
   <Store.Consumer>
     {store => (
@@ -127,35 +127,64 @@ const DetailAccountMenuPresenter = ({ balace, transaction, toAddress, amount, pa
         }}
       >
         <ModalHeader/>  
-        <Input addressInput toAddress={ toAddress }
-          placeholder={"Address"}
-          required
-          name="toAddress"
-          value={toAddress}
-          type={"text"}
-          onChange={handleInput}
-        />
-        <Input amountInput amount={ amount }
-          placeholder={"Amount"}
-          required
-          name="amount"
-          type={"number"}
-          value={amount}
-          onChange={handleInput}
-          max={store.balance}
-        />
-        <Input passwordInput password={ password }
-          placeholder={"Password"}
-          required
-          name="password"
-          type={"password"}
-          value={password}
-          onChange={handleInput}
-        />
+        { 
+          store.statusModal === "transfer"
+          ?
+          <FlexItem>
+            <Input addressInput toAddress={ toAddress }
+            placeholder={"Address"}
+            required
+            name="toAddress"
+            value={toAddress}
+            type={"text"}
+            onChange={handleInput}
+            />
+            <Input amountInput amount={ amount }
+              placeholder={"Amount"}
+              required
+              name="amount"
+              type={"number"}
+              value={amount}
+              onChange={handleInput}
+              max={store.balance}
+            />
+            <Input passwordInput password={ password }
+              placeholder={"Password"}
+              required
+              name="password"
+              type={"password"}
+              value={password}
+              onChange={handleInput}
+            />
 
-        <AlertInfo>
-          { alertInput }
-        </AlertInfo>
+            <AlertInfo>
+              { alertInput }
+            </AlertInfo>
+          </FlexItem>
+          :
+          ""
+        }
+        { 
+          store.statusModal === "delete"
+          ?
+          <FlexItem>
+            <Input passwordInput password={ password }
+              placeholder={"Password"}
+              required
+              name="password"
+              type={"password"}
+              value={password}
+              onChange={handleInput}
+            />
+
+            <AlertInfo>
+              { alertInput }
+            </AlertInfo>
+          </FlexItem>
+          :
+          ""
+        }
+          
           
         <Flex alignCenter justifyBetween>
           <FlexItem>
@@ -165,7 +194,11 @@ const DetailAccountMenuPresenter = ({ balace, transaction, toAddress, amount, pa
             <Fragment>
               <Button 
                 onClick={() => {
-                  transaction(store.selectAddress)
+                  if(store.statusModal === "transfer"){
+                    transaction(store.selectAddress)
+                  }else if(store.statusModal === "delete"){
+                    deleteAccount(store.selectAddress)
+                  }
                 }}
               >
                 SEND
