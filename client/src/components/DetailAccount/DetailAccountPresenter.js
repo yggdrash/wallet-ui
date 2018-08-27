@@ -15,6 +15,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Check } from 'styled-icons/material/Check';
 import { Button } from "components/Shared";
 import DetailAccountMenu from 'components/DetailAccountMenu';
+import back from "assets/images/back4.jpg";
 import txReceipt from 'components/txReceipt';
 import {
   Tooltip,
@@ -27,7 +28,10 @@ const Container = styled.div`
 `;
 const Modal = styled(ReactModal)`
   border: 0;
-  background-color: rgba( 22, 48, 72, 0.95 );
+  // background-color: rgba( 22, 48, 72, 0.95 );
+  background-image: url(${back});
+  background-repeat: no-repeat
+  background-size: auto;
   width: 90%;
   height: 90%;
   position: absolute;
@@ -35,7 +39,7 @@ const Modal = styled(ReactModal)`
   left: 5%;
   border: 2px solid rgba(0,0,0,.0975);
   box-shadow: 0 7px 14px rgba(0,0,0,.0975);, 0 3px 6px rgba(0, 0, 0, 0.08);
-  border-radius: 10px;
+  border-radius: 15px;
   box-sizing: border-box;
   border-color: rgba(70, 219, 115, 0);
   &:focus,
@@ -379,7 +383,7 @@ const HeaderTitle = styled.div`
   font-family: 'Titillium Web', sans-serif
 `;
 
-const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, left, balance, txResult, getTransactionReceipt, txReceipt, txReceiptOpen, close}) => (
+const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, left, balance, txResult, txReceipt, txReceiptOpen, close}) => (
   <Container>
   <Store.Consumer>
     {store => (
@@ -465,7 +469,7 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
               <LockIcon/> PASSWORD
             </AccountIcon>
             <AccountIcon
-              onClick={() => store.DetailAccountMenuModal()}
+              onClick={() => store.DeleteAccountMenuModal()}
             >
               <DeleteIcon/> DELETE
             </AccountIcon>
@@ -487,7 +491,7 @@ const DetailAccountPresenter = ({copy, copied, copyHidden, handleTooltip, top, l
             </FlexItem>
             <FlexItem>
               <TransactionData
-                onClick={() => getTransactionReceipt(txResult)}
+                onClick={() => store.getTransactionReceipt(txResult)}
               >
               {
                 txResult 

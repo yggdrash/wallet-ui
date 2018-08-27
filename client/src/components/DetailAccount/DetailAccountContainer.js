@@ -18,12 +18,14 @@ class DetailAccountContainer extends Component {
       balance:"",
       txResult:[],
       txReceipt:{},
-      txReceiptOpen:false
+      txReceiptOpen:false,
+      closeTransfer:false,
+      showAccountModal:false
     };
 
     this.componentDidMount = () => {
       this.balanceOf()
-      setInterval(this.balanceOf, 3000);
+      setInterval(this.balanceOf, 500);
       this.getAllTransactionReceipt()
       setInterval(this.getAllTransactionReceipt, 5000);
     };
@@ -45,7 +47,7 @@ class DetailAccountContainer extends Component {
 
     this.getBalanceData = () => {
       let { address } = this.props
-      var address40 = address.substring(2)
+      let address40 = address.substring(2)
       const balanceParamsdata = {
         "address":address40,
         "method":"balanceOf",
@@ -83,13 +85,16 @@ class DetailAccountContainer extends Component {
         } else {
           console.log(res.result)
           for(let tx in res.result){
+            // this.setState({
+            //   txResult: update(
+            //     this.state.txResult,
+            //     {
+            //         $push: [tx]
+            //     }
+            //   ),
+            // })
             this.setState({
-              txResult: update(
-                this.state.txResult,
-                {
-                    $push: [tx]
-                }
-              ),
+              txResult: tx
             })
           }
         }
@@ -105,21 +110,16 @@ class DetailAccountContainer extends Component {
         } else {
           console.log(res.result)
           this.setState({
-            txReceipt: update(
-              this.state.txReceipt,
-              {
-                  $push: [res.result]
-              }
-            ),
             txReceiptOpen:true
           })
         }
       })
     }
 
-    this._close = () =>{
+    this._closeModal = () =>{
       this.setState({
-        txReceiptOpen:false
+        closeTransfer:false,
+        showAccountModal:false
       })
     }
 
@@ -140,12 +140,12 @@ class DetailAccountContainer extends Component {
             copied={this.state.copied}
             copyHidden={this.state.copyHidden}
             handleTooltip={this._handleTooltip}
-            getTransactionReceipt={this._getTransactionReceipt}
+            // getTransactionReceipt={this._getTransactionReceipt}
             balance={this.state.balance}
             txResult={this.state.txResult}
             txReceipt={this.state.txReceipt}
             txReceiptOpen={this.state.txReceiptOpen}
-            close={this._close}
+            closeModal={this._closeModal}
           />;
   }
 }

@@ -21,45 +21,38 @@ class AppContainer extends Component {
     this.componentDidMount = () => {
       document.body.addEventListener("keydown", this.closeLastPopup);
       this.balanceOf()
-      setInterval(this.balanceOf, 10000);
-      
-      // lowdb.get("accounts").map("address").value().map(addr => {
-      //   console.log(addr)
-      // });
+      setInterval(this.balanceOf, 1000);
     };
 
-    this.getBalanceData = () => {
-      let address = lowdb.get("accounts").map("address").value()
-      try {
-        let address40 = address[0].substring(2)
-        const balanceParamsdata = {
-          "address":address40,
-          "method":"balanceOf",
-          "params":[
-            { 
-              address :address40
-            }
-          ]
-        }
-        let balanceParamsdataJson = dataToJson(balanceParamsdata)
-        return balanceParamsdataJson
-      }catch (e) {
-        console.log(e)
-      }
-    }
-
     this.balanceOf = async () => {
-      let params = this.getBalanceData();
       let client  = await jayson.client.http(`${MASTER_NODE}/api/account`)
-      client.request('balanceOf', {data: params}, (err, res) => {
-        if(err) {
-          throw err
-        } else {
-          this.setState({
-            balance:JSON.parse(res.result).result
-          })
+      lowdb.get("accounts").map("address").value().map(addr => {
+        try {
+          let address40 = addr.substring(2)
+          const balanceParamsdata = {
+            "address":address40,
+            "method":"balanceOf",
+            "params":[
+              { 
+                address :address40
+              }
+            ]
+          }
+          let balanceParamsdataJson = dataToJson(balanceParamsdata)
+          client.request('balanceOf', {data: balanceParamsdataJson}, (err, res) => {
+            if(err) {
+              throw err
+            } else {
+              lowdb.get("accounts").find({address:addr}).assign({balance:[JSON.parse(res.result).result]}).write()
+              this.setState({
+                balance:lowdb.get("accounts").find({address:addr}).value().balance
+              })
+            }
+          });
+        }catch (e) {
+          console.log(e)
         }
-      })
+      });
     };
     
 
@@ -217,9 +210,10 @@ class AppContainer extends Component {
      * @method createAccount
      * @param mnemonicToSeed mnemonic buffer한 값
     */
-    this._createAccount = () => {
+    this._createAccount = async () => {
       let wordSplit = this.state.mnemonic.split(" ");
       this.setState({isloading:true});
+      var client  = await jayson.client.http(`${MASTER_NODE}/api/account`)
       if(wordSplit[2]=== this.state.word3 && wordSplit[5]=== this.state.word6 && wordSplit[8]=== this.state.word9){
         const { accountName, password } = this.state
         const hdwallet = HDKey.fromMasterSeed(bip39.mnemonicToSeed(this.state.mnemonic));
@@ -237,15 +231,34 @@ class AppContainer extends Component {
   
         setTimeout(() =>{
           const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password )
-          lowdb.get('accounts').push({
-            uuid:uuid,
-            name:accountName,
-            address:address
-          }).write()
-          lowdb.get('principal').push({
-            address:address,
-            EncryptedKey:privatekeyEncryptedKey
-          }).write()
+          
+          let address40 = address.substring(2)
+          const balanceParamsdata = {
+            "address":address40,
+            "method":"balanceOf",
+            "params":[
+              { 
+                address :address40
+              }
+            ]
+          }
+          let balanceParamsdataJson = dataToJson(balanceParamsdata)
+          client.request('balanceOf', {data: balanceParamsdataJson}, (err, res) => {
+            if(err) {
+              throw err
+            } else {
+              lowdb.get('accounts').push({
+                uuid:uuid,
+                name:accountName,
+                address:address,
+                balance:JSON.parse(res.result).result
+              }).write()
+              lowdb.get('principal').push({
+                address:address,
+                EncryptedKey:privatekeyEncryptedKey
+              }).write()
+            }
+          });
   
           this.setState(currentState => {
             const newState = delete currentState.mnemonic;
@@ -414,11 +427,12 @@ class AppContainer extends Component {
       }, 2000)
     };
 
-    this.setImportAccount = (address, wallet)=> {
+    this.setImportAccount = async (address, wallet)=> {
       const { lowdb } = this.props;
       const { accountName, password } = this.state
       const uuid = this.guid();
       const fromPrivateKeyBuffer = wallet.getPrivateKey();
+      let client  = await jayson.client.http(`${MASTER_NODE}/api/account`)
       setTimeout(() =>{
         const privatekeyEncryptedKey = bip38.encrypt(fromPrivateKeyBuffer, true, password)
         let account ={
@@ -428,15 +442,33 @@ class AppContainer extends Component {
           privatekeyEncryptedKey
         }
           
-        lowdb.get('accounts').push({
-          uuid:uuid,
-          name:accountName,
-          address:address
-        }).write()
-        lowdb.get('principal').push({
-          address:address,
-          EncryptedKey:privatekeyEncryptedKey
-        }).write()
+        let address40 = address.substring(2)
+          const balanceParamsdata = {
+            "address":address40,
+            "method":"balanceOf",
+            "params":[
+              { 
+                address :address40
+              }
+            ]
+          }
+          let balanceParamsdataJson = dataToJson(balanceParamsdata)
+          client.request('balanceOf', {data: balanceParamsdataJson}, (err, res) => {
+            if(err) {
+              throw err
+            } else {
+              lowdb.get('accounts').push({
+                uuid:uuid,
+                name:accountName,
+                address:address,
+                balance:JSON.parse(res.result).result
+              }).write()
+              lowdb.get('principal').push({
+                address:address,
+                EncryptedKey:privatekeyEncryptedKey
+              }).write()
+            }
+          });
 
         this.setState(currentState => {
           const newState = delete currentState.importMnemonic;
@@ -445,12 +477,6 @@ class AppContainer extends Component {
               accountBox: {
                   ...currentState.accountBox
               },
-              accounts: update(
-                this.state.accounts,
-                {
-                    $push: [account]
-                }
-              ),
               showModal: !this.state.showModal,
               statusModal:"import",
               newState,
@@ -564,6 +590,15 @@ class AppContainer extends Component {
       });
     }
 
+    this._DeleteAccountMenuModal = () => {
+      this.setState(() => {
+        return {
+          showDetailAccountMenuModal: !this.state.showDetailAccountMenuModal,
+          statusModal:"delete" 
+        };
+      });
+    }
+
     this._edit = address => {
       if(this.state.editor === true && this.state.selectName === ""){
         return false
@@ -576,10 +611,24 @@ class AppContainer extends Component {
       });
     }
 
+    this._getTransactionReceipt = async (txId) => {
+      let client  = await jayson.client.http(`${MASTER_NODE}/api/transaction`)
+      client.request('getTransactionReceipt', {hashOfTx:txId}, (err, res) => {
+        if(err) {
+          console.log(err)
+          throw err
+        } else {
+          console.log(res.result)
+          this.setState({
+            txReceiptOpen:true
+          })
+        }
+      })
+    }
+
     this.state = {
       isloading:false,
-      accounts:[],
-      balance: [],
+      balance: "",
       toAddress: "",
       amount:"",
       selectAddress:"",
@@ -602,6 +651,7 @@ class AppContainer extends Component {
       AlertImportAccountName:"",
       AlertImportAccountPass:"",
       AlertImportAccountConfirmPass:"",
+      txReceipt:{},
       accountBox: {
         "1": {
           id: 1
@@ -619,6 +669,8 @@ class AppContainer extends Component {
       AccountModal:this._AccountModal,
       closeModal: this._closeModal,
       DetailAccountMenuModal: this._DetailAccountMenuModal,
+      DeleteAccountMenuModal:this._DeleteAccountMenuModal,
+      getTransactionReceipt:this._getTransactionReceipt,
       edit:this._edit,
       editor:false,
       lowdb:lowdb

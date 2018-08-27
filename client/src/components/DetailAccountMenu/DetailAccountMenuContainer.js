@@ -10,27 +10,62 @@ const bip38Decrypt = require('bip38-decrypt'),
       { sha3, dataToJson } = require('utils'),
       { remote } = window.require("electron"),
       jayson = remote.getGlobal("jayson"),
-      lowdb = remote.getGlobal("lowdb"),
-      { numberToHex, hexToNumber, hexToBytes } = require('utils/txUtil');
+      { numberToHex, hexToNumber, isAddress } = require('utils/txUtil');
 
 class DetailAccountMenuContainer extends Component {
   constructor(props) {
     super(props);
-    const { lowdb } = this.props;
+    const { lowdb, close } = this.props;
     this.state = {
       password:"",
       toAddress:"",
       amount:"",
       isloading:false,
-      close:false
+      close:false,
+      alertInput:""
     };
+
+    this.componentDidMount = () => {
+      document.body.addEventListener("keydown", this.closeLastPopup)
+    };
+
+    this.closeLastPopup = e => {
+      if (!(e.key === "Escape" || e.keyCode === 27)) return
+      this.setState({ 
+        isloading:false,
+        password:"",
+        toAddress:"",
+        amount:""
+      })
+     }
 
     this._transaction = (selectAddress)=> {
       const { toAddress, amount, password } = this.state;
       this.setState({isloading:true, close:true});
       let privatekeyEncryptedKey = lowdb.get("principal").find({address:selectAddress}).value().EncryptedKey
-
-      setTimeout(() =>{
+      if(toAddress===""){
+        this.setState(() => {
+          return {
+            alertInput:"Please enter to address.",
+            isloading:false
+          };
+        });
+      }else if(!isAddress(toAddress)){
+        this.setState(() => {
+          return {
+            alertInput:"The address format is not correct.",
+            isloading:false
+          };
+        });
+      }else if(password===""){
+        this.setState(() => {
+          return {
+            alertInput:"Please enter this wallet password.",
+            isloading:false
+          };
+        });
+      }else {
+        setTimeout(() =>{
         bip38Decrypt(privatekeyEncryptedKey, password , (err, decryptedPrivateWif) => {
           if (err){
             console.log(err.msg);
@@ -48,23 +83,17 @@ class DetailAccountMenuContainer extends Component {
             const decoded = wif.decode(decryptedPrivateWif)
             let privateKey = decoded.privateKey.toString("hex");
             const yeedAccount = fromPrivateKey(toBuffer(`0x${privateKey}`));
-            console.log(privateKey)
             const fromPrivateKeyBuffer = yeedAccount.getPrivateKey();
             const getTimestamp = Math.round(new Date().getTime() / 1000);
-            console.log("timestamp.type=", typeof getTimestamp)
-            console.log("timestamp=", getTimestamp)
-
-            var hexTimestamp = this.decimalToHex(getTimestamp);
-            console.log("hexTimestamp.type=", typeof hexTimestamp)
-            console.log("hexTimestamp=", hexTimestamp)
+            let address40 = toAddress.substring(2)
             const data = {
               "method":"transfer",
               "params":[
                 { 
-                  address :"5db10750e8caff27f906b41c71b3471057dd2001"
+                  address :address40
                 },
                 { 
-                  amount :10
+                  amount :amount
                 }
               ]
             }
@@ -91,6 +120,13 @@ class DetailAccountMenuContainer extends Component {
           }
         });
         }, 100)
+      }
+
+      setTimeout(() =>{
+        this.setState({
+            alertInput:"",
+        });
+      }, 2000)
      };
 
      this.decimalToHex = (d) => {
@@ -147,6 +183,40 @@ class DetailAccountMenuContainer extends Component {
         })
       };
 
+      this._delete = selectAddress => {
+        this.setState({isloading:true});
+        let privatekeyEncryptedKey = lowdb.get("principal").find({address:selectAddress}).value().EncryptedKey
+        setTimeout(() =>{
+          bip38Decrypt(privatekeyEncryptedKey, this.state.password , (err, decryptedPrivateWif) => {
+            if (err){
+              this.setState(() => {
+                return {
+                  isloading:false,
+                  password:"",
+                  alertInput:"Passwords do not match."
+                };
+              });
+              return err;
+            }
+            else {
+              const decoded = wif.decode(decryptedPrivateWif)
+              let privateKey = decoded.privateKey.toString("hex");
+              const yeedAccount = fromPrivateKey(toBuffer(`0x${privateKey}`));
+              const address = yeedAccount.getAddressString();
+              lowdb.get("accounts")
+                  .remove({address:address})
+                  .write();
+              this.setState({isloading:false});
+            }
+          });
+        }, 100)
+        setTimeout(() =>{
+          this.setState({
+              alertInput:"",
+          });
+        }, 2000)
+      }
+
      this._handleInput = e => {
         const { target: { name, value } } = e;
         this.setState({
@@ -159,9 +229,11 @@ class DetailAccountMenuContainer extends Component {
   render() {
     return <DetailAccountMenuPresenter {...this.props} {...this.state} 
             transaction={this._transaction}
+            deleteAccount={this._delete}
             handleInput={this._handleInput}
             isloading={this.state.isloading}
-            close={this.state.close}
+            close={this.props.close}
+            alertInput={this.state.alertInput}
           />;
   }
 }

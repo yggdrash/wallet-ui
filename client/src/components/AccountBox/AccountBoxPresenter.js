@@ -533,9 +533,6 @@ const AccountBoxPresenter = ({
                     </FlexItem>
                   </Flex>
                 </Modal>
-                {/* <DetailAccount
-                
-                /> */}
               </Fragment>
             )}
           </Store.Consumer>
@@ -561,6 +558,7 @@ const AccountBoxPresenter = ({
                     address={addr}
                     name={store.lowdb.get("accounts").find({address:addr}).value().name}
                     lowdb={store.lowdb}
+                    balance={store.lowdb.get("accounts").find({address:addr}).value().balance}
                   />
                 ));
               }}
