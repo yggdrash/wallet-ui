@@ -2,7 +2,7 @@
 Yggdrash Wallet Desktop App for YEED Coin
 
 ## Download
-[Latest Release]()
+[Latest Release](https://github.com/yggdrash/yggdrash-wallet/releases/latest)
 
 
 #### Homebrew
